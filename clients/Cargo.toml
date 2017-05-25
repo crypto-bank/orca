@@ -1,0 +1,37 @@
+[package]
+name = "orca_clients"
+version = "0.1.0"
+authors = ["crackcomm <crackcomm@gmail.com>"]
+
+[dependencies]
+orca_markets = { path = "../markets" }
+orca_currency = { path = "../currency" }
+
+error-chain = "*"
+
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+
+hyper = { git = "https://github.com/hyperium/hyper.git" }
+hyper-tls = { git = "https://github.com/hyperium/hyper-tls.git" }
+
+url = "*"
+log = "*"
+chrono = "*"
+futures = "*"
+
+tokio-io = "*"
+tokio-core = "*"
+
+ordered-float = "*"
+
+# Signing requests
+rust-crypto = "0.2"
+data-encoding = "2.0.0-rc.1"
+
+ws = { version = "*", features = ["ssl"] }
+
+[dev_dependencies]
+getopts = "*"
+pretty_env_logger = "*"
