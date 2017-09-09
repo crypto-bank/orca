@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package orca.client;
+
+
+import "orca/core/trade.proto";
+
+
+// Order making strategy.
+enum OrderStrategy {
+    // A fill-or-kill order will either fill in its entirety or be completely aborted.
+    FILL_OR_KILL = 0;
+    
+    // An immediate-or-cancel order can be partially or completely filled,
+    // but any portion of the order that cannot be filled immediately will be canceled
+    // rather than left on the order book
+    IMMEDIATE_OR_CANCEL = 1;
+
+    // A post-only order will only be placed if no portion of it fills immediately;
+    // this guarantees you will never pay the taker fee on any part of the order that fills.
+    POST_ONLY = 2;
+}
+
+
+// Placed order result.
+message OrderPlacedResult {
+    // Placed order ID.
+    string id = 1;
+}
+
+
+// Order resulted in trades on place and order was filled.
+message OrderFilledResult {
+    // Trades filled on place.
+    repeated RawTrade trades = 1;
+}
+
+// Order resulted in trades on place and was partially filled.
+message OrderPartiallyFilledResult {
+    // Placed order ID.
+    string id = 1;
+
+    // Trades filled on place.
+    repeated RawTrade trades = 2;
+}
+
+// Result of placing order on a market.
+message OrderResult {
+    oneof result {
+        // Order was placed.
+        OrderPlacedResult placed = 1;
+
+        // Order was filled.
+        OrderFilledResult filled = 2;
+
+        // Order was partially filled.
+        OrderPartiallyFilledResult partial = 3;
+    }
+}

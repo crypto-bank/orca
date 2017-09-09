@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package orca;
+
+
+// Pair of currency symbols.
+// Used to identify markets eq. `BTC/USD`
+message CoinPair {
+    string first = 1;
+    string second = 2;
+}
+
+
+// Volume of a specified currency.
+message CoinVolume {
+    string coin = 1;
+    uint64 amount = 2;
+}
