@@ -6,8 +6,8 @@ package orca;
 // Pair of currency symbols.
 // Used to identify markets eq. `BTC/USD`
 message CoinPair {
-    string first = 1;
-    string second = 2;
+    string quote = 1;
+    string base = 2;
 }
 
 
