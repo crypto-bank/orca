@@ -42,3 +42,4 @@ data/
 **/.vscode
 
 *.rs_
+*.rs.fmt

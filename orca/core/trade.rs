@@ -24,9 +24,9 @@ use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 #[derive(PartialEq,Clone,Default)]
 pub struct Trade {
     // message fields
-    pub id: u64,
+    pub id: i64,
     pub order: ::protobuf::SingularPtrField<super::order::Order>,
-    pub timestamp: u64,
+    pub timestamp: i64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -50,26 +50,26 @@ impl Trade {
         }
     }
 
-    // uint64 id = 1;
+    // int64 id = 1;
 
     pub fn clear_id(&mut self) {
         self.id = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_id(&mut self, v: u64) {
+    pub fn set_id(&mut self, v: i64) {
         self.id = v;
     }
 
-    pub fn get_id(&self) -> u64 {
+    pub fn get_id(&self) -> i64 {
         self.id
     }
 
-    fn get_id_for_reflect(&self) -> &u64 {
+    fn get_id_for_reflect(&self) -> &i64 {
         &self.id
     }
 
-    fn mut_id_for_reflect(&mut self) -> &mut u64 {
+    fn mut_id_for_reflect(&mut self) -> &mut i64 {
         &mut self.id
     }
 
@@ -114,26 +114,26 @@ impl Trade {
         &mut self.order
     }
 
-    // uint64 timestamp = 3;
+    // int64 timestamp = 3;
 
     pub fn clear_timestamp(&mut self) {
         self.timestamp = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_timestamp(&mut self, v: u64) {
+    pub fn set_timestamp(&mut self, v: i64) {
         self.timestamp = v;
     }
 
-    pub fn get_timestamp(&self) -> u64 {
+    pub fn get_timestamp(&self) -> i64 {
         self.timestamp
     }
 
-    fn get_timestamp_for_reflect(&self) -> &u64 {
+    fn get_timestamp_for_reflect(&self) -> &i64 {
         &self.timestamp
     }
 
-    fn mut_timestamp_for_reflect(&mut self) -> &mut u64 {
+    fn mut_timestamp_for_reflect(&mut self) -> &mut i64 {
         &mut self.timestamp
     }
 }
@@ -156,7 +156,7 @@ impl ::protobuf::Message for Trade {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_int64()?;
                     self.id = tmp;
                 },
                 2 => {
@@ -166,7 +166,7 @@ impl ::protobuf::Message for Trade {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_int64()?;
                     self.timestamp = tmp;
                 },
                 _ => {
@@ -198,7 +198,7 @@ impl ::protobuf::Message for Trade {
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
         if self.id != 0 {
-            os.write_uint64(1, self.id)?;
+            os.write_int64(1, self.id)?;
         }
         if let Some(ref v) = self.order.as_ref() {
             os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
@@ -206,7 +206,7 @@ impl ::protobuf::Message for Trade {
             v.write_to_with_cached_sizes(os)?;
         }
         if self.timestamp != 0 {
-            os.write_uint64(3, self.timestamp)?;
+            os.write_int64(3, self.timestamp)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -252,7 +252,7 @@ impl ::protobuf::MessageStatic for Trade {
         unsafe {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
                     "id",
                     Trade::get_id_for_reflect,
                     Trade::mut_id_for_reflect,
@@ -262,7 +262,7 @@ impl ::protobuf::MessageStatic for Trade {
                     Trade::get_order_for_reflect,
                     Trade::mut_order_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
                     "timestamp",
                     Trade::get_timestamp_for_reflect,
                     Trade::mut_timestamp_for_reflect,
@@ -301,9 +301,9 @@ impl ::protobuf::reflect::ProtobufValue for Trade {
 #[derive(PartialEq,Clone,Default)]
 pub struct RawTrade {
     // message fields
-    pub id: u64,
-    pub RawOrder: ::protobuf::SingularPtrField<super::order::Order>,
-    pub timestamp: u64,
+    pub id: i64,
+    pub order: ::protobuf::SingularPtrField<super::order::RawOrder>,
+    pub timestamp: i64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -327,97 +327,97 @@ impl RawTrade {
         }
     }
 
-    // uint64 id = 1;
+    // int64 id = 1;
 
     pub fn clear_id(&mut self) {
         self.id = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_id(&mut self, v: u64) {
+    pub fn set_id(&mut self, v: i64) {
         self.id = v;
     }
 
-    pub fn get_id(&self) -> u64 {
+    pub fn get_id(&self) -> i64 {
         self.id
     }
 
-    fn get_id_for_reflect(&self) -> &u64 {
+    fn get_id_for_reflect(&self) -> &i64 {
         &self.id
     }
 
-    fn mut_id_for_reflect(&mut self) -> &mut u64 {
+    fn mut_id_for_reflect(&mut self) -> &mut i64 {
         &mut self.id
     }
 
-    // .orca.Order RawOrder = 2;
+    // .orca.RawOrder order = 2;
 
-    pub fn clear_RawOrder(&mut self) {
-        self.RawOrder.clear();
+    pub fn clear_order(&mut self) {
+        self.order.clear();
     }
 
-    pub fn has_RawOrder(&self) -> bool {
-        self.RawOrder.is_some()
+    pub fn has_order(&self) -> bool {
+        self.order.is_some()
     }
 
     // Param is passed by value, moved
-    pub fn set_RawOrder(&mut self, v: super::order::Order) {
-        self.RawOrder = ::protobuf::SingularPtrField::some(v);
+    pub fn set_order(&mut self, v: super::order::RawOrder) {
+        self.order = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_RawOrder(&mut self) -> &mut super::order::Order {
-        if self.RawOrder.is_none() {
-            self.RawOrder.set_default();
+    pub fn mut_order(&mut self) -> &mut super::order::RawOrder {
+        if self.order.is_none() {
+            self.order.set_default();
         }
-        self.RawOrder.as_mut().unwrap()
+        self.order.as_mut().unwrap()
     }
 
     // Take field
-    pub fn take_RawOrder(&mut self) -> super::order::Order {
-        self.RawOrder.take().unwrap_or_else(|| super::order::Order::new())
+    pub fn take_order(&mut self) -> super::order::RawOrder {
+        self.order.take().unwrap_or_else(|| super::order::RawOrder::new())
     }
 
-    pub fn get_RawOrder(&self) -> &super::order::Order {
-        self.RawOrder.as_ref().unwrap_or_else(|| super::order::Order::default_instance())
+    pub fn get_order(&self) -> &super::order::RawOrder {
+        self.order.as_ref().unwrap_or_else(|| super::order::RawOrder::default_instance())
     }
 
-    fn get_RawOrder_for_reflect(&self) -> &::protobuf::SingularPtrField<super::order::Order> {
-        &self.RawOrder
+    fn get_order_for_reflect(&self) -> &::protobuf::SingularPtrField<super::order::RawOrder> {
+        &self.order
     }
 
-    fn mut_RawOrder_for_reflect(&mut self) -> &mut ::protobuf::SingularPtrField<super::order::Order> {
-        &mut self.RawOrder
+    fn mut_order_for_reflect(&mut self) -> &mut ::protobuf::SingularPtrField<super::order::RawOrder> {
+        &mut self.order
     }
 
-    // uint64 timestamp = 3;
+    // int64 timestamp = 3;
 
     pub fn clear_timestamp(&mut self) {
         self.timestamp = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_timestamp(&mut self, v: u64) {
+    pub fn set_timestamp(&mut self, v: i64) {
         self.timestamp = v;
     }
 
-    pub fn get_timestamp(&self) -> u64 {
+    pub fn get_timestamp(&self) -> i64 {
         self.timestamp
     }
 
-    fn get_timestamp_for_reflect(&self) -> &u64 {
+    fn get_timestamp_for_reflect(&self) -> &i64 {
         &self.timestamp
     }
 
-    fn mut_timestamp_for_reflect(&mut self) -> &mut u64 {
+    fn mut_timestamp_for_reflect(&mut self) -> &mut i64 {
         &mut self.timestamp
     }
 }
 
 impl ::protobuf::Message for RawTrade {
     fn is_initialized(&self) -> bool {
-        for v in &self.RawOrder {
+        for v in &self.order {
             if !v.is_initialized() {
                 return false;
             }
@@ -433,17 +433,17 @@ impl ::protobuf::Message for RawTrade {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_int64()?;
                     self.id = tmp;
                 },
                 2 => {
-                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.RawOrder)?;
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.order)?;
                 },
                 3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_int64()?;
                     self.timestamp = tmp;
                 },
                 _ => {
@@ -461,7 +461,7 @@ impl ::protobuf::Message for RawTrade {
         if self.id != 0 {
             my_size += ::protobuf::rt::value_size(1, self.id, ::protobuf::wire_format::WireTypeVarint);
         }
-        if let Some(ref v) = self.RawOrder.as_ref() {
+        if let Some(ref v) = self.order.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
@@ -475,15 +475,15 @@ impl ::protobuf::Message for RawTrade {
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
         if self.id != 0 {
-            os.write_uint64(1, self.id)?;
+            os.write_int64(1, self.id)?;
         }
-        if let Some(ref v) = self.RawOrder.as_ref() {
+        if let Some(ref v) = self.order.as_ref() {
             os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         }
         if self.timestamp != 0 {
-            os.write_uint64(3, self.timestamp)?;
+            os.write_int64(3, self.timestamp)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -529,17 +529,17 @@ impl ::protobuf::MessageStatic for RawTrade {
         unsafe {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
                     "id",
                     RawTrade::get_id_for_reflect,
                     RawTrade::mut_id_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::order::Order>>(
-                    "RawOrder",
-                    RawTrade::get_RawOrder_for_reflect,
-                    RawTrade::mut_RawOrder_for_reflect,
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::order::RawOrder>>(
+                    "order",
+                    RawTrade::get_order_for_reflect,
+                    RawTrade::mut_order_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
                     "timestamp",
                     RawTrade::get_timestamp_for_reflect,
                     RawTrade::mut_timestamp_for_reflect,
@@ -557,7 +557,7 @@ impl ::protobuf::MessageStatic for RawTrade {
 impl ::protobuf::Clear for RawTrade {
     fn clear(&mut self) {
         self.clear_id();
-        self.clear_RawOrder();
+        self.clear_order();
         self.clear_timestamp();
         self.unknown_fields.clear();
     }
@@ -577,11 +577,11 @@ impl ::protobuf::reflect::ProtobufValue for RawTrade {
 
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\x15orca/core/trade.proto\x12\x04orca\x1a\x15orca/core/order.proto\"X\
-    \n\x05Trade\x12\x0e\n\x02id\x18\x01\x20\x01(\x04R\x02id\x12!\n\x05order\
+    \n\x05Trade\x12\x0e\n\x02id\x18\x01\x20\x01(\x03R\x02id\x12!\n\x05order\
     \x18\x02\x20\x01(\x0b2\x0b.orca.OrderR\x05order\x12\x1c\n\ttimestamp\x18\
-    \x03\x20\x01(\x04R\ttimestamp\"a\n\x08RawTrade\x12\x0e\n\x02id\x18\x01\
-    \x20\x01(\x04R\x02id\x12'\n\x08RawOrder\x18\x02\x20\x01(\x0b2\x0b.orca.O\
-    rderR\x08RawOrder\x12\x1c\n\ttimestamp\x18\x03\x20\x01(\x04R\ttimestampb\
+    \x03\x20\x01(\x03R\ttimestamp\"^\n\x08RawTrade\x12\x0e\n\x02id\x18\x01\
+    \x20\x01(\x03R\x02id\x12$\n\x05order\x18\x02\x20\x01(\x0b2\x0e.orca.RawO\
+    rderR\x05order\x12\x1c\n\ttimestamp\x18\x03\x20\x01(\x03R\ttimestampb\
     \x06proto3\
 ";
 

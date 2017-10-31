@@ -1,0 +1,2388 @@
+syntax = "proto3";
+
+package orca;
+
+// Pair of currency symbols.
+// Used to identify markets eq. `BTC/USD`
+message CurrencyPair {
+    Currency quote = 1;
+    Currency base = 2;
+}
+
+// Volume of a specified currency.
+message CurrencyVolume {
+    Currency currency = 1;
+    uint64 amount = 2;
+}
+
+// Currency
+enum Currency {
+    // None
+    NONE = 0;
+    // Euro
+    EUR = 1;
+    // United States Dollar
+    USD = 2;
+    // Bitcoin
+    BTC = 3;
+    // Ethereum
+    ETH = 4;
+    // Ethereum Classic
+    ETC = 5;
+    // Ripple
+    XRP = 6;
+    // Zcash
+    ZEC = 7;
+    // Bitcoin Cash
+    BCH = 8;
+    // Litecoin
+    LTC = 9;
+    // Alphabit
+    ABC = 10;
+    // Abncoin
+    ABN = 11;
+    // ArtByte
+    ABY = 12;
+    // AsiaCoin
+    AC = 13;
+    // AdCoin
+    ACC = 14;
+    // Aces
+    ACES = 15;
+    // Avoncoin
+    ACN = 16;
+    // Acoin
+    ACOIN = 17;
+    // AnarchistsPrime
+    ACP = 18;
+    // Achain
+    ACT = 19;
+    // Cardano
+    ADA = 20;
+    // AudioCoin
+    ADC = 21;
+    // Asiadigicoin
+    ADCN = 22;
+    // Aidos Kuneen
+    ADK = 23;
+    // Adelphoi
+    ADL = 24;
+    // AdShares
+    ADST = 25;
+    // adToken
+    ADT = 26;
+    // AdEx
+    ADX = 27;
+    // Adzcoin
+    ADZ = 28;
+    // Aeternity
+    AE = 29;
+    // Aeon
+    AEON = 30;
+    // AgrolifeCoin
+    AGLC = 31;
+    // Agoras Tokens
+    AGRS = 32;
+    // Bowhead
+    AHT = 33;
+    // Advanced Internet Blocks
+    AIB = 34;
+    // Aion
+    AION = 35;
+    // AirToken
+    AIR = 36;
+    // Akuya Coin
+    AKY = 37;
+    // ALIS
+    ALIS = 38;
+    // Allion
+    ALL = 39;
+    // Altcoin
+    ALT = 40;
+    // Antilitecoin
+    ALTC = 41;
+    // Amber
+    AMB = 42;
+    // AmberCoin
+    AMBER = 43;
+    // AMIS
+    AMIS = 44;
+    // Ammo Rewards
+    AMMO = 45;
+    // Synereo
+    AMP = 46;
+    // AmsterdamCoin
+    AMS = 47;
+    // Anoncoin
+    ANC = 48;
+    // Animecoin
+    ANI = 49;
+    // Aragon
+    ANT = 50;
+    // AntiBitcoin
+    ANTI = 51;
+    // Antimatter
+    ANTX = 52;
+    // AlpaCoin
+    APC = 53;
+    // AppleCoin
+    APW = 54;
+    // APX
+    APX = 55;
+    // ARbit
+    ARB = 56;
+    // AquariusCoin
+    ARCO = 57;
+    // Ardor
+    ARDR = 58;
+    // Argentum
+    ARG = 59;
+    // Argus
+    ARGUS = 60;
+    // Aricoin
+    ARI = 61;
+    // Ark
+    ARK = 62;
+    // Maecenas
+    ART = 63;
+    // AllSafe
+    ASAFE2 = 64;
+    // AsicCoin
+    ASC = 65;
+    // Aseancoin
+    ASN = 66;
+    // AirSwap
+    AST = 67;
+    // ATBCoin
+    ATB = 68;
+    // ATC Coin
+    ATCC = 69;
+    // ATMChain
+    ATM = 70;
+    // Atmos
+    ATMS = 71;
+    // Atomic Coin
+    ATOM = 72;
+    // Authorship
+    ATS = 73;
+    // Artex Coin
+    ATX = 74;
+    // AurumCoin
+    AU = 75;
+    // Auroracoin
+    AUR = 76;
+    // Aureus
+    AURS = 77;
+    // AvatarCoin
+    AV = 78;
+    // Aventus
+    AVT = 79;
+    // AxFunds
+    AXF = 80;
+    // Axiom
+    AXIOM = 81;
+    // SegWit2x [Futures]
+    B2X = 82;
+    // B3Coin
+    B3 = 83;
+    // BitAlphaCoin
+    BAC = 84;
+    // BitAsean
+    BAS = 85;
+    // LuckChain
+    BASH = 86;
+    // BitBay
+    BAY = 87;
+    // BigBoobsCoin
+    BBC = 88;
+    // BiblePay
+    BBP = 89;
+    // BCAP
+    BCAP = 90;
+    // BitConnect
+    BCC = 91;
+    // BitcoinCashScrypt
+    BCCS = 92;
+    // BitcoinFast
+    BCF = 93;
+    // Bytecoin
+    BCN = 94;
+    // BridgeCoin
+    BCO = 95;
+    // BlockMason Credit Protocol
+    BCPT = 96;
+    // Bitcrystals
+    BCY = 97;
+    // Bitdeal
+    BDL = 98;
+    // Bela
+    BELA = 99;
+    // BenjiRolls
+    BENJI = 100;
+    // BERNcash
+    BERN = 101;
+    // BestChain
+    BEST = 102;
+    // Bongger
+    BGR = 103;
+    // BigUp
+    BIGUP = 104;
+    // BioBar
+    BIOB = 105;
+    // BiosCrypto
+    BIOS = 106;
+    // BipCoin
+    BIP = 107;
+    // Birds
+    BIRDS = 108;
+    // Bismuth
+    BIS = 109;
+    // First Bitcoin
+    BIT = 110;
+    // BitBean
+    BITB = 111;
+    // bitBTC
+    BITBTC = 112;
+    // First Bitcoin Capital
+    BITCF = 113;
+    // bitCNY
+    BITCNY = 114;
+    // bitEUR
+    BITEUR = 115;
+    // bitGold
+    BITGOLD = 116;
+    // Bitok
+    BITOK = 117;
+    // Bitstar
+    BITS = 118;
+    // bitSilver
+    BITSILVER = 119;
+    // bitUSD
+    BITUSD = 120;
+    // Bitz
+    BITZ = 121;
+    // BlakeStar
+    BLAS = 122;
+    // BlazerCoin
+    BLAZR = 123;
+    // Blakecoin
+    BLC = 124;
+    // Blitzcash
+    BLITZ = 125;
+    // BlackCoin
+    BLK = 126;
+    // Bolenum
+    BLN = 127;
+    // Blocknet
+    BLOCK = 128;
+    // BlockPay
+    BLOCKPAY = 129;
+    // BillaryCoin
+    BLRY = 130;
+    // BlueCoin
+    BLU = 131;
+    // Ethereum Blue
+    BLUE = 132;
+    // Blockchain Index
+    BLX = 133;
+    // BlazeCoin
+    BLZ = 134;
+    // Blackmoon Crypto
+    BMC = 135;
+    // Binance Coin
+    BNB = 136;
+    // Bancor
+    BNT = 137;
+    // BnrtxCoin
+    BNX = 138;
+    // Doubloon
+    BOAT = 139;
+    // Bolivarcoin
+    BOLI = 140;
+    // BOScoin
+    BOS = 141;
+    // BoostCoin
+    BOST = 142;
+    // Bitpark Coin
+    BPC = 143;
+    // bitqy
+    BQ = 144;
+    // BBQCoin
+    BQC = 145;
+    // Bitquence
+    BQX = 146;
+    // Braincoin
+    BRAIN = 147;
+    // BRAT
+    BRAT = 148;
+    // BriaCoin
+    BRIA = 149;
+    // BritCoin
+    BRIT = 150;
+    // Breakout
+    BRK = 151;
+    // Bitradio
+    BRO = 152;
+    // Breakout Stake
+    BRX = 153;
+    // BowsCoin
+    BSC = 154;
+    // BitSend
+    BSD = 155;
+    // Bastonet
+    BSN = 156;
+    // BitSoar
+    BSR = 157;
+    // Blackstar
+    BSTAR = 158;
+    // GlobalBoost-Y
+    BSTY = 159;
+    // BT1 [CST]
+    BT1 = 160;
+    // BT2 [CST]
+    BT2 = 161;
+    // Bata
+    BTA = 162;
+    // BitBar
+    BTB = 163;
+    // BitcoinDark
+    BTCD = 164;
+    // BTCMoon
+    BTCM = 165;
+    // Bitcurrency
+    BTCR = 166;
+    // Bitcoin Red
+    BTCRED = 167;
+    // BitcoinZ
+    BTCZ = 168;
+    // Bitcloud
+    BTDX = 169;
+    // Bitcoin Planet
+    BTPL = 170;
+    // BitQuark
+    BTQ = 171;
+    // BitShares
+    BTS = 172;
+    // BTSR
+    BTSR = 173;
+    // Bitcoin Unlimited (Futures)
+    BTU = 174;
+    // Bit20
+    BTWTY = 175;
+    // Bitcore
+    BTX = 176;
+    // Bubble
+    BUB = 177;
+    // SwagBucks
+    BUCKS = 178;
+    // BumbaCoin
+    BUMBA = 179;
+    // BunnyCoin
+    BUN = 180;
+    // Burst
+    BURST = 181;
+    // BuzzCoin
+    BUZZ = 182;
+    // BeaverCoin
+    BVC = 183;
+    // Bitcedi
+    BXC = 184;
+    // BitTokens
+    BXT = 185;
+    // Bytecent
+    BYC = 186;
+    // Coin2.1
+    C2 = 187;
+    // Cabbage
+    CAB = 188;
+    // CacheCoin
+    CACH = 189;
+    // Bitland
+    CADASTRAL = 190;
+    // Change
+    CAG = 191;
+    // CageCoin
+    CAGE = 192;
+    // CaliphCoin
+    CALC = 193;
+    // CannabisCoin
+    CANN = 194;
+    // Bottlecaps
+    CAP = 195;
+    // Carboncoin
+    CARBON = 196;
+    // Casino
+    CASINO = 197;
+    // CBD Crystals
+    CBD = 198;
+    // Crypto Bullion
+    CBX = 199;
+    // CyberCoin
+    CC = 200;
+    // CCMiner
+    CCM100 = 201;
+    // Cannacoin
+    CCN = 202;
+    // CryptoCarbon
+    CCRB = 203;
+    // Crystal Clear 
+    CCT = 204;
+    // Canada eCoin
+    CDN = 205;
+    // CoinDash
+    CDT = 206;
+    // CryptoEscudo
+    CESC = 207;
+    // Californium
+    CF = 208;
+    // Cofound.it
+    CFI = 209;
+    // CryptoForecast
+    CFT = 210;
+    // ChainCoin
+    CHC = 211;
+    // Cheapcoin
+    CHEAP = 212;
+    // ChessCoin
+    CHESS = 213;
+    // CHIPS
+    CHIPS = 214;
+    // Cryptojacks
+    CJ = 215;
+    // Clams
+    CLAM = 216;
+    // Clinton
+    CLINT = 217;
+    // CloakCoin
+    CLOAK = 218;
+    // ClubCoin
+    CLUB = 219;
+    // Cashme
+    CME = 220;
+    // Compcoin
+    CMP = 221;
+    // CampusCoin
+    CMPCO = 222;
+    // Comet
+    CMT = 223;
+    // CHNCoin
+    CNC = 224;
+    // Cindicator
+    CND = 225;
+    // Cannation
+    CNNC = 226;
+    // Coin(O)
+    CNO = 227;
+    // Centurion
+    CNT = 228;
+    // Cryptonex
+    CNX = 229;
+    // BitCoal
+    COAL = 230;
+    // Cobinhood
+    COB = 231;
+    // ColossusCoinXT
+    COLX = 232;
+    // PayCon
+    CON = 233;
+    // Concoin
+    CONX = 234;
+    // CORION
+    COR = 235;
+    // CorgiCoin
+    CORG = 236;
+    // COSS
+    COSS = 237;
+    // Coupecoin
+    COUPE = 238;
+    // Circuits of Value
+    COVAL = 239;
+    // CoExistCoin
+    COXST = 240;
+    // Capricoin
+    CPC = 241;
+    // CompuCoin
+    CPN = 242;
+    // Crave
+    CRAVE = 243;
+    // Creditbit
+    CRB = 244;
+    // Creativecoin
+    CREA = 245;
+    // Credo
+    CREDO = 246;
+    // CrevaCoin
+    CREVA = 247;
+    // Cream
+    CRM = 248;
+    // CRTCoin
+    CRT = 249;
+    // Crown
+    CRW = 250;
+    // Chronos
+    CRX = 251;
+    // CryptCoin
+    CRYPT = 252;
+    // CasinoCoin
+    CSC = 253;
+    // BitDice
+    CSNO = 254;
+    // Coimatic 2.0
+    CTIC2 = 255;
+    // Coimatic 3.0
+    CTIC3 = 256;
+    // Crypto
+    CTO = 257;
+    // Centra
+    CTR = 258;
+    // DigiCube
+    CUBE = 259;
+    // Curecoin
+    CURE = 260;
+    // Colossuscoin V2
+    CV2 = 261;
+    // Civic
+    CVC = 262;
+    // CVCoin
+    CVCOIN = 263;
+    // CryptoWorldX Token
+    CWXT = 264;
+    // Coinonat
+    CXT = 265;
+    // Cycling Coin
+    CYC = 266;
+    // Cyder
+    CYDER = 267;
+    // Cypher
+    CYP = 268;
+    // Dalecoin
+    DALC = 269;
+    // Darcrus
+    DAR = 270;
+    // DAS
+    DAS = 271;
+    // Dash
+    DASH = 272;
+    // Dashs
+    DASHS = 273;
+    // DaxxCoin
+    DAXX = 274;
+    // Chronologic
+    DAY = 275;
+    // Digital Bullion Gold
+    DBG = 276;
+    // DubaiCoin
+    DBIX = 277;
+    // Debitcoin
+    DBTC = 278;
+    // Dentacoin
+    DCN = 279;
+    // Decred
+    DCR = 280;
+    // DeltaCredits
+    DCRE = 281;
+    // DECENT
+    DCT = 282;
+    // Dinastycoin
+    DCY = 283;
+    // DigitalDevelopersFund
+    DDF = 284;
+    // Deutsche eMark
+    DEM = 285;
+    // Dent
+    DENT = 286;
+    // Destiny
+    DES = 287;
+    // DeusCoin
+    DEUS = 288;
+    // DFSCoin
+    DFS = 289;
+    // DraftCoin
+    DFT = 290;
+    // DigiByte
+    DGB = 291;
+    // Digitalcoin
+    DGC = 292;
+    // Digital Credits
+    DGCS = 293;
+    // DigixDAO
+    DGD = 294;
+    // DIBCOIN
+    DIBC = 295;
+    // Etheroll
+    DICE = 296;
+    // Dimecoin
+    DIME = 297;
+    // DarkLisk
+    DISK = 298;
+    // Dix Asset
+    DIX = 299;
+    // Dollarcoin
+    DLC = 300;
+    // DAPPSTER
+    DLISK = 301;
+    // Agrello
+    DLT = 302;
+    // Digital Money Bits
+    DMB = 303;
+    // DynamicCoin
+    DMC = 304;
+    // Diamond
+    DMD = 305;
+    // Denarius
+    DNR = 306;
+    // district0x
+    DNT = 307;
+    // Dogecoin
+    DOGE = 308;
+    // Dollar Online
+    DOLLAR = 309;
+    // Donationcoin
+    DON = 310;
+    // DopeCoin
+    DOPE = 311;
+    // Dotcoin
+    DOT = 312;
+    // Dovu
+    DOVU = 313;
+    // DigitalPrice
+    DP = 314;
+    // DPAY
+    DPAY = 315;
+    // DT Token
+    DRACO = 316;
+    // Dreamcoin
+    DRM = 317;
+    // Digital Rupees
+    DRS = 318;
+    // DomRaider
+    DRT = 319;
+    // DROXNE
+    DRXNE = 320;
+    // Dashcoin
+    DSH = 321;
+    // Databits
+    DTB = 322;
+    // Dubstep
+    DUB = 323;
+    // ParallelCoin
+    DUO = 324;
+    // Dutch Coin
+    DUTCH = 325;
+    // Devcoin
+    DVC = 326;
+    // Dynamic
+    DYN = 327;
+    // E4ROW
+    E4ROW = 328;
+    // EarthCoin
+    EAC = 329;
+    // EthBet
+    EBET = 330;
+    // eBoost
+    EBST = 331;
+    // Ebittree Coin
+    EBT = 332;
+    // eBTC
+    EBTC = 333;
+    // Electra
+    ECA = 334;
+    // Ethereum Cash
+    ECASH = 335;
+    // ECC
+    ECC = 336;
+    // E-coin
+    ECN = 337;
+    // EcoCoin
+    ECO = 338;
+    // Ecobit
+    ECOB = 339;
+    // Edgeless
+    EDG = 340;
+    // Eidoo
+    EDO = 341;
+    // EtherDoge
+    EDOGE = 342;
+    // E-Dinar Coin
+    EDR = 343;
+    // EDRCoin
+    EDRC = 344;
+    // e-Gulden
+    EFL = 345;
+    // Ergo
+    EFYT = 346;
+    // EverGreenCoin
+    EGC = 347;
+    // EggCoin
+    EGG = 348;
+    // EGO
+    EGO = 349;
+    // Elcoin
+    EL = 350;
+    // Elacoin
+    ELC = 351;
+    // Elementrem
+    ELE = 352;
+    // Ethereum Lite
+    ELITE = 353;
+    // Elixir
+    ELIX = 354;
+    // Ellaism
+    ELLA = 355;
+    // Elysium
+    ELS = 356;
+    // eLTC
+    ELTC2 = 357;
+    // EmberCoin
+    EMB = 358;
+    // Emercoin
+    EMC = 359;
+    // Einsteinium
+    EMC2 = 360;
+    // Emerald Crypto
+    EMD = 361;
+    // EMoneyPower
+    EMP = 362;
+    // Ethereum Movie Venture
+    EMV = 363;
+    // Enigma
+    ENG = 364;
+    // Energycoin
+    ENRG = 365;
+    // Eternity
+    ENT = 366;
+    // Environ
+    ENV = 367;
+    // EOS
+    EOS = 368;
+    // EOT Token
+    EOT = 369;
+    // EquiTrader
+    EQT = 370;
+    // EuropeCoin
+    ERC = 371;
+    // eREAL
+    EREAL = 372;
+    // Eryllium
+    ERY = 373;
+    // Espers
+    ESP = 374;
+    // Ethbits
+    ETBS = 375;
+    // Ethereum Gold
+    ETG = 376;
+    // Ethereum Dark
+    ETHD = 377;
+    // Metaverse ETP
+    ETP = 378;
+    // Etherx
+    ETX = 379;
+    // Eurocoin
+    EUC = 380;
+    // eUSD
+    EUSD = 381;
+    // Evil Coin
+    EVIL = 382;
+    // Evotion
+    EVO = 383;
+    // Everus
+    EVR = 384;
+    // Everex
+    EVX = 385;
+    // ExclusiveCoin
+    EXCL = 386;
+    // Excelcoin
+    EXL = 387;
+    // ExchangeN
+    EXN = 388;
+    // Expanse
+    EXP = 389;
+    // EXRNchain
+    EXRN = 390;
+    // FairCoin
+    FAIR = 391;
+    // Falcoin
+    FAL = 392;
+    // FAPcoin
+    FAP = 393;
+    // Fazzcoin
+    FAZZ = 394;
+    // Facecoin
+    FC = 395;
+    // FuelCoin
+    FC2 = 396;
+    // Fantomcoin
+    FCN = 397;
+    // Factom
+    FCT = 398;
+    // Future Digital Currency
+    FDC = 399;
+    // FireFlyCoin
+    FFC = 400;
+    // BITFID
+    FID = 401;
+    // FIMKrypto
+    FIMK = 402;
+    // Firecoin
+    FIRE = 403;
+    // FujiCoin
+    FJC = 404;
+    // FlappyCoin
+    FLAP = 405;
+    // Flash
+    FLASH = 406;
+    // Flaxscript
+    FLAX = 407;
+    // FoldingCoin
+    FLDC = 408;
+    // FLiK
+    FLIK = 409;
+    // FlorinCoin
+    FLO = 410;
+    // FlutterCoin
+    FLT = 411;
+    // FlavorCoin
+    FLVR = 412;
+    // Flycoin
+    FLY = 413;
+    // FinCoin
+    FNC = 414;
+    // Fonziecoin
+    FONZ = 415;
+    // Frazcoin
+    FRAZ = 416;
+    // Freicoin
+    FRC = 417;
+    // Fargocoin
+    FRGC = 418;
+    // Franko
+    FRK = 419;
+    // Francs
+    FRN = 420;
+    // FirstCoin
+    FRST = 421;
+    // FrankyWillCoin
+    FRWC = 422;
+    // Fastcoin
+    FST = 423;
+    // Feathercoin
+    FTC = 424;
+    // FuckToken
+    FUCK = 425;
+    // Etherparty
+    FUEL = 426;
+    // FunFair
+    FUN = 427;
+    // FUNCoin
+    FUNC = 428;
+    // The Cypherfunks
+    FUNK = 429;
+    // FutCoin
+    FUTC = 430;
+    // FuzzBalls
+    FUZZ = 431;
+    // FuturXe
+    FXE = 432;
+    // FundYourselfNow
+    FYN = 433;
+    // G3N
+    G3N = 434;
+    // GAIA
+    GAIA = 435;
+    // UGAIN
+    GAIN = 436;
+    // Gambit
+    GAM = 437;
+    // GameCredits
+    GAME = 438;
+    // Gapcoin
+    GAP = 439;
+    // President Johnson
+    GARY = 440;
+    // Gas
+    GAS = 441;
+    // GAY Money
+    GAY = 442;
+    // GoldBlocks
+    GB = 443;
+    // GBCGoldCoin
+    GBC = 444;
+    // Golos Gold
+    GBG = 445;
+    // Global Business Revolution
+    GBRC = 446;
+    // GameBet Coin
+    GBT = 447;
+    // Byteball Bytes
+    GBYTE = 448;
+    // GCoin
+    GCN = 449;
+    // Global Currency Reserve
+    GCR = 450;
+    // GeertCoin
+    GEERT = 451;
+    // GeoCoin
+    GEO = 452;
+    // GlobalCoin
+    GLC = 453;
+    // GoldCoin
+    GLD = 454;
+    // GlobalToken
+    GLT = 455;
+    // GameLeagueCoin
+    GML = 456;
+    // Mercury Protocol
+    GMT = 457;
+    // GoldMaxCoin
+    GMX = 458;
+    // Gnosis
+    GNO = 459;
+    // Golem
+    GNT = 460;
+    // Golfcoin
+    GOLF = 461;
+    // Golos
+    GOLOS = 462;
+    // Goodomy
+    GOOD = 463;
+    // GoldPieces
+    GP = 464;
+    // Gold Pressed Latinum
+    GPL = 465;
+    // GPU Coin
+    GPU = 466;
+    // GridCoin
+    GRC = 467;
+    // Greencoin
+    GRE = 468;
+    // Granite
+    GRN = 469;
+    // Groestlcoin
+    GRS = 470;
+    // Grantcoin
+    GRT = 471;
+    // Growers International
+    GRWI = 472;
+    // GeyserCoin
+    GSR = 473;
+    // Global Tour Coin
+    GTC = 474;
+    // GoldUnionCoin
+    GUC = 475;
+    // Guncoin
+    GUN = 476;
+    // Matchpool
+    GUP = 477;
+    // GXShares
+    GXS = 478;
+    // Halcyon
+    HAL = 479;
+    // Halloween Coin
+    HALLO = 480;
+    // HoboNickels
+    HBN = 481;
+    // Hubii Network
+    HBT = 482;
+    // Happy Creator Coin
+    HCC = 483;
+    // Hedge
+    HDG = 484;
+    // HODL Bucks
+    HDLB = 485;
+    // HEAT
+    HEAT = 486;
+    // Sovereign Hero
+    HERO = 487;
+    // HelloGold
+    HGT = 488;
+    // Hacker Gold
+    HKG = 489;
+    // HarmonyCoin
+    HMC = 490;
+    // HempCoin
+    HMP = 491;
+    // Humaniq
+    HMQ = 492;
+    // HOdlcoin
+    HODL = 493;
+    // Honey
+    HONEY = 494;
+    // Happycoin
+    HPC = 495;
+    // Hshare
+    HSR = 496;
+    // HitCoin
+    HTC = 497;
+    // HTMLCOIN
+    HTML5 = 498;
+    // HunterCoin
+    HUC = 499;
+    // Hush
+    HUSH = 500;
+    // High Voltage
+    HVCO = 501;
+    // Hive
+    HVN = 502;
+    // Hexx
+    HXX = 503;
+    // HyperStake
+    HYP = 504;
+    // Hyper
+    HYPER = 505;
+    // I0Coin
+    I0C = 506;
+    // iBank
+    IBANK = 507;
+    // iDice
+    ICE = 508;
+    // ICOBID
+    ICOB = 509;
+    // Iconic
+    ICON = 510;
+    // ICO OpenLedger
+    ICOO = 511;
+    // ICOS
+    ICOS = 512;
+    // ICON
+    ICX = 513;
+    // iEthereum
+    IETH = 514;
+    // Infinitecoin
+    IFC = 515;
+    // InflationCoin
+    IFLT = 516;
+    // InvestFeed
+    IFT = 517;
+    // ImpulseCoin
+    IMPS = 518;
+    // Independent Money System
+    IMS = 519;
+    // Impact
+    IMX = 520;
+    // Incent
+    INCNT = 521;
+    // Indorse Token
+    IND = 522;
+    // India Coin
+    INDIA = 523;
+    // InfChain
+    INF = 524;
+    // Influxcoin
+    INFX = 525;
+    // InPay
+    INPAY = 526;
+    // InsaneCoin
+    INSN = 527;
+    // Internxt
+    INXT = 528;
+    // I/O Coin
+    IOC = 529;
+    // ION
+    ION = 530;
+    // Internet of People
+    IOP = 531;
+    // iQuant
+    IQT = 532;
+    // IrishCoin
+    IRL = 533;
+    // IslaCoin
+    ISL = 534;
+    // iTicoin
+    ITI = 535;
+    // Intelligent Trading Tech
+    ITT = 536;
+    // Interzone
+    ITZ = 537;
+    // InvisibleCoin
+    IVZ = 538;
+    // Ixcoin
+    IXC = 539;
+    // iXledger
+    IXT = 540;
+    // Joincoin
+    J = 541;
+    // Jetcoin
+    JET = 542;
+    // Jin Coin
+    JIN = 543;
+    // Jinn
+    JINN = 544;
+    // JIO Token
+    JIO = 545;
+    // Janus
+    JNS = 546;
+    // JobsCoin
+    JOBS = 547;
+    // JavaScript Token
+    JS = 548;
+    // Jewels
+    JWL = 549;
+    // Karmacoin
+    KARMA = 550;
+    // KashhCoin
+    KASHH = 551;
+    // Kayicoin
+    KAYI = 552;
+    // KuCoin Shares
+    KCS = 553;
+    // Darsek
+    KED = 554;
+    // KekCoin
+    KEK = 555;
+    // KexCoin
+    KEXCOIN = 556;
+    // KibiCoin
+    KIC = 557;
+    // KickCoin
+    KICK = 558;
+    // Kin
+    KIN = 559;
+    // KiloCoin
+    KLC = 560;
+    // Kolion
+    KLN = 561;
+    // Komodo
+    KMD = 562;
+    // Kobocoin
+    KOBO = 563;
+    // Kore
+    KORE = 564;
+    // Karbowanec
+    KRB = 565;
+    // Kronecoin
+    KRONE = 566;
+    // Kurrent
+    KURT = 567;
+    // KushCoin
+    KUSH = 568;
+    // LAToken
+    LA = 569;
+    // LanaCoin
+    LANA = 570;
+    // Lazaruscoin
+    LAZ = 571;
+    // LBRY Credits
+    LBC = 572;
+    // LiteBitcoin
+    LBTC = 573;
+    // Litecoin Plus
+    LCP = 574;
+    // LandCoin
+    LDCN = 575;
+    // LiteDoge
+    LDOGE = 576;
+    // LeaCoin
+    LEA = 577;
+    // LEOcoin
+    LEO = 578;
+    // LePen
+    LEPEN = 579;
+    // Lex4All
+    LEX = 580;
+    // Legends Room
+    LGD = 581;
+    // LIFE
+    LIFE = 582;
+    // Linda
+    LINDA = 583;
+    // ChainLink
+    LINK = 584;
+    // Linx
+    LINX = 585;
+    // LetItRide
+    LIR = 586;
+    // LinkedCoin
+    LKC = 587;
+    // Lykke
+    LKK = 588;
+    // LLToken
+    LLT = 589;
+    // LoMoCoin
+    LMC = 590;
+    // Link Platform
+    LNK = 591;
+    // Woodcoin
+    LOG = 592;
+    // LottoCoin
+    LOT = 593;
+    // Loopring
+    LRC = 594;
+    // Lisk
+    LSK = 595;
+    // LiteBar
+    LTB = 596;
+    // LTBcoin
+    LTBC = 597;
+    // Litecred
+    LTCR = 598;
+    // LiteCoin Ultra
+    LTCU = 599;
+    // LiteCoin Gold
+    LTG = 600;
+    // LAthaan
+    LTH = 601;
+    // Lunyr
+    LUN = 602;
+    // Luna Coin
+    LUNA = 603;
+    // LUXCoin
+    LUX = 604;
+    // LevoPlus
+    LVPS = 605;
+    // Machinecoin
+    MAC = 606;
+    // SatoshiMadness
+    MAD = 607;
+    // Magnetcoin
+    MAGN = 608;
+    // MaidSafeCoin
+    MAID = 609;
+    // Decentraland
+    MANA = 610;
+    // Mao Zedong
+    MAO = 611;
+    // Marijuanacoin
+    MAR = 612;
+    // Marscoin
+    MARS = 613;
+    // MarxCoin
+    MARX = 614;
+    // Mavro
+    MAVRO = 615;
+    // MaxCoin
+    MAX = 616;
+    // Theresa May Coin
+    MAY = 617;
+    // Monster Byte
+    MBI = 618;
+    // MobileCash
+    MBL = 619;
+    // Embers
+    MBRS = 620;
+    // MCAP
+    MCAP = 621;
+    // Musiconomi
+    MCI = 622;
+    // Monaco
+    MCO = 623;
+    // Macro
+    MCR = 624;
+    // MACRON
+    MCRN = 625;
+    // Moeda Loyalty Points
+    MDA = 626;
+    // Megacoin
+    MEC = 627;
+    // Memetic
+    MEME = 628;
+    // PeopleCoin
+    MEN = 629;
+    // Kittehcoin
+    MEOW = 630;
+    // Mercury
+    MER = 631;
+    // MetalCoin
+    METAL = 632;
+    // Mind Gene
+    MG = 633;
+    // Magnum
+    MGM = 634;
+    // MobileGo
+    MGO = 635;
+    // MiloCoin
+    MILO = 636;
+    // Minex
+    MINEX = 637;
+    // Mintcoin
+    MINT = 638;
+    // IOTA
+    MIOTA = 639;
+    // MIYUCoin
+    MIU = 640;
+    // Melon
+    MLN = 641;
+    // MMXVI
+    MMXVI = 642;
+    // MindCoin
+    MND = 643;
+    // Minereum
+    MNE = 644;
+    // Mineum
+    MNM = 645;
+    // Modum
+    MOD = 646;
+    // Moin
+    MOIN = 647;
+    // MojoCoin
+    MOJO = 648;
+    // MonaCoin
+    MONA = 649;
+    // Moneta
+    MONETA = 650;
+    // MoneyCoin
+    MONEY = 651;
+    // Mooncoin
+    MOON = 652;
+    // Motocoin
+    MOTO = 653;
+    // microCoin
+    MRC = 654;
+    // GanjaCoin
+    MRJA = 655;
+    // MorningStar
+    MRNG = 656;
+    // Miners&#39; Reward Token
+    MRT = 657;
+    // Master Swiscoin
+    MSCN = 658;
+    // MSD
+    MSD = 659;
+    // Mothership
+    MSP = 660;
+    // MustangCoin
+    MST = 661;
+    // Monetha
+    MTH = 662;
+    // Metal
+    MTL = 663;
+    // Metal Music Coin
+    MTLMC3 = 664;
+    // MTMGaming
+    MTM = 665;
+    // Masternodecoin
+    MTNC = 666;
+    // MonetaryUnit
+    MUE = 667;
+    // MikeTheMug
+    MUG = 668;
+    // Musicoin
+    MUSIC = 669;
+    // MarteXcoin
+    MXT = 670;
+    // MyBit Token
+    MYB = 671;
+    // Mysterium
+    MYST = 672;
+    // MazaCoin
+    MZC = 673;
+    // NamoCoin
+    NAMO = 674;
+    // Project-X
+    NANOX = 675;
+    // Nebulas Token
+    NAS = 676;
+    // NautilusCoin
+    NAUT = 677;
+    // NAV Coin
+    NAV = 678;
+    // BitCentavo
+    NBE = 679;
+    // netBit
+    NBIT = 680;
+    // NeuroDAO
+    NDAO = 681;
+    // NEVERDIE
+    NDC = 682;
+    // Neblio
+    NEBL = 683;
+    // NEO
+    NEO = 684;
+    // NeosCoin
+    NEOS = 685;
+    // Netko
+    NETKO = 686;
+    // NevaCoin
+    NEVA = 687;
+    // Newbium
+    NEWB = 688;
+    // IncaKoin
+    NKA = 689;
+    // NoLimitCoin
+    NLC2 = 690;
+    // Gulden
+    NLG = 691;
+    // Namecoin
+    NMC = 692;
+    // Numeraire
+    NMR = 693;
+    // NobleCoin
+    NOBL = 694;
+    // NodeCoin
+    NODC = 695;
+    // DNotes
+    NOTE = 696;
+    // Neuro
+    NRO = 697;
+    // NuShares
+    NSR = 698;
+    // Natcoin
+    NTC = 699;
+    // Neptune Classic
+    NTCC = 700;
+    // Fujinto
+    NTO = 701;
+    // Neutron
+    NTRN = 702;
+    // Network Token
+    NTWK = 703;
+    // Nuls
+    NULS = 704;
+    // Novacoin
+    NVC = 705;
+    // NVO
+    NVST = 706;
+    // Nexium
+    NXC = 707;
+    // Nexus
+    NXS = 708;
+    // Nxt
+    NXT = 709;
+    // Nexxus
+    NXX = 710;
+    // Nyancoin
+    NYAN = 711;
+    // NewYorkCoin
+    NYC = 712;
+    // OAX
+    OAX = 713;
+    // OBITS
+    OBITS = 714;
+    // BurstOcean
+    OCEAN = 715;
+    // Oceanlab
+    OCL = 716;
+    // OCOW
+    OCOW = 717;
+    // OracleChain
+    OCT = 718;
+    // Obsidian
+    ODN = 719;
+    // Cthulhu Offerings
+    OFF = 720;
+    // OHM
+    OHM = 721;
+    // OKCash
+    OK = 722;
+    // Omicron
+    OMC = 723;
+    // OmiseGO
+    OMG = 724;
+    // Omni
+    OMNI = 725;
+    // DeepOnion
+    ONION = 726;
+    // Onix
+    ONX = 727;
+    // Operand
+    OP = 728;
+    // Opal
+    OPAL = 729;
+    // Opescoin
+    OPES = 730;
+    // Opus
+    OPT = 731;
+    // Orbitcoin
+    ORB = 732;
+    // Orlycoin
+    ORLY = 733;
+    // Ormeus Coin
+    ORME = 734;
+    // OsmiumCoin
+    OS76 = 735;
+    // Open Trading Network
+    OTN = 736;
+    // OX Fina
+    OX = 737;
+    // P7Coin
+    P7C = 738;
+    // Paccoin
+    PAC = 739;
+    // Pakcoin
+    PAK = 740;
+    // Particl
+    PART = 741;
+    // Pascal Coin
+    PASC = 742;
+    // Pascal Lite
+    PASL = 743;
+    // TenX
+    PAY = 744;
+    // PayPeer
+    PAYP = 745;
+    // Primalbase Token
+    PBT = 746;
+    // PeepCoin
+    PCN = 747;
+    // Pabyosi Coin (Special)
+    PCS = 748;
+    // Project Decorum
+    PDC = 749;
+    // PinkDog
+    PDG = 750;
+    // Peacecoin
+    PEC = 751;
+    // Pepe Cash
+    PEPECASH = 752;
+    // PosEx
+    PEX = 753;
+    // Prospectors Gold
+    PGL = 754;
+    // Photon
+    PHO = 755;
+    // Philosopher Stones
+    PHS = 756;
+    // PiCoin
+    PI = 757;
+    // PIECoin
+    PIE = 758;
+    // Piggycoin
+    PIGGY = 759;
+    // CryptoPing
+    PING = 760;
+    // PinkCoin
+    PINK = 761;
+    // PiplCoin
+    PIPL = 762;
+    // Pirl
+    PIRL = 763;
+    // PIVX
+    PIVX = 764;
+    // Lampix
+    PIX = 765;
+    // PizzaCoin
+    PIZZA = 766;
+    // ParkByte
+    PKB = 767;
+    // PlayerCoin
+    PLACO = 768;
+    // Polybius
+    PLBT = 769;
+    // PLNcoin
+    PLNC = 770;
+    // Pillar
+    PLR = 771;
+    // Pluton
+    PLU = 772;
+    // Pandacoin
+    PND = 773;
+    // Po.et
+    POE = 774;
+    // PokeCoin
+    POKE = 775;
+    // ClearPoll
+    POLL = 776;
+    // PonziCoin
+    PONZI = 777;
+    // PopularCoin
+    POP = 778;
+    // PoSToken
+    POS = 779;
+    // PostCoin
+    POST = 780;
+    // PoSW Coin
+    POSW = 781;
+    // PotCoin
+    POT = 782;
+    // Peercoin
+    PPC = 783;
+    // PayPie
+    PPP = 784;
+    // Populous
+    PPT = 785;
+    // Peerplays
+    PPY = 786;
+    // Prototanium
+    PR = 787;
+    // PRCoin
+    PRC = 788;
+    // President Trump
+    PRES = 789;
+    // Paragon
+    PRG = 790;
+    // Primulon
+    PRIMU = 791;
+    // PrismChain
+    PRM = 792;
+    // Protean
+    PRN = 793;
+    // Propy
+    PRO = 794;
+    // ProCurrency
+    PROC = 795;
+    // Printerium
+    PRX = 796;
+    // Pesobit
+    PSB = 797;
+    // Primas
+    PST = 798;
+    // Psilocybin
+    PSY = 799;
+    // Pesetacoin
+    PTC = 800;
+    // Patientory
+    PTOY = 801;
+    // Pulse
+    PULSE = 802;
+    // Pura
+    PURA = 803;
+    // PutinCoin
+    PUT = 804;
+    // Powercoin
+    PWR = 805;
+    // PX
+    PX = 806;
+    // Phoenixcoin
+    PXC = 807;
+    // Prime-XI
+    PXI = 808;
+    // PRIZM
+    PZM = 809;
+    // QubitCoin
+    Q2C = 810;
+    // Quantum
+    QAU = 811;
+    // Quebecoin
+    QBC = 812;
+    // Qibuck Asset
+    QBK = 813;
+    // Cubits
+    QBT = 814;
+    // QuazarCoin
+    QCN = 815;
+    // Qora
+    QORA = 816;
+    // Quark
+    QRK = 817;
+    // Quantum Resistant Ledger
+    QRL = 818;
+    // Quatloo
+    QTL = 819;
+    // Qtum
+    QTUM = 820;
+    // Qwark
+    QWARK = 821;
+    // Radium
+    RADS = 822;
+    // Condensate
+    RAIN = 823;
+    // RabbitCoin
+    RBBT = 824;
+    // Rubies
+    RBIES = 825;
+    // Rimbit
+    RBT = 826;
+    // Ripto Bux
+    RBX = 827;
+    // Rubycoin
+    RBY = 828;
+    // RussiaCoin
+    RC = 829;
+    // ReddCoin
+    RDD = 830;
+    // REAL
+    REAL = 831;
+    // Regalcoin
+    REC = 832;
+    // RedCoin
+    RED = 833;
+    // ReeCoin
+    REE = 834;
+    // Regacoin
+    REGA = 835;
+    // Augur
+    REP = 836;
+    // Request Network
+    REQ = 837;
+    // Revenu
+    REV = 838;
+    // REX
+    REX = 839;
+    // RHFCoin
+    RHFC = 840;
+    // RChain
+    RHOC = 841;
+    // Riecoin
+    RIC = 842;
+    // RichCoin
+    RICHX = 843;
+    // Ride My Car
+    RIDE = 844;
+    // Rise
+    RISE = 845;
+    // Etheriya
+    RIYA = 846;
+    // Royal Kingdom Coin
+    RKC = 847;
+    // iExec RLC
+    RLC = 848;
+    // RouletteToken
+    RLT = 849;
+    // Remicoin
+    RMC = 850;
+    // Renos
+    RNS = 851;
+    // Roofs
+    ROOFS = 852;
+    // RoyalCoin
+    ROYAL = 853;
+    // RonPaulCoin
+    RPC = 854;
+    // Red Pulse
+    RPX = 855;
+    // RSGPcoin
+    RSGP = 856;
+    // RubleBit
+    RUBIT = 857;
+    // Runners
+    RUNNERS = 858;
+    // Rupee
+    RUP = 859;
+    // Rupaya
+    RUPX = 860;
+    // Rustbits
+    RUSTBITS = 861;
+    // Rivetz
+    RVT = 862;
+    // SACoin
+    SAC = 863;
+    // Safe Exchange Coin
+    SAFEX = 864;
+    // Sharkcoin
+    SAK = 865;
+    // SALT
+    SALT = 866;
+    // Santiment Network Token
+    SAN = 867;
+    // Save and Gain
+    SANDG = 868;
+    // Steem Dollars
+    SBD = 869;
+    // Siacoin
+    SC = 870;
+    // Social
+    SCL = 871;
+    // Scorecoin
+    SCORE = 872;
+    // SecretCoin
+    SCRT = 873;
+    // Speedcash
+    SCS = 874;
+    // ShadowCash
+    SDC = 875;
+    // SydPak
+    SDP = 876;
+    // Senderon
+    SDRN = 877;
+    // Sequence
+    SEQ = 878;
+    // Solarflarecoin
+    SFC = 879;
+    // SafeCoin
+    SFE = 880;
+    // Shilling
+    SH = 881;
+    // SHACoin
+    SHA = 882;
+    // Shadow Token
+    SHDW = 883;
+    // ShellCoin
+    SHELL = 884;
+    // Shift
+    SHIFT = 885;
+    // StrongHands
+    SHND = 886;
+    // Shorty
+    SHORTY = 887;
+    // SIBCoin
+    SIB = 888;
+    // Swisscoin
+    SIC = 889;
+    // Smart Investment Fund Token
+    SIFT = 890;
+    // SIGMAcoin
+    SIGMA = 891;
+    // Signatum
+    SIGT = 892;
+    // Storjcoin X
+    SJCX = 893;
+    // Skeincoin
+    SKC = 894;
+    // SkinCoin
+    SKIN = 895;
+    // Sakuracoin
+    SKR = 896;
+    // Pirate Blocks
+    SKULL = 897;
+    // Skycoin
+    SKY = 898;
+    // Slevin
+    SLEVIN = 899;
+    // Selfiecoin
+    SLFI = 900;
+    // Sterlingcoin
+    SLG = 901;
+    // Sling
+    SLING = 902;
+    // Slimcoin
+    SLM = 903;
+    // SolarCoin
+    SLR = 904;
+    // SaluS
+    SLS = 905;
+    // SmartCash
+    SMART = 906;
+    // SmartCoin
+    SMC = 907;
+    // SmileyCoin
+    SMLY = 908;
+    // Smoke
+    SMOKE = 909;
+    // SnakeEyes
+    SNAKE = 910;
+    // SunContract
+    SNC = 911;
+    // Sand Coin
+    SND = 912;
+    // SingularDTV
+    SNGLS = 913;
+    // SONM
+    SNM = 914;
+    // Synergy
+    SNRG = 915;
+    // Status
+    SNT = 916;
+    // Soarcoin
+    SOAR = 917;
+    // SocialCoin
+    SOCC = 918;
+    // SOILcoin
+    SOIL = 919;
+    // Sojourn
+    SOJ = 920;
+    // SongCoin
+    SONG = 921;
+    // SoonCoin
+    SOON = 922;
+    // SoulCoin
+    SOUL = 923;
+    // SpaceCoin
+    SPACE = 924;
+    // SproutsExtreme
+    SPEX = 925;
+    // Sphere
+    SPHR = 926;
+    // SportsCoin
+    SPORT = 927;
+    // SpreadCoin
+    SPR = 928;
+    // Sprouts
+    SPRTS = 929;
+    // Spots
+    SPT = 930;
+    // SecureCoin
+    SRC = 931;
+    // Starta
+    STA = 932;
+    // Startcoin
+    START = 933;
+    // Stakecoin
+    STCN = 934;
+    // Steem
+    STEEM = 935;
+    // Steps
+    STEPS = 936;
+    // STEX
+    STEX = 937;
+    // Storj
+    STORJ = 938;
+    // Stratis
+    STRAT = 939;
+    // StarCredits
+    STRC = 940;
+    // Stress
+    STS = 941;
+    // Sativacoin
+    STV = 942;
+    // Stox
+    STX = 943;
+    // Substratum
+    SUB = 944;
+    // Sumokoin
+    SUMO = 945;
+    // SuperCoin
+    SUPER = 946;
+    // Suretly
+    SUR = 947;
+    // Bitswift
+    SWIFT = 948;
+    // Swing
+    SWING = 949;
+    // Swapcoin
+    SWP = 950;
+    // Swarm City
+    SWT = 951;
+    // Sexcoin
+    SXC = 952;
+    // Sync
+    SYNC = 953;
+    // Syndicate
+    SYNX = 954;
+    // Syscoin
+    SYS = 955;
+    // TaaS
+    TAAS = 956;
+    // TagCoin
+    TAG = 957;
+    // TAGRcoin
+    TAGR = 958;
+    // TajCoin
+    TAJ = 959;
+    // BTCtalkcoin
+    TALK = 960;
+    // The ChampCoin
+    TCC = 961;
+    // T-coin
+    TCOIN = 962;
+    // TheCreed
+    TCR = 963;
+    // TeamUp
+    TEAM = 964;
+    // TEKcoin
+    TEK = 965;
+    // Tellurion
+    TELL = 966;
+    // TerraNova
+    TER = 967;
+    // TeraCoin
+    TERA = 968;
+    // TeslaCoin
+    TES = 969;
+    // TeslaCoilCoin
+    TESLA = 970;
+    // TrueFlip
+    TFL = 971;
+    // Tigercoin
+    TGC = 972;
+    // Target Coin
+    TGT = 973;
+    // HempCoin
+    THC = 974;
+    // TechShares
+    THS = 975;
+    // Chronobank
+    TIME = 976;
+    // FedoraCoin
+    TIPS = 977;
+    // Titcoin
+    TIT = 978;
+    // TokenCard
+    TKN = 979;
+    // CryptoInsight
+    TKR = 980;
+    // Tokes
+    TKS = 981;
+    // Tattoocoin (Limited Edition)
+    TLE = 982;
+    // Tierion
+    TNT = 983;
+    // ToaCoin
+    TOA = 984;
+    // TodayCoin
+    TODAY = 985;
+    // SwapToken
+    TOKEN = 986;
+    // TopCoin
+    TOP = 987;
+    // Topaz Coin
+    TOPAZ = 988;
+    // Torcoin
+    TOR = 989;
+    // Tradecoin
+    TRADE = 990;
+    // Terracoin
+    TRC = 991;
+    // Tracto
+    TRCT = 992;
+    // Triangles
+    TRI = 993;
+    // TrickyCoin
+    TRICK = 994;
+    // Triggers
+    TRIG = 995;
+    // Truckcoin
+    TRK = 996;
+    // Trollcoin
+    TROLL = 997;
+    // WeTrust
+    TRST = 998;
+    // TrumpCoin
+    TRUMP = 999;
+    // TrustPlus
+    TRUST = 1000;
+    // TRON
+    TRX = 1001;
+    // Tattoocoin (Standard Edition)
+    TSE = 1002;
+    // Tristar Coin
+    TSTR = 1003;
+    // TittieCoin
+    TTC = 1004;
+    // TurboCoin
+    TURBO = 1005;
+    // TransferCoin
+    TX = 1006;
+    // Tyrocoin
+    TYC = 1007;
+    // Tychocoin
+    TYCHO = 1008;
+    // TrezarCoin
+    TZC = 1009;
+    // Ubiq
+    UBQ = 1010;
+    // Useless Ethereum Token
+    UET = 1011;
+    // UFO Coin
+    UFO = 1012;
+    // UG Token
+    UGT = 1013;
+    // Unitus
+    UIS = 1014;
+    // Ulatech
+    ULA = 1015;
+    // UnbreakableCoin
+    UNB = 1016;
+    // UNCoin
+    UNC = 1017;
+    // Universe
+    UNI = 1018;
+    // UniCoin
+    UNIC = 1019;
+    // Unify
+    UNIFY = 1020;
+    // Universal Currency
+    UNIT = 1021;
+    // GameUnits
+    UNITS = 1022;
+    // SuperNET
+    UNITY = 1023;
+    // Unobtanium
+    UNO = 1024;
+    // UniversalRoyalCoin
+    UNRC = 1025;
+    // Unity Ingot
+    UNY = 1026;
+    // UR
+    UR = 1027;
+    // Unrealcoin
+    URC = 1028;
+    // Uro
+    URO = 1029;
+    // Ultimate Secure Cash
+    USC = 1030;
+    // USDe
+    USDE = 1031;
+    // Tether
+    USDT = 1032;
+    // NuBits
+    USNBT = 1033;
+    // UtaCoin
+    UTA = 1034;
+    // UltraCoin
+    UTC = 1035;
+    // Version
+    V = 1036;
+    // Valorbit
+    VAL = 1037;
+    // VPNCoin
+    VASH = 1038;
+    // VirtualCoin
+    VC = 1039;
+    // Vector
+    VEC2 = 1040;
+    // VeChain
+    VEN = 1041;
+    // Veritaseum
+    VERI = 1042;
+    // VegasCoin
+    VGC = 1043;
+    // Viacoin
+    VIA = 1044;
+    // Viberate
+    VIB = 1045;
+    // VIBE
+    VIBE = 1046;
+    // PureVidz
+    VIDZ = 1047;
+    // VIP Tokens
+    VIP = 1048;
+    // Visio
+    VISIO = 1049;
+    // VIVO
+    VIVO = 1050;
+    // Veltor
+    VLT = 1051;
+    // Vault Coin
+    VLTC = 1052;
+    // Voise
+    VOISE = 1053;
+    // Bitvolt
+    VOLT = 1054;
+    // Voxels
+    VOX = 1055;
+    // Voyacoin
+    VOYA = 1056;
+    // VapersCoin
+    VPRC = 1057;
+    // VeriCoin
+    VRC = 1058;
+    // VeriumReserve
+    VRM = 1059;
+    // Veros
+    VRS = 1060;
+    // vSlice
+    VSL = 1061;
+    // Vsync
+    VSX = 1062;
+    // Virtacoin
+    VTA = 1063;
+    // Vertcoin
+    VTC = 1064;
+    // vTorrent
+    VTR = 1065;
+    // Virta Unique Coin
+    VUC = 1066;
+    // Vulcano
+    VULC = 1067;
+    // WA Space
+    WA = 1068;
+    // WARP
+    WARP = 1069;
+    // Waves
+    WAVES = 1070;
+    // WayGuide
+    WAY = 1071;
+    // Wild Beast Block
+    WBB = 1072;
+    // WalletBuildersCoin
+    WBC = 1073;
+    // Waves Community Token
+    WCT = 1074;
+    // WorldCoin
+    WDC = 1075;
+    // Wowecoin
+    WEC = 1076;
+    // Wexcoin
+    WEX = 1077;
+    // WavesGo
+    WGO = 1078;
+    // Wagerr
+    WGR = 1079;
+    // WhaleCoin
+    WHL = 1080;
+    // Wi Coin
+    WIC = 1081;
+    // Wild Crypto
+    WILD = 1082;
+    // Wings
+    WINGS = 1083;
+    // Wink
+    WINK = 1084;
+    // WMCoin
+    WMC = 1085;
+    // WomenCoin
+    WOMEN = 1086;
+    // HealthyWormCoin
+    WORM = 1087;
+    // Wowcoin
+    WOW = 1088;
+    // WeAreSatoshi
+    WSX = 1089;
+    // Walton
+    WTC = 1090;
+    // Giga Watt Token
+    WTT = 1091;
+    // Wyvern
+    WYV = 1092;
+    // X2
+    X2 = 1093;
+    // Asch
+    XAS = 1094;
+    // Xaucoin
+    XAU = 1095;
+    // Xaurum
+    XAUR = 1096;
+    // Bitcoin Plus
+    XBC = 1097;
+    // BTCGold
+    XBG = 1098;
+    // Billionaire Token
+    XBL = 1099;
+    // Bitcoin 21
+    XBTC21 = 1100;
+    // Beatcoin
+    XBTS = 1101;
+    // XTRABYTES
+    XBY = 1102;
+    // XCurrency
+    XC = 1103;
+    // Cryptonite
+    XCN = 1104;
+    // X-Coin
+    XCO = 1105;
+    // Counterparty
+    XCP = 1106;
+    // Creatio
+    XCRE = 1107;
+    // CybCSec
+    XCS = 1108;
+    // C-Bit
+    XCT = 1109;
+    // CoinonatX
+    XCXT = 1110;
+    // XDE II
+    XDE2 = 1111;
+    // DigitalNote
+    XDN = 1112;
+    // Elastic
+    XEL = 1113;
+    // NEM
+    XEM = 1114;
+    // Footy Cash
+    XFT = 1115;
+    // GO! Coin
+    XGOX = 1116;
+    // GoldReserve
+    XGR = 1117;
+    // HiCoin
+    XHI = 1118;
+    // Infinity Economics
+    XIN = 1119;
+    // Xios
+    XIOS = 1120;
+    // Joulecoin
+    XJO = 1121;
+    // LeviarCoin
+    XLC = 1122;
+    // Stellar Lumens
+    XLM = 1123;
+    // Solaris
+    XLR = 1124;
+    // MonacoCoin
+    XMCC = 1125;
+    // Magi
+    XMG = 1126;
+    // Monero
+    XMR = 1127;
+    // Myriad
+    XMY = 1128;
+    // Enigma
+    XNG = 1129;
+    // Xenon
+    XNN = 1130;
+    // Xonecoin
+    XOC = 1131;
+    // Internet of Things
+    XOT = 1132;
+    // XP
+    XP = 1133;
+    // XPlay
+    XPA = 1134;
+    // PetroDollar
+    XPD = 1135;
+    // Primecoin
+    XPM = 1136;
+    // PlatinumBAR
+    XPTX = 1137;
+    // PayCoin
+    XPY = 1138;
+    // Quotient
+    XQN = 1139;
+    // Ratecoin
+    XRA = 1140;
+    // RaiBlocks
+    XRB = 1141;
+    // Rawcoin
+    XRC = 1142;
+    // RevolverCoin
+    XRE = 1143;
+    // Rialto
+    XRL = 1144;
+    // Royalties
+    XRY = 1145;
+    // Spectrecoin
+    XSPEC = 1146;
+    // Stealthcoin
+    XST = 1147;
+    // Safe Trade Coin
+    XSTC = 1148;
+    // TileCoin
+    XTC = 1149;
+    // XTD Coin
+    XTD = 1150;
+    // Tao
+    XTO = 1151;
+    // Tezos (Pre-Launch)
+    XTZ = 1152;
+    // Exchange Union
+    XUC = 1153;
+    // Vcash
+    XVC = 1154;
+    // The Vegan Initiative
+    XVE = 1155;
+    // Verge
+    XVG = 1156;
+    // Virtacoinplus
+    XVP = 1157;
+    // WhiteCoin
+    XWC = 1158;
+    // ZCoin
+    XZC = 1159;
+    // Yacoin
+    YAC = 1160;
+    // YashCoin
+    YASH = 1161;
+    // Yescoin
+    YES = 1162;
+    // Yocoin
+    YOC = 1163;
+    // YOYOW
+    YOYOW = 1164;
+    // Zilbercoin
+    ZBC = 1165;
+    // ZcCoin
+    ZCC = 1166;
+    // ZClassic
+    ZCL = 1167;
+    // Zeitcoin
+    ZEIT = 1168;
+    // ZenCash
+    ZEN = 1169;
+    // ZenGold
+    ZENGOLD = 1170;
+    // Zennies
+    ZENI = 1171;
+    // Zero
+    ZER = 1172;
+    // Zetacoin
+    ZET = 1173;
+    // ZetaMicron
+    ZMC = 1174;
+    // Zonecoin
+    ZNE = 1175;
+    // Bitzeny
+    ZNY = 1176;
+    // Zoin
+    ZOI = 1177;
+    // ZrCoin
+    ZRC = 1178;
+    // 0x
+    ZRX = 1179;
+    // Zeusshield
+    ZSC = 1180;
+    // ZSEcoin
+    ZSE = 1181;
+    // Zurcoin
+    ZUR = 1182;
+    // Zayedcoin
+    ZYD = 1183;
+}

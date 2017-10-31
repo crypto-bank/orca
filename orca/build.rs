@@ -1,3 +1,5 @@
+#![feature(rustc_private)]
+
 extern crate glob;
 #[macro_use]
 extern crate log;
@@ -21,13 +23,21 @@ fn glob_simple(pattern: &str) -> Vec<String> {
                 .expect("utf-8")
                 .to_owned()
         })
+        .map(|p| p.replace("\\", "/"))
         .collect()
 }
 
 
 fn clean_old_files() {
-    for f in glob_simple("core/**/*_pb.rs") {
-        fs::remove_file(f).expect("rm");
+    for f in &[
+        "core/currency.rs",
+        "core/order.rs",
+        "core/trade.rs",
+        "core/client/order.rs",
+    ] {
+        if let Err(e) = fs::remove_file(f) {
+            warn!("couldn't remote {}, err: {:?}", f, e);
+        }
     }
 }
 

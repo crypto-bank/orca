@@ -25,8 +25,8 @@ use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 pub struct Order {
     // message fields
     pub kind: OrderKind,
-    pub rate: ::protobuf::SingularPtrField<super::coin::CoinVolume>,
-    pub volume: ::protobuf::SingularPtrField<super::coin::CoinVolume>,
+    pub rate: ::protobuf::SingularPtrField<super::currency::CurrencyVolume>,
+    pub volume: ::protobuf::SingularPtrField<super::currency::CurrencyVolume>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -73,7 +73,7 @@ impl Order {
         &mut self.kind
     }
 
-    // .orca.CoinVolume rate = 2;
+    // .orca.CurrencyVolume rate = 2;
 
     pub fn clear_rate(&mut self) {
         self.rate.clear();
@@ -84,13 +84,13 @@ impl Order {
     }
 
     // Param is passed by value, moved
-    pub fn set_rate(&mut self, v: super::coin::CoinVolume) {
+    pub fn set_rate(&mut self, v: super::currency::CurrencyVolume) {
         self.rate = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_rate(&mut self) -> &mut super::coin::CoinVolume {
+    pub fn mut_rate(&mut self) -> &mut super::currency::CurrencyVolume {
         if self.rate.is_none() {
             self.rate.set_default();
         }
@@ -98,23 +98,23 @@ impl Order {
     }
 
     // Take field
-    pub fn take_rate(&mut self) -> super::coin::CoinVolume {
-        self.rate.take().unwrap_or_else(|| super::coin::CoinVolume::new())
+    pub fn take_rate(&mut self) -> super::currency::CurrencyVolume {
+        self.rate.take().unwrap_or_else(|| super::currency::CurrencyVolume::new())
     }
 
-    pub fn get_rate(&self) -> &super::coin::CoinVolume {
-        self.rate.as_ref().unwrap_or_else(|| super::coin::CoinVolume::default_instance())
+    pub fn get_rate(&self) -> &super::currency::CurrencyVolume {
+        self.rate.as_ref().unwrap_or_else(|| super::currency::CurrencyVolume::default_instance())
     }
 
-    fn get_rate_for_reflect(&self) -> &::protobuf::SingularPtrField<super::coin::CoinVolume> {
+    fn get_rate_for_reflect(&self) -> &::protobuf::SingularPtrField<super::currency::CurrencyVolume> {
         &self.rate
     }
 
-    fn mut_rate_for_reflect(&mut self) -> &mut ::protobuf::SingularPtrField<super::coin::CoinVolume> {
+    fn mut_rate_for_reflect(&mut self) -> &mut ::protobuf::SingularPtrField<super::currency::CurrencyVolume> {
         &mut self.rate
     }
 
-    // .orca.CoinVolume volume = 3;
+    // .orca.CurrencyVolume volume = 3;
 
     pub fn clear_volume(&mut self) {
         self.volume.clear();
@@ -125,13 +125,13 @@ impl Order {
     }
 
     // Param is passed by value, moved
-    pub fn set_volume(&mut self, v: super::coin::CoinVolume) {
+    pub fn set_volume(&mut self, v: super::currency::CurrencyVolume) {
         self.volume = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_volume(&mut self) -> &mut super::coin::CoinVolume {
+    pub fn mut_volume(&mut self) -> &mut super::currency::CurrencyVolume {
         if self.volume.is_none() {
             self.volume.set_default();
         }
@@ -139,19 +139,19 @@ impl Order {
     }
 
     // Take field
-    pub fn take_volume(&mut self) -> super::coin::CoinVolume {
-        self.volume.take().unwrap_or_else(|| super::coin::CoinVolume::new())
+    pub fn take_volume(&mut self) -> super::currency::CurrencyVolume {
+        self.volume.take().unwrap_or_else(|| super::currency::CurrencyVolume::new())
     }
 
-    pub fn get_volume(&self) -> &super::coin::CoinVolume {
-        self.volume.as_ref().unwrap_or_else(|| super::coin::CoinVolume::default_instance())
+    pub fn get_volume(&self) -> &super::currency::CurrencyVolume {
+        self.volume.as_ref().unwrap_or_else(|| super::currency::CurrencyVolume::default_instance())
     }
 
-    fn get_volume_for_reflect(&self) -> &::protobuf::SingularPtrField<super::coin::CoinVolume> {
+    fn get_volume_for_reflect(&self) -> &::protobuf::SingularPtrField<super::currency::CurrencyVolume> {
         &self.volume
     }
 
-    fn mut_volume_for_reflect(&mut self) -> &mut ::protobuf::SingularPtrField<super::coin::CoinVolume> {
+    fn mut_volume_for_reflect(&mut self) -> &mut ::protobuf::SingularPtrField<super::currency::CurrencyVolume> {
         &mut self.volume
     }
 }
@@ -279,12 +279,12 @@ impl ::protobuf::MessageStatic for Order {
                     Order::get_kind_for_reflect,
                     Order::mut_kind_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::coin::CoinVolume>>(
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::currency::CurrencyVolume>>(
                     "rate",
                     Order::get_rate_for_reflect,
                     Order::mut_rate_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::coin::CoinVolume>>(
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<super::currency::CurrencyVolume>>(
                     "volume",
                     Order::get_volume_for_reflect,
                     Order::mut_volume_for_reflect,
@@ -324,8 +324,8 @@ impl ::protobuf::reflect::ProtobufValue for Order {
 pub struct RawOrder {
     // message fields
     pub kind: OrderKind,
-    pub rate: u64,
-    pub volume: u64,
+    pub rate: f64,
+    pub volume: f64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
@@ -372,49 +372,49 @@ impl RawOrder {
         &mut self.kind
     }
 
-    // uint64 rate = 2;
+    // double rate = 2;
 
     pub fn clear_rate(&mut self) {
-        self.rate = 0;
+        self.rate = 0.;
     }
 
     // Param is passed by value, moved
-    pub fn set_rate(&mut self, v: u64) {
+    pub fn set_rate(&mut self, v: f64) {
         self.rate = v;
     }
 
-    pub fn get_rate(&self) -> u64 {
+    pub fn get_rate(&self) -> f64 {
         self.rate
     }
 
-    fn get_rate_for_reflect(&self) -> &u64 {
+    fn get_rate_for_reflect(&self) -> &f64 {
         &self.rate
     }
 
-    fn mut_rate_for_reflect(&mut self) -> &mut u64 {
+    fn mut_rate_for_reflect(&mut self) -> &mut f64 {
         &mut self.rate
     }
 
-    // uint64 volume = 3;
+    // double volume = 3;
 
     pub fn clear_volume(&mut self) {
-        self.volume = 0;
+        self.volume = 0.;
     }
 
     // Param is passed by value, moved
-    pub fn set_volume(&mut self, v: u64) {
+    pub fn set_volume(&mut self, v: f64) {
         self.volume = v;
     }
 
-    pub fn get_volume(&self) -> u64 {
+    pub fn get_volume(&self) -> f64 {
         self.volume
     }
 
-    fn get_volume_for_reflect(&self) -> &u64 {
+    fn get_volume_for_reflect(&self) -> &f64 {
         &self.volume
     }
 
-    fn mut_volume_for_reflect(&mut self) -> &mut u64 {
+    fn mut_volume_for_reflect(&mut self) -> &mut f64 {
         &mut self.volume
     }
 }
@@ -436,17 +436,17 @@ impl ::protobuf::Message for RawOrder {
                     self.kind = tmp;
                 },
                 2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_double()?;
                     self.rate = tmp;
                 },
                 3 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_double()?;
                     self.volume = tmp;
                 },
                 _ => {
@@ -464,11 +464,11 @@ impl ::protobuf::Message for RawOrder {
         if self.kind != OrderKind::ASK {
             my_size += ::protobuf::rt::enum_size(1, self.kind);
         }
-        if self.rate != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.rate, ::protobuf::wire_format::WireTypeVarint);
+        if self.rate != 0. {
+            my_size += 9;
         }
-        if self.volume != 0 {
-            my_size += ::protobuf::rt::value_size(3, self.volume, ::protobuf::wire_format::WireTypeVarint);
+        if self.volume != 0. {
+            my_size += 9;
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -479,11 +479,11 @@ impl ::protobuf::Message for RawOrder {
         if self.kind != OrderKind::ASK {
             os.write_enum(1, self.kind.value())?;
         }
-        if self.rate != 0 {
-            os.write_uint64(2, self.rate)?;
+        if self.rate != 0. {
+            os.write_double(2, self.rate)?;
         }
-        if self.volume != 0 {
-            os.write_uint64(3, self.volume)?;
+        if self.volume != 0. {
+            os.write_double(3, self.volume)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -534,12 +534,12 @@ impl ::protobuf::MessageStatic for RawOrder {
                     RawOrder::get_kind_for_reflect,
                     RawOrder::mut_kind_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
                     "rate",
                     RawOrder::get_rate_for_reflect,
                     RawOrder::mut_rate_for_reflect,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
                     "volume",
                     RawOrder::get_volume_for_reflect,
                     RawOrder::mut_volume_for_reflect,
@@ -578,7 +578,7 @@ impl ::protobuf::reflect::ProtobufValue for RawOrder {
 #[derive(Clone,PartialEq,Eq,Debug,Hash)]
 pub enum OrderKind {
     ASK = 0,
-    Bid = 1,
+    BID = 1,
 }
 
 impl ::protobuf::ProtobufEnum for OrderKind {
@@ -589,7 +589,7 @@ impl ::protobuf::ProtobufEnum for OrderKind {
     fn from_i32(value: i32) -> ::std::option::Option<OrderKind> {
         match value {
             0 => ::std::option::Option::Some(OrderKind::ASK),
-            1 => ::std::option::Option::Some(OrderKind::Bid),
+            1 => ::std::option::Option::Some(OrderKind::BID),
             _ => ::std::option::Option::None
         }
     }
@@ -597,7 +597,7 @@ impl ::protobuf::ProtobufEnum for OrderKind {
     fn values() -> &'static [Self] {
         static values: &'static [OrderKind] = &[
             OrderKind::ASK,
-            OrderKind::Bid,
+            OrderKind::BID,
         ];
         values
     }
@@ -631,14 +631,14 @@ impl ::protobuf::reflect::ProtobufValue for OrderKind {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x15orca/core/order.proto\x12\x04orca\x1a\x14orca/core/coin.proto\"|\n\
-    \x05Order\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f.orca.OrderKindR\x04ki\
-    nd\x12$\n\x04rate\x18\x02\x20\x01(\x0b2\x10.orca.CoinVolumeR\x04rate\x12\
-    (\n\x06volume\x18\x03\x20\x01(\x0b2\x10.orca.CoinVolumeR\x06volume\"[\n\
-    \x08RawOrder\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f.orca.OrderKindR\
-    \x04kind\x12\x12\n\x04rate\x18\x02\x20\x01(\x04R\x04rate\x12\x16\n\x06vo\
-    lume\x18\x03\x20\x01(\x04R\x06volume*\x1d\n\tOrderKind\x12\x07\n\x03ASK\
-    \x10\0\x12\x07\n\x03Bid\x10\x01b\x06proto3\
+    \n\x15orca/core/order.proto\x12\x04orca\x1a\x18orca/core/currency.proto\
+    \"\x84\x01\n\x05Order\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f.orca.Orde\
+    rKindR\x04kind\x12(\n\x04rate\x18\x02\x20\x01(\x0b2\x14.orca.CurrencyVol\
+    umeR\x04rate\x12,\n\x06volume\x18\x03\x20\x01(\x0b2\x14.orca.CurrencyVol\
+    umeR\x06volume\"[\n\x08RawOrder\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f\
+    .orca.OrderKindR\x04kind\x12\x12\n\x04rate\x18\x02\x20\x01(\x01R\x04rate\
+    \x12\x16\n\x06volume\x18\x03\x20\x01(\x01R\x06volume*\x1d\n\tOrderKind\
+    \x12\x07\n\x03ASK\x10\0\x12\x07\n\x03BID\x10\x01b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

@@ -5,7 +5,7 @@ authors = ["Lukasz Kurowski <crackcomm@gmail.com>"]
 build = "build.rs"
 
 [lib]
-path = "core/lib.rs"
+path = "lib.rs"
 doctest = false
 
 [features]
@@ -17,11 +17,17 @@ with-bytes = ["bytes", "protobuf/with-bytes"]
 protoc      = "1.4"
 protoc-rust = "1.4"
 glob        = "0.2"
-log         = "0.*"
 env_logger  = "0.*"
 
 [dependencies]
-protobuf = "1.4"
+log           = "0.3"
+futures       = "0.1"
+protobuf      = "1.4"
+websocket     = "0.20"
+serde_json    = "1.0"
+tokio-core    = "0.1"
+error-chain   = "0.11"
+ordered-float = "0.5"
 
 [dependencies.bytes]
 version = "0.*"

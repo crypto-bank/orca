@@ -2,22 +2,19 @@ syntax = "proto3";
 
 package orca;
 
-
 import "orca/core/order.proto";
-
 
 // Currency trade.
 message Trade {
     // Trade ID, unique only for a market.
-    uint64 id = 1;
+    int64 id = 1;
 
     // Trade order.
     Order order = 2;
 
     // Trade timestamp.
-    uint64 timestamp = 3;
+    int64 timestamp = 3;
 }
-
 
 // Raw currency trade.
 // 
@@ -25,11 +22,11 @@ message Trade {
 // in places where  currency pair is always known.
 message RawTrade {
     // Trade ID, unique only for a market.
-    uint64 id = 1;
+    int64 id = 1;
 
     // Trade order.
-    Order RawOrder = 2;
+    RawOrder order = 2;
 
     // Trade timestamp.
-    uint64 timestamp = 3;
+    int64 timestamp = 3;
 }

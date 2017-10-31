@@ -2,17 +2,14 @@ syntax = "proto3";
 
 package orca;
 
-
-import "orca/core/coin.proto";
-
+import "orca/core/currency.proto";
 
 // Order kind can be either `Ask` when we are selling
 // or a `Bid` when we are trying to buy something.
 enum OrderKind {
     ASK = 0; // Ask or a sell.
-    Bid = 1; // Bid or a buy.
+    BID = 1; // Bid or a buy.
 }
-
 
 // Currency trade order.
 message Order {
@@ -20,12 +17,11 @@ message Order {
     OrderKind kind = 1;
 
     // Price rate is a price of a unit.
-    CoinVolume rate = 2;
+    CurrencyVolume rate = 2;
 
     // Order volume.
-    CoinVolume volume = 3;
+    CurrencyVolume volume = 3;
 }
-
 
 // Raw currency order.
 // 
@@ -36,8 +32,8 @@ message RawOrder {
     OrderKind kind = 1;
 
     // Price rate is a price of a unit.
-    uint64 rate = 2;
+    double rate = 2;
 
     // Order volume.
-    uint64 volume = 3;
+    double volume = 3;
 }
