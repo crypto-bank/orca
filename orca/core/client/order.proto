@@ -21,39 +21,23 @@ enum OrderStrategy {
     POST_ONLY = 2;
 }
 
-
-// Placed order result.
 message OrderPlacedResult {
-    // Placed order ID.
     string id = 1;
 }
 
-
-// Order resulted in trades on place and order was filled.
 message OrderFilledResult {
-    // Trades filled on place.
     repeated RawTrade trades = 1;
 }
 
-// Order resulted in trades on place and was partially filled.
 message OrderPartiallyFilledResult {
-    // Placed order ID.
     string id = 1;
-
-    // Trades filled on place.
     repeated RawTrade trades = 2;
 }
 
-// Result of placing order on a market.
 message OrderResult {
     oneof result {
-        // Order was placed.
         OrderPlacedResult placed = 1;
-
-        // Order was filled.
         OrderFilledResult filled = 2;
-
-        // Order was partially filled.
         OrderPartiallyFilledResult partial = 3;
     }
 }
