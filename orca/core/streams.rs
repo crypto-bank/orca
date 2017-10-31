@@ -1,17 +1,7 @@
 //! Markets streams.
 
-use tokio_core::reactor::Handle;
 use core::errors::*;
-use core::{CurrencyPair, OrderBooks, RawOrder, RawTrade};
-
-/// Stream event.
-pub enum Event {
-    /// Message from stream.
-    Message(Message),
-
-    /// Close of a stream.
-    Close,
-}
+use core::{reactor, BoxFuture, CurrencyPair, OrderBooks, RawOrder, RawTrade};
 
 /// Message from stream.
 pub enum Message {
@@ -25,14 +15,16 @@ pub enum Message {
     OrderBooks(OrderBooks),
 }
 
-/// Connected stream.
-pub trait Stream {
-    /// Creates a new connected stream.
-    fn connect(handle: &Handle) -> Box<Future<Self>>;
+pub trait Stream: Sized {
+    /// Creates a connected stream..
+    fn connect(handle: &reactor::Handle) -> BoxFuture<Self>;
 
-    /// Subscribes to a currency pair.
-    fn subscribe(&mut self, pair: &CurrencyPair) -> Future<()>;
+    /// Closes a stream.
+    fn close(&mut self) -> BoxFuture<()>;
 
-    /// Unsubscribes from a currency pair.
-    fn unsubscribe(&mut self, pair: &CurrencyPair) -> Future<()>;
+    /// Subscribes to currency pair stream.
+    fn subscribe(&mut self, pair: &CurrencyPair) -> BoxFuture<()>;
+
+    /// Unsubscribes from currency pair stream.
+    fn unsubscribe(&mut self, pair: &CurrencyPair) -> BoxFuture<()>;
 }

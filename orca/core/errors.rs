@@ -13,6 +13,10 @@ error_chain! {
             description("unexpected message type")
             display("unexpected message type: {}", t)
         }
+        InvalidMarket(market: String) {
+            description("invalid market")
+            display("invalid market: {}", market)
+        }
         InvalidCurrencyPair(pair: String) {
             description("invalid currency pair")
             display("invalid currency pair: {}", pair)
@@ -28,3 +32,4 @@ error_chain! {
 }
 
 pub type Future<T> = ::futures::Future<Item=T, Error=Error>;
+pub type BoxFuture<T> = Box<Future<T>>;

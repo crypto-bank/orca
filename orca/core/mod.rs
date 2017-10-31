@@ -2,6 +2,8 @@
 #[cfg(proto3)]
 pub mod currency;
 #[cfg(proto3)]
+pub mod market;
+#[cfg(proto3)]
 pub mod order;
 #[cfg(proto3)]
 pub mod trade;
@@ -10,9 +12,16 @@ pub mod errors;
 mod orderbook;
 
 pub use self::currency::*;
+pub use self::market::*;
 pub use self::order::*;
 pub use self::trade::*;
 pub use self::orderbook::*;
+pub use self::errors::Future;
+pub use self::errors::BoxFuture;
+
+pub mod reactor {
+    pub use tokio_core::reactor::*;
+}
 
 impl ::std::convert::TryFrom<i64> for OrderKind {
     type Error = errors::Error;
