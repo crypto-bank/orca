@@ -22,3 +22,4 @@ extern crate tokio_core;
 
 pub mod core;
 pub mod markets;
+pub mod utils;

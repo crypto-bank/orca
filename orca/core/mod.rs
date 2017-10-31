@@ -6,29 +6,13 @@ pub mod order;
 #[cfg(proto3)]
 pub mod trade;
 pub mod streams;
+pub mod errors;
 mod orderbook;
 
 pub use self::currency::*;
 pub use self::order::*;
 pub use self::trade::*;
 pub use self::orderbook::*;
-
-// helpful conversion utilities
-
-pub mod errors {
-    error_chain! {
-        errors {
-            InvalidCurrencyPair(pair: String) {
-                description("invalid currency pair")
-                display("invalid currency pair: {}", pair)
-            }
-            InvalidOrderKind(k: i64) {
-                description("invalid order kind")
-                display("invalid order kind: {}", k)
-            }
-        }
-    }
-}
 
 impl ::std::convert::TryFrom<i64> for OrderKind {
     type Error = errors::Error;

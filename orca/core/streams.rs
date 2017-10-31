@@ -1,20 +1,8 @@
 //! Markets streams.
 
 use tokio_core::reactor::Handle;
-use core::{CurrencyPair, OrderBook, RawOrder, RawTrade};
-
-/// Message from stream.
-pub enum Message {
-    /// Single trade.
-    Trade(RawTrade),
-
-    /// Single order book change.
-    Order(RawOrder),
-
-    /// Order book message.
-    /// Resets entire order book.
-    OrderBook(OrderBook),
-}
+use core::errors::*;
+use core::{CurrencyPair, OrderBooks, RawOrder, RawTrade};
 
 /// Stream event.
 pub enum Event {
@@ -25,8 +13,17 @@ pub enum Event {
     Close,
 }
 
-/// Stream future.
-pub type Future<T> = ::futures::Future<Item=T, Error=errors::Error>;
+/// Message from stream.
+pub enum Message {
+    /// Single trade.
+    Trade(RawTrade),
+
+    /// Single order book change.
+    Order(RawOrder),
+
+    /// Order books message.
+    OrderBooks(OrderBooks),
+}
 
 /// Connected stream.
 pub trait Stream {
@@ -39,14 +36,3 @@ pub trait Stream {
     /// Unsubscribes from a currency pair.
     fn unsubscribe(&mut self, pair: &CurrencyPair) -> Future<()>;
 }
-
-pub mod errors {
-    error_chain! {
-        foreign_links {
-            IoError(::std::io::Error);
-            WebSocketError(::websocket::result::WebSocketError);
-        }
-    }
-}
-
-pub use self::errors::*;
