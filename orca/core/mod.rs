@@ -35,6 +35,8 @@ impl ::std::convert::TryFrom<i64> for OrderKind {
     }
 }
 
+/// NOTE: this operation is pretty expensive
+/// TODO: it should use generated lookup table
 impl<'a> ::std::convert::TryFrom<&'a str> for Currency {
     type Error = errors::Error;
 
@@ -46,4 +48,15 @@ impl<'a> ::std::convert::TryFrom<&'a str> for Currency {
         }
         Err(errors::ErrorKind::InvalidCurrencyPair(name.to_owned()).into())
     }
+}
+
+impl ::std::fmt::Display for Currency {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.write_str(<Currency as ::protobuf::ProtobufEnum>::descriptor(self).name())
+    }
+}
+
+#[test]
+fn display_currency() {
+    assert_eq!(format!("{}", Currency::BTC), "BTC");
 }

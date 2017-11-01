@@ -23,8 +23,8 @@ use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 
 #[derive(Clone,PartialEq,Eq,Debug,Hash)]
 pub enum Market {
-    INVALID = 0,
-    POLONIEX = 1,
+    Invalid = 0,
+    Poloniex = 1,
 }
 
 impl ::protobuf::ProtobufEnum for Market {
@@ -34,16 +34,16 @@ impl ::protobuf::ProtobufEnum for Market {
 
     fn from_i32(value: i32) -> ::std::option::Option<Market> {
         match value {
-            0 => ::std::option::Option::Some(Market::INVALID),
-            1 => ::std::option::Option::Some(Market::POLONIEX),
+            0 => ::std::option::Option::Some(Market::Invalid),
+            1 => ::std::option::Option::Some(Market::Poloniex),
             _ => ::std::option::Option::None
         }
     }
 
     fn values() -> &'static [Self] {
         static values: &'static [Market] = &[
-            Market::INVALID,
-            Market::POLONIEX,
+            Market::Invalid,
+            Market::Poloniex,
         ];
         values
     }
@@ -66,7 +66,7 @@ impl ::std::marker::Copy for Market {
 
 impl ::std::default::Default for Market {
     fn default() -> Self {
-        Market::INVALID
+        Market::Invalid
     }
 }
 
@@ -77,8 +77,8 @@ impl ::protobuf::reflect::ProtobufValue for Market {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x16orca/core/market.proto\x12\x04orca*#\n\x06Market\x12\x0b\n\x07INVA\
-    LID\x10\0\x12\x0c\n\x08POLONIEX\x10\x01b\x06proto3\
+    \n\x16orca/core/market.proto\x12\x04orca*#\n\x06Market\x12\x0b\n\x07Inva\
+    lid\x10\0\x12\x0c\n\x08Poloniex\x10\x01b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

@@ -5,30 +5,41 @@ use serde_json::Value;
 use utils::try_opt;
 use utils::parse::{get_array, get_object, get_i64, get_str, parse_str, parse_nth_str};
 use core::errors::*;
-use core::streams::Message;
+use core::streams::{Event, Events};
 use core::{OrderBooks, OrderKind, RawOrder, RawTrade};
 
-fn parse_body(msg: &Value) -> Result<Option<(i64, Vec<Message>)>> {
+/// Parsed Poloniex stream message.
+pub struct Message {
+    pub seq_id: i64,
+    pub chan_id: i64,
+    pub events: Events,
+}
+
+pub fn parse_message(text: String) -> Result<Option<Message>> {
+    let msg = ::serde_json::from_str::<Value>(&text)?;
     if try_opt(msg.as_array())?.len() <= 2 {
         return Ok(None)
     }
-    let chan_id = get_i64(msg, 0)?;
-    let seq_id = get_i64(msg, 1)?;
-    let events = get_array(msg, 2)?;
-    let mut results = Vec::with_capacity(events.len());
+    let chan_id = get_i64(&msg, 0)?;
+    let seq_id = get_i64(&msg, 1)?;
+    let events = get_array(&msg, 2)?;
+    let mut results = Events::with_capacity(events.len());
     for event in events {
-        let msg = parse_message(event)?;
-        results.push(msg);
+        results.push(parse_event(event)?);
     }
-    Ok(Some((seq_id, results)))
+    Ok(Some(Message {
+        seq_id: seq_id,
+        chan_id: chan_id,
+        events: results,
+    }))
 }
 
-fn parse_message(event: &Value) -> Result<Message> {
+fn parse_event(event: &Value) -> Result<Event> {
     match get_str(event, 0)? {
-        "t" => Ok(Message::Trade(parse_trade(event)?)),
-        "o" => Ok(Message::Order(parse_order(event)?)),
-        "i" => Ok(Message::OrderBooks(parse_order_book(try_opt(event.get(1))?)?)),
-        any => Err(ErrorKind::UnexpectedMessageType(any.to_owned()).into()),
+        "t" => Ok(Event::Trade(parse_trade(event)?)),
+        "o" => Ok(Event::Order(parse_order(event)?)),
+        "i" => Ok(Event::OrderBooks(parse_order_book(try_opt(event.get(1))?)?)),
+        any => Err(ErrorKind::UnexpectedEventType(any.to_owned()).into()),
     }
 }
 
