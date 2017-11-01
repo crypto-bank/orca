@@ -6,12 +6,13 @@ error_chain! {
         ParseFloatError(::std::num::ParseFloatError);
         DeserializeError(::serde_json::error::Error);
         WebSocketError(::websocket::result::WebSocketError);
+        SendEventsError(::futures::sync::mpsc::SendError<::core::streams::Events>);
     }
 
     errors {
-        UnexpectedMessageType(t: String) {
-            description("unexpected message type")
-            display("unexpected message type: {}", t)
+        UnexpectedEventType(t: String) {
+            description("unexpected event type")
+            display("unexpected event type: {}", t)
         }
         InvalidMarket(market: String) {
             description("invalid market")
@@ -31,5 +32,10 @@ error_chain! {
     }
 }
 
+// above are placed here for `use core::errors::*;`
+
+/// Future with core error type.
 pub type Future<T> = ::futures::Future<Item=T, Error=Error>;
+
+/// Boxed future with core error type.
 pub type BoxFuture<T> = Box<Future<T>>;
