@@ -14,7 +14,10 @@ pub fn get_array<'a, I: Index>(event: &'a Value, index: I) -> Result<&'a Vec<Val
 }
 
 #[inline]
-pub fn get_object<'a>(objects: &'a Vec<Value>, index: usize) -> Result<&'a ::serde_json::Map<String, Value>> {
+pub fn get_object<'a>(
+    objects: &'a Vec<Value>,
+    index: usize,
+) -> Result<&'a ::serde_json::Map<String, Value>> {
     let object = try_opt(objects.get(index))?;
     let object = try_opt(object.as_object())?;
     Ok(object)
@@ -55,4 +58,3 @@ where
         None => Err(ErrorKind::ValueNotFound.into()),
     }
 }
-

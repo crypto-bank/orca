@@ -1,9 +1,16 @@
+//! Orca core utilities.
+
+pub mod parse;
 
 mod pair;
-pub mod parse;
 pub use self::pair::*;
 
-use core::errors::*;
+mod future;
+pub use self::future::boxfuture;
+pub use self::future::FutureExt;
+
+
+use core::errors::{Result, ErrorKind};
 
 #[inline]
 pub fn try_opt<T: Sized>(opt: Option<T>) -> Result<T> {
