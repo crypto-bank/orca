@@ -1,6 +1,6 @@
 
 use core::CurrencyPair;
-use utils::join_pair_reversed;
+use util::join_pair_reversed;
 use streams::Command;
 
 /// Creates a `subscribe` message for a given pair.

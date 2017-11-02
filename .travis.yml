@@ -1,0 +1,50 @@
+---
+language: rust
+dist: trusty
+sudo: false
+
+cache:
+  cargo: true
+  apt: true
+
+addons:
+  apt:
+    packages:
+    - libssl-dev
+    - protobuf-compiler
+
+matrix:
+  include:
+  - rust: nightly
+  - rust: stable
+    before_deploy: cargo doc --no-deps
+
+install:
+  - bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
+  - curl -OL https://github.com/google/protobuf/releases/download/v3.4.0/protoc-3.4.0-linux-x86_64.zip
+  - unzip protoc-3.4.0-linux-x86_64.zip -d protoc3
+  - sudo mv protoc3/bin/* $HOME/.cargo/bin/
+
+before_script:
+  - cd orca
+  - cargo clean
+
+script:
+  # Build without unstable flag
+  - cargo build
+
+  # Test examples in README.
+  - rustdoc --test ../README.md -L target/debug -L target/debug/deps
+
+  # Check with unstable flag
+  - cargo check --features unstable
+
+  # Build the test executables in a separate step, since Tarpaulin
+  # will not fail on test compile errors.
+  - cargo build --tests --features unstable
+
+  # Run tests
+  - RUST_TEST_THREADS=1 cargo test --features unstable
+
+after_success:
+  - bash <(curl -Ls https://codecov.io/bash)

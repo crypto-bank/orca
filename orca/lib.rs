@@ -28,4 +28,4 @@ extern crate serde_json;
 
 pub mod core;
 pub mod streams;
-pub mod utils;
+pub mod util;

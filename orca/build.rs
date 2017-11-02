@@ -31,6 +31,7 @@ fn glob_simple(pattern: &str) -> Vec<String> {
 fn clean_old_files() {
     for f in &[
         "core/currency.rs",
+        "core/market.rs",
         "core/order.rs",
         "core/trade.rs",
         "core/client/order.rs",

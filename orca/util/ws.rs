@@ -12,7 +12,7 @@ use websocket::client::async::{Client as WebSocketClient, TlsStream};
 use core::errors::*;
 use core::{reactor, CurrencyPair};
 use streams::{CommandReceiver, Event, EventSender};
-use utils::{boxfuture, FutureExt};
+use util::{boxfuture, FutureExt};
 
 /// TLS-encrypted asynchronous WebSocket stream client.
 pub type Client = WebSocketClient<TlsStream<TcpStream>>;
@@ -85,19 +85,6 @@ pub fn send_msg(msg: OwnedMessage, stream: Client, handle: Handle) -> LoopFuture
     stream
         .send(msg)
         .map(|stream| Loop::Continue((stream, Some(handle))))
-        .map_err(|e| e.into())
-        .into_box()
-}
-
-/// Sends close message to a WebSocket stream and returns empty message.
-pub fn close_with_err(
-    stream: Client,
-    err: ::websocket::WebSocketError,
-) -> BoxFuture<(Option<OwnedMessage>, Client)> {
-    error!("Could not receive message: {:?}", err);
-    stream
-        .send(OwnedMessage::Close(None))
-        .map(|stream| (None, stream))
         .map_err(|e| e.into())
         .into_box()
 }

@@ -2,12 +2,12 @@
 
 use std::convert::TryFrom;
 use serde_json::Value;
-use utils::try_opt;
-use utils::parse::{get_array, get_object, get_i64, get_str, parse_str, parse_nth_str};
+use util::try_opt;
+use util::parse::{get_array, get_object, get_i64, get_str, parse_str, parse_nth_str};
 use core::errors::*;
 use core::{OrderBook, OrderKind, RawOrder, RawTrade};
 use streams::Event;
-use utils::ws;
+use util::ws;
 
 pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
     let msg = ::serde_json::from_str::<Value>(text)?;
@@ -39,7 +39,7 @@ fn parse_event(event: &Value) -> Result<Event> {
 
 fn parse_order_book(event: &Value) -> Result<OrderBook> {
     let pair = get_str(event, "currencyPair")?;
-    let pair = ::utils::parse_pair_reversed(pair)?;
+    let pair = ::util::parse_pair_reversed(pair)?;
     let books = get_array(event, "orderBook")?;
     let mut book = OrderBook::new(&pair);
     for (ref rate, ref volume) in get_object(books, 0)?.iter() {

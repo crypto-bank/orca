@@ -13,7 +13,7 @@ use futures::prelude::*;
 use orca::core::reactor;
 use orca::streams::{connect, Command, Event};
 use orca::streams::poloniex;
-use orca::utils::{parse_pair, ws};
+use orca::util::{parse_pair, ws};
 
 const STREAM_URL: &'static str = "wss://api2.poloniex.com:443";
 

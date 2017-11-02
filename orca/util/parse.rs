@@ -3,7 +3,7 @@ use std::str::FromStr;
 use std::convert::From;
 use serde_json::Value;
 use serde_json::value::Index;
-use utils::try_opt;
+use util::try_opt;
 use core::errors::*;
 
 #[inline]

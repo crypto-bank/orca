@@ -1,6 +1,6 @@
 
 use std::convert::TryFrom;
-use utils::try_opt;
+use util::try_opt;
 use core::errors::*;
 use core::{Currency, CurrencyPair};
 
