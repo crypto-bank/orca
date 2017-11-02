@@ -1,20 +1,28 @@
 
+#![feature(rustc_private)]
+#[macro_use]
+extern crate log;
+
 extern crate orca;
 // extern crate tokio_core;
 extern crate futures;
 extern crate multiqueue;
-
-use std::thread;
+extern crate env_logger;
 
 use futures::prelude::*;
-
 use orca::core::reactor;
-use orca::streams::{Command, Event};
-// use orca::streams::Connector;
+use orca::streams::{connect, Command, Event};
 use orca::streams::poloniex;
-use orca::utils::parse_pair;
+use orca::utils::{parse_pair, ws};
+
+const STREAM_URL: &'static str = "wss://api2.poloniex.com:443";
 
 fn main() {
+    env_logger::init().unwrap();
+
+    info!("hello");
+    println!("hello");
+
     let mut core = reactor::Core::new().unwrap();
     // let streams = ::orca::streams::Core::new(core.handle());
 
@@ -23,21 +31,24 @@ fn main() {
 
     let pair = parse_pair("XRP_BTC").unwrap();
 
+    info!("subscribing {}", pair);
+
     // streams.command(Command::Subscribe(pair)).unwrap();
     cmd_sender.try_send(Command::Subscribe(pair)).unwrap();
 
-    let conn = poloniex::connect(event_sender, cmd_receiver, &core.handle());
+    info!("subscribed");
 
-    let reader = event_receiver.for_each(|(m, events)| {
-        // println!("event from market {:?}", m);
+    let handle = ws::Handle::new(event_sender, cmd_receiver, core.handle());
+    let conn = connect::<poloniex::Protocol>(STREAM_URL, handle);
 
+    let reader = event_receiver.for_each(|(_m, _c, events)| {
         for e in events {
             match e {
                 Event::Order(o) => println!("order {}@{}", o.volume, o.rate),
                 Event::Trade(t) => {
                     println!("order {}@{}", t.get_order().volume, t.get_order().rate)
                 }
-                Event::OrderBooks(_) => println!("orderbook"),
+                Event::OrderBook(ref book) => println!("orderbook@{}", book.pair),
             }
         }
 
@@ -45,6 +56,8 @@ fn main() {
     });
 
     core.handle().spawn(reader);
+
+    info!("spawned conn");
 
     core.run(conn).ok();
 }

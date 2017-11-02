@@ -35,6 +35,7 @@ pub struct Message {
 
 /// WebSocket Stream connection handlers.
 pub struct Handle {
+    pub reactor: reactor::Handle,
     pub sender: EventSender,
     pub commands: CommandReceiver,
     pub pairs: HashMap<i64, CurrencyPair>,
@@ -42,8 +43,9 @@ pub struct Handle {
 
 impl Handle {
     /// Creates new connection struct.
-    pub fn new(sender: EventSender, commands: CommandReceiver) -> Self {
+    pub fn new(sender: EventSender, commands: CommandReceiver, handle: reactor::Handle) -> Self {
         Handle {
+            reactor: handle,
             sender: sender,
             commands: commands,
             pairs: HashMap::new(),
@@ -52,13 +54,13 @@ impl Handle {
 
     /// Creates handle with new channel.
     pub fn with_chan(self, id: i64, pair: &CurrencyPair) -> Self {
-        let pairs = self.pairs.clone();
+        let mut pairs = self.pairs.clone();
         pairs.insert(id, pair.clone());
         Handle { pairs: pairs, .. self }
     }
 }
 
-/// Connects to WebSocket stream.
+/// Asynchronously Connects to WebSocket stream.
 pub fn connect(address: &str, handle: &reactor::Handle) -> BoxFuture<Client> {
     ClientBuilder::new(address)
         .unwrap() // panics on address parse
