@@ -6,7 +6,8 @@ error_chain! {
         ParseFloatError(::std::num::ParseFloatError);
         DeserializeError(::serde_json::error::Error);
         WebSocketError(::websocket::result::WebSocketError);
-        SendEventsError(::futures::sync::mpsc::SendError<::core::streams::Events>);
+        SendCommandError(::std::sync::mpsc::TrySendError<::streams::Command>);
+        SendEventsError(::futures::sync::mpsc::SendError<::streams::Events>);
     }
 
     errors {
@@ -35,7 +36,7 @@ error_chain! {
 // above are placed here for `use core::errors::*;`
 
 /// Future with core error type.
-pub type Future<T> = ::futures::Future<Item=T, Error=Error>;
+pub type Future<T> = ::futures::Future<Item = T, Error = Error>;
 
 /// Boxed future with core error type.
 pub type BoxFuture<T> = Box<Future<T>>;

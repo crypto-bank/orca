@@ -1,11 +1,10 @@
 //! Orca core utilities.
 
-pub mod parse;
-
 mod pair;
-pub use self::pair::*;
-
 mod future;
+pub mod parse;
+pub mod ws;
+pub use self::pair::*;
 pub use self::future::boxfuture;
 pub use self::future::FutureExt;
 

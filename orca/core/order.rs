@@ -53,7 +53,7 @@ impl Order {
     // .orca.OrderKind kind = 1;
 
     pub fn clear_kind(&mut self) {
-        self.kind = OrderKind::ASK;
+        self.kind = OrderKind::Ask;
     }
 
     // Param is passed by value, moved
@@ -200,7 +200,7 @@ impl ::protobuf::Message for Order {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if self.kind != OrderKind::ASK {
+        if self.kind != OrderKind::Ask {
             my_size += ::protobuf::rt::enum_size(1, self.kind);
         }
         if let Some(ref v) = self.rate.as_ref() {
@@ -217,7 +217,7 @@ impl ::protobuf::Message for Order {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        if self.kind != OrderKind::ASK {
+        if self.kind != OrderKind::Ask {
             os.write_enum(1, self.kind.value())?;
         }
         if let Some(ref v) = self.rate.as_ref() {
@@ -352,7 +352,7 @@ impl RawOrder {
     // .orca.OrderKind kind = 1;
 
     pub fn clear_kind(&mut self) {
-        self.kind = OrderKind::ASK;
+        self.kind = OrderKind::Ask;
     }
 
     // Param is passed by value, moved
@@ -461,7 +461,7 @@ impl ::protobuf::Message for RawOrder {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if self.kind != OrderKind::ASK {
+        if self.kind != OrderKind::Ask {
             my_size += ::protobuf::rt::enum_size(1, self.kind);
         }
         if self.rate != 0. {
@@ -476,7 +476,7 @@ impl ::protobuf::Message for RawOrder {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        if self.kind != OrderKind::ASK {
+        if self.kind != OrderKind::Ask {
             os.write_enum(1, self.kind.value())?;
         }
         if self.rate != 0. {
@@ -577,8 +577,8 @@ impl ::protobuf::reflect::ProtobufValue for RawOrder {
 
 #[derive(Clone,PartialEq,Eq,Debug,Hash)]
 pub enum OrderKind {
-    ASK = 0,
-    BID = 1,
+    Ask = 0,
+    Bid = 1,
 }
 
 impl ::protobuf::ProtobufEnum for OrderKind {
@@ -588,16 +588,16 @@ impl ::protobuf::ProtobufEnum for OrderKind {
 
     fn from_i32(value: i32) -> ::std::option::Option<OrderKind> {
         match value {
-            0 => ::std::option::Option::Some(OrderKind::ASK),
-            1 => ::std::option::Option::Some(OrderKind::BID),
+            0 => ::std::option::Option::Some(OrderKind::Ask),
+            1 => ::std::option::Option::Some(OrderKind::Bid),
             _ => ::std::option::Option::None
         }
     }
 
     fn values() -> &'static [Self] {
         static values: &'static [OrderKind] = &[
-            OrderKind::ASK,
-            OrderKind::BID,
+            OrderKind::Ask,
+            OrderKind::Bid,
         ];
         values
     }
@@ -620,7 +620,7 @@ impl ::std::marker::Copy for OrderKind {
 
 impl ::std::default::Default for OrderKind {
     fn default() -> Self {
-        OrderKind::ASK
+        OrderKind::Ask
     }
 }
 
@@ -638,7 +638,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     umeR\x06volume\"[\n\x08RawOrder\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f\
     .orca.OrderKindR\x04kind\x12\x12\n\x04rate\x18\x02\x20\x01(\x01R\x04rate\
     \x12\x16\n\x06volume\x18\x03\x20\x01(\x01R\x06volume*\x1d\n\tOrderKind\
-    \x12\x07\n\x03ASK\x10\0\x12\x07\n\x03BID\x10\x01b\x06proto3\
+    \x12\x07\n\x03Ask\x10\0\x12\x07\n\x03Bid\x10\x01b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

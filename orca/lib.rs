@@ -1,7 +1,10 @@
 
 #![feature(try_from)]
-
 #![feature(rustc_private)]
+
+#![feature(test)]
+extern crate test;
+
 #[macro_use]
 extern crate log;
 
@@ -14,12 +17,15 @@ extern crate error_chain;
 // extern crate num_traits;
 extern crate ordered_float;
 
+extern crate multiqueue;
+extern crate websocket;
+extern crate tokio_core;
 extern crate futures;
 extern crate protobuf;
-extern crate websocket;
+
 extern crate serde_json;
-extern crate tokio_core;
+
 
 pub mod core;
-pub mod markets;
+pub mod streams;
 pub mod utils;

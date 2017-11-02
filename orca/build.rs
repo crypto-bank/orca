@@ -34,7 +34,8 @@ fn clean_old_files() {
         "core/order.rs",
         "core/trade.rs",
         "core/client/order.rs",
-    ] {
+    ]
+    {
         if let Err(e) = fs::remove_file(f) {
             warn!("couldn't remote {}, err: {:?}", f, e);
         }
@@ -44,7 +45,10 @@ fn clean_old_files() {
 fn compile_dir(dir: &str, out: &str) {
     let protos = glob_simple(dir);
     assert!(!protos.is_empty());
-    let input = protos.iter().map(|a| format!("orca/{}", a)).collect::<Vec<String>>();
+    let input = protos
+        .iter()
+        .map(|a| format!("orca/{}", a))
+        .collect::<Vec<String>>();
 
     let root = Path::new("../");
     assert!(env::set_current_dir(&root).is_ok());
@@ -56,7 +60,7 @@ fn compile_dir(dir: &str, out: &str) {
         // input: &protos.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
     }).expect("protoc");
 
-    warn!("Generated!");
+    println!("Generated!");
 
     let root = Path::new("./orca");
     assert!(env::set_current_dir(&root).is_ok());

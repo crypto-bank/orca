@@ -1,4 +1,6 @@
 
-pub mod cmd;
-pub mod connect;
-pub mod parser;
+mod cmd;
+mod connect;
+mod parser;
+
+pub use self::connect::*;

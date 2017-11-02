@@ -7,8 +7,8 @@ import "orca/core/currency.proto";
 // Order kind can be either `Ask` when we are selling
 // or a `Bid` when we are trying to buy something.
 enum OrderKind {
-    ASK = 0; // Ask or a sell.
-    BID = 1; // Bid or a buy.
+    Ask = 0; // Ask or a sell.
+    Bid = 1; // Bid or a buy.
 }
 
 // Currency trade order.
