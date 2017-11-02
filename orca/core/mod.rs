@@ -1,3 +1,4 @@
+//! Orca core module.
 
 #[cfg(proto3)]
 pub mod currency;

@@ -16,8 +16,8 @@ addons:
 matrix:
   include:
   - rust: nightly
-  - rust: stable
     before_deploy: cargo doc --no-deps
+  - rust: stable
 
 install:
   - bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
@@ -48,13 +48,17 @@ script:
 
 after_success:
   - bash <(curl -Ls https://codecov.io/bash)
+  - curl -X POST -H "Content-Type: application/json" -d '{"content":"Orca build was successful."}' $DISCORD_WEBHOOK
+
+after_failure:
+  - curl -X POST -H "Content-Type: application/json" -d '{"content":"Orca build has failed."}' $DISCORD_WEBHOOK
 
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GH_TOKEN
   target_branch: gh-pages
-  local_dir: orca/target/doc
+  local_dir: target/doc
   on:
     branch: master
     repo: crypto-bank/orca

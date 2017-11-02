@@ -3,7 +3,7 @@ use core::CurrencyPair;
 use util::join_pair_reversed;
 use streams::Command;
 
-/// Creates a `subscribe` message for a given pair.
+/// Serializes a stream command.
 pub fn serialize(cmd: Command) -> String {
     match cmd {
         Command::Subscribe(ref pair) => subscribe(pair),
