@@ -37,14 +37,29 @@ script:
   - rustdoc --test ../README.md -L target/debug -L target/debug/deps
 
   # Check with unstable flag
-  - cargo check --features unstable
+  - cargo check
 
   # Build the test executables in a separate step, since Tarpaulin
   # will not fail on test compile errors.
-  - cargo build --tests --features unstable
+  - cargo build --tests
 
   # Run tests
-  - RUST_TEST_THREADS=1 cargo test --features unstable
+  - RUST_TEST_THREADS=1 cargo test
 
 after_success:
   - bash <(curl -Ls https://codecov.io/bash)
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN
+  target_branch: gh-pages
+  local_dir: orca/target/doc
+  on:
+    branch: master
+    repo: crypto-bank/orca
+    rust: nightly
+
+notifications:
+  email:
+    on_success: never

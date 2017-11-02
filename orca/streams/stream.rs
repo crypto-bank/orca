@@ -1,13 +1,10 @@
 
-use std::cell::Cell;
-use futures::future::{self, Future, Loop};
+use futures::future::{self, Future};
 use futures::prelude::*;
 use websocket::{OwnedMessage};
-use core::{Market, CurrencyPair};
 use core::errors::*;
-use core::reactor;
-use util::{ws, boxfuture, FutureExt};
-use super::{Command, CommandReceiver, Event, EventSender};
+use util::{ws, FutureExt};
+use super::Command;
 
 /// WebSocket Stream protocol trait.
 pub trait Protocol {
@@ -97,9 +94,9 @@ fn send_cmd<P: Protocol>(cmd: Command, stream: ws::Client, handle: ws::Handle) -
 }
 
 fn close_with_err(
-    stream: Client,
+    stream: ws::Client,
     err: ::websocket::WebSocketError,
-) -> BoxFuture<(Option<OwnedMessage>, Client)> {
+) -> BoxFuture<(Option<OwnedMessage>, ws::Client)> {
     error!("Could not receive message: {:?}", err);
     stream
         .send(OwnedMessage::Close(None))
