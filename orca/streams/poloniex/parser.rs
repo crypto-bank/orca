@@ -5,17 +5,11 @@ use serde_json::Value;
 use utils::try_opt;
 use utils::parse::{get_array, get_object, get_i64, get_str, parse_str, parse_nth_str};
 use core::errors::*;
-use core::{OrderBooks, OrderKind, RawOrder, RawTrade};
+use core::{OrderBook, OrderKind, RawOrder, RawTrade};
 use streams::Event;
+use utils::ws;
 
-/// Parsed Poloniex stream message.
-pub struct Message {
-    pub chan_id: i64,
-    pub seq_id: i64,
-    pub events: Vec<Event>,
-}
-
-pub fn parse_message(text: &str) -> Result<Option<Message>> {
+pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
     let msg = ::serde_json::from_str::<Value>(text)?;
     if try_opt(msg.as_array())?.len() <= 2 {
         return Ok(None);
@@ -27,9 +21,9 @@ pub fn parse_message(text: &str) -> Result<Option<Message>> {
     for event in events {
         results.push(parse_event(event)?);
     }
-    Ok(Some(Message {
-        chan_id: chan_id,
+    Ok(Some(ws::Message {
         seq_id: seq_id,
+        chan_id: chan_id,
         events: results,
     }))
 }
@@ -38,27 +32,27 @@ fn parse_event(event: &Value) -> Result<Event> {
     match get_str(event, 0)? {
         "t" => Ok(Event::Trade(parse_trade(event)?)),
         "o" => Ok(Event::Order(parse_order(event)?)),
-        "i" => Ok(Event::OrderBooks(parse_order_book(try_opt(event.get(1))?)?)),
+        "i" => Ok(Event::OrderBook(parse_order_book(try_opt(event.get(1))?)?)),
         any => Err(ErrorKind::UnexpectedEventType(any.to_owned()).into()),
     }
 }
 
-fn parse_order_book(event: &Value) -> Result<OrderBooks> {
+fn parse_order_book(event: &Value) -> Result<OrderBook> {
     let pair = get_str(event, "currencyPair")?;
     let pair = ::utils::parse_pair_reversed(pair)?;
     let books = get_array(event, "orderBook")?;
-    let mut order_books = OrderBooks::new(pair);
+    let mut book = OrderBook::new(&pair);
     for (ref rate, ref volume) in get_object(books, 0)?.iter() {
         let rate = rate.as_str().parse::<f64>()?;
         let volume = parse_str::<f64>(volume)?;
-        order_books.asks.set(rate, volume);
+        book.asks.set(rate, volume);
     }
     for (ref rate, ref volume) in get_object(books, 1)?.iter() {
         let rate = rate.as_str().parse::<f64>()?;
         let volume = parse_str::<f64>(volume)?;
-        order_books.bids.set(rate, volume);
+        book.bids.set(rate, volume);
     }
-    Ok(order_books)
+    Ok(book)
 }
 
 fn parse_order(event: &Value) -> Result<RawOrder> {

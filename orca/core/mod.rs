@@ -38,7 +38,7 @@ impl ::std::convert::TryFrom<i64> for OrderKind {
 impl<'a> ::std::convert::TryFrom<&'a str> for Currency {
     type Error = errors::Error;
 
-    // TODO: it should use generated lookup table
+    // TODO: it should use generated lookup table #bitfinex
     fn try_from(name: &str) -> Result<Self, Self::Error> {
         for c in <Currency as ::protobuf::ProtobufEnum>::values() {
             if <Currency as ::protobuf::ProtobufEnum>::descriptor(c).name() == name {

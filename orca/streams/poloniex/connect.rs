@@ -3,16 +3,15 @@
 //  * No heartbeats.
 //  * No sequence IDs track.
 
-use std::collections::HashMap;
-use futures::sink::Sink;
-use futures::stream::Stream;
-use futures::future::{self, IntoFuture, Future, Loop};
-use websocket::{ClientBuilder, OwnedMessage, WebSocketError};
+use std::cell::Cell;
+use futures::future::{self, Future, Loop};
+use futures::prelude::*;
+use websocket::{OwnedMessage};
 use core::{Market, CurrencyPair};
 use core::errors::*;
 use core::reactor;
-use streams::{Command, CommandReceiver, EventSender};
-use utils::{ws, FutureExt};
+use streams::{Command, CommandReceiver, Event, EventSender};
+use utils::{ws, boxfuture, FutureExt};
 
 const STREAM_URL: &'static str = "wss://api2.poloniex.com:443";
 
@@ -24,110 +23,67 @@ pub fn connect(
 ) -> BoxFuture<()> {
     ws::connect(STREAM_URL, handle)
         .and_then(move |stream| {
-            let conn = Conn::new(sender, commands);
-            future::loop_fn((stream, Some(conn)), move |(stream, conn)| {
-                let conn = conn.unwrap();
-                if let Ok(cmd) = conn.commands.try_recv() {
-                    return send_cmd(cmd, stream, conn);
+            let handle = ws::Handle::new(sender, commands);
+            future::loop_fn((stream, Some(handle)), move |(stream, handle)| {
+                let handle = handle.unwrap();
+                if let Ok(cmd) = handle.commands.try_recv() {
+                    return send_cmd(cmd, stream, handle);
                 }
                 stream
                     .into_future()
-                    .or_else(|(err, stream)| close_stream_err(stream, err))
-                    .and_then(move |(body, stream)| parse_msg(body, stream, conn))
+                    .or_else(|(err, stream)| ws::close_with_err(stream, err))
+                    .and_then(move |(body, stream)| match body {
+                        Some(msg) => parse_body(msg, stream, handle),
+                        None => ws::break_loop(), // closed stream
+                    })
                     .into_box()
             })
         })
         .into_box()
 }
 
-type Transfer = (ws::Client, Option<Conn>);
+type Transfer = (ws::Client, Option<ws::Handle>);
+type LoopFuture = BoxFuture<Loop<(), Transfer>>;
 
-fn parse_msg(
-    body: Option<OwnedMessage>,
-    stream: ws::Client,
-    conn: Conn,
-) -> BoxFuture<Loop<(), Transfer>> {
+fn parse_body(body: OwnedMessage, stream: ws::Client, handle: ws::Handle) -> LoopFuture {
     match body {
-        Some(OwnedMessage::Text(txt)) => {
-            match super::parser::parse_message(&txt) {
-                Ok(Some(msgs)) => {
-                    conn.sender
-                        .unbounded_send((Market::Poloniex, msgs.events))
-                        .unwrap();
-                }
-                Ok(None) => {} // empty message
-                Err(err) => error!("poloniex websocket parse error: {:?}", err),
-            }
-            continue_stream(stream, conn)
-        }
-        Some(OwnedMessage::Close(_)) => break_stream(),
-        None => break_stream(),
+        OwnedMessage::Text(body) => parse_message(body, stream, handle),
+        OwnedMessage::Close(_) => ws::break_loop(),
         _ => {
             // we will investigate further on any
             error!("unexpected poloniex message");
-            break_stream()
+            ws::break_loop()
         }
     }
 }
 
-#[inline]
-fn break_stream() -> BoxFuture<Loop<(), Transfer>> {
-    future::ok(Loop::Break(())).into_box()
-}
-
-#[inline]
-fn continue_stream(stream: ws::Client, conn: Conn) -> BoxFuture<Loop<(), Transfer>> {
-    future::ok(Loop::Continue((stream, Some(conn)))).into_box()
-}
-
-#[inline]
-fn send_cmd(cmd: Command, stream: ws::Client, conn: Conn) -> BoxFuture<Loop<(), Transfer>> {
-    stream
-        .send(OwnedMessage::Text(super::cmd::serialize(cmd)))
-        .map(|stream| Loop::Continue((stream, Some(conn))))
-        .map_err(|e| e.into())
-        .into_box()
-}
-
-#[inline]
-fn close_stream_err(
-    stream: ws::Client,
-    err: WebSocketError,
-) -> BoxFuture<(Option<OwnedMessage>, ws::Client)> {
-    error!("Could not receive message: {:?}", err);
-    stream
-        .send(OwnedMessage::Close(None))
-        .map(|stream| (None, stream))
-        .map_err(|e| e.into())
-        .into_box()
-}
-
-struct Conn {
-    sender: EventSender,
-    commands: CommandReceiver,
-    // channel id to currency pair
-    pairs: HashMap<i64, CurrencyPair>,
-}
-
-impl Conn {
-    /// Creates new connection struct.
-    fn new(sender: EventSender, commands: CommandReceiver) -> Self {
-        Conn {
-            sender: sender,
-            commands: commands,
-            pairs: HashMap::new(),
+fn parse_message(body: String, stream: ws::Client, handle: ws::Handle) -> LoopFuture {
+    match super::parser::parse_message(&body) {
+        Ok(Some(msg)) => handle_message(msg, stream, handle),
+        Ok(None) => ws::continue_loop(stream, handle), // empty message
+        Err(err) => {
+            error!("poloniex websocket parse error: {:?}", err);
+            ws::continue_loop(stream, handle)
         }
     }
+}
 
-    /// Returns currency pair by registered channel id.
-    fn chan(&self, id: &i64) -> Option<&::core::CurrencyPair> {
-        self.pairs.get(id)
+fn handle_message(msg: ws::Message, stream: ws::Client, handle: ws::Handle) -> LoopFuture {
+    if msg.events.len() == 1 {
+        if let Event::OrderBook(ref book) = msg.events[0] {
+            // handle .with_chan(msg.chan_id, &book.pair)
+            return boxfuture::ok()
+        }
     }
+    // send events
+    // handle.sender
+    //     .unbounded_send((Market::Poloniex, pair, msg.events))
+    //     .unwrap();
+    ws::continue_loop(stream, handle)
+}
 
-    /// Registers currency pair under channel id.
-    fn set_chan(&mut self, id: i64, pair: ::core::CurrencyPair) {
-        self.pairs.insert(id, pair);
-    }
+fn send_cmd(cmd: Command, stream: ws::Client, handle: ws::Handle) -> LoopFuture {
+    ws::send_msg(OwnedMessage::Text(super::cmd::serialize(cmd)), stream, handle)
 }
 
 #[cfg(test)]

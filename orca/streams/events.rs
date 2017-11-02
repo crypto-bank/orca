@@ -1,6 +1,6 @@
 //! Markets streams.
 
-use core::{OrderBooks, RawOrder, RawTrade, Market};
+use core::{CurrencyPair, OrderBook, RawOrder, RawTrade, Market};
 
 /// Market stream event.
 pub enum Event {
@@ -11,11 +11,11 @@ pub enum Event {
     Order(RawOrder),
 
     /// Order books message.
-    OrderBooks(OrderBooks),
+    OrderBook(OrderBook),
 }
 
 /// Market stream events.
-pub type Events = (Market, Vec<Event>);
+pub type Events = (Market, CurrencyPair, Vec<Event>);
 
 /// Market stream events sender.
 pub type EventSender = ::futures::sync::mpsc::UnboundedSender<Events>;
