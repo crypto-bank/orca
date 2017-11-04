@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Protocol","Poloniex WebSocket protocol implementation."]]});

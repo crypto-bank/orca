@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Handle` struct in crate `orca`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Handle">
+
+    <title>orca::util::ws::Handle - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct Handle</p><div class="block items"><li><a href="#fields">Fields</a></li><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.new">new</a><a href="#method.with_chan">with_chan</a></div></div><p class='location'><a href='../../index.html'>orca</a>::<wbr><a href='../index.html'>util</a>::<wbr><a href='index.html'>ws</a></p><script>window.sidebarCurrent = {name: 'Handle', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>orca</a>::<wbr><a href='../index.html'>util</a>::<wbr><a href='index.html'>ws</a>::<wbr><a class="struct" href=''>Handle</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/orca/util/ws.rs.html#37-42' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Handle {
+    pub reactor: <a class="struct" href="https://docs.rs/tokio-core/0.1/tokio_core/reactor/struct.Handle.html" title="struct tokio_core::reactor::Handle">Handle</a>,
+    pub sender: <a class="type" href="../../../orca/streams/type.EventSender.html" title="type orca::streams::EventSender">EventSender</a>,
+    pub commands: <a class="type" href="../../../orca/streams/type.CommandReceiver.html" title="type orca::streams::CommandReceiver">CommandReceiver</a>,
+    pub pairs: <a class="struct" href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap">HashMap</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="struct" href="../../../orca/core/currency/struct.CurrencyPair.html" title="struct orca::core::currency::CurrencyPair">CurrencyPair</a>&gt;,
+}</pre><div class='docblock'><p>WebSocket Stream connection handlers.</p>
+</div><h2 id='fields' class='fields small-section-header'>
+                       Fields<a href='#fields' class='anchor'></a></h2><span id="structfield.reactor" class="structfield small-section-header">
+                           <a href="#structfield.reactor" class="anchor field"></a>
+                           <span id="reactor.v" class='invisible'>
+                           <code>reactor: <a class="struct" href="https://docs.rs/tokio-core/0.1/tokio_core/reactor/struct.Handle.html" title="struct tokio_core::reactor::Handle">Handle</a></code>
+                           </span></span><span id="structfield.sender" class="structfield small-section-header">
+                           <a href="#structfield.sender" class="anchor field"></a>
+                           <span id="sender.v" class='invisible'>
+                           <code>sender: <a class="type" href="../../../orca/streams/type.EventSender.html" title="type orca::streams::EventSender">EventSender</a></code>
+                           </span></span><span id="structfield.commands" class="structfield small-section-header">
+                           <a href="#structfield.commands" class="anchor field"></a>
+                           <span id="commands.v" class='invisible'>
+                           <code>commands: <a class="type" href="../../../orca/streams/type.CommandReceiver.html" title="type orca::streams::CommandReceiver">CommandReceiver</a></code>
+                           </span></span><span id="structfield.pairs" class="structfield small-section-header">
+                           <a href="#structfield.pairs" class="anchor field"></a>
+                           <span id="pairs.v" class='invisible'>
+                           <code>pairs: <a class="struct" href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap">HashMap</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="struct" href="../../../orca/core/currency/struct.CurrencyPair.html" title="struct orca::core::currency::CurrencyPair">CurrencyPair</a>&gt;</code>
+                           </span></span>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../../../orca/util/ws/struct.Handle.html" title="struct orca::util::ws::Handle">Handle</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/orca/util/ws.rs.html#44-61' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><code>pub fn <a href='#method.new' class='fnname'>new</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;sender: <a class="type" href="../../../orca/streams/type.EventSender.html" title="type orca::streams::EventSender">EventSender</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;commands: <a class="type" href="../../../orca/streams/type.CommandReceiver.html" title="type orca::streams::CommandReceiver">CommandReceiver</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;handle: <a class="struct" href="https://docs.rs/tokio-core/0.1/tokio_core/reactor/struct.Handle.html" title="struct tokio_core::reactor::Handle">Handle</a><br>) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/orca/util/ws.rs.html#46-53' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates new connection struct.</p>
+</div><h4 id='method.with_chan' class="method"><span id='with_chan.v' class='invisible'><code>pub fn <a href='#method.with_chan' class='fnname'>with_chan</a>(self, id: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, pair: &amp;<a class="struct" href="../../../orca/core/currency/struct.CurrencyPair.html" title="struct orca::core::currency::CurrencyPair">CurrencyPair</a>) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/orca/util/ws.rs.html#56-60' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates handle with new channel.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "orca";
+    </script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

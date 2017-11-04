@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Currency",""]],"fn":[["file_descriptor_proto",""]],"struct":[["CurrencyPair",""],["CurrencyVolume",""]]});
