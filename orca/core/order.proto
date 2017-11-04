@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package orca;
+package orca.core;
 
 import "orca/core/currency.proto";
 
@@ -11,7 +11,7 @@ enum OrderKind {
     Bid = 1; // Bid or a buy.
 }
 
-// Currency trade order.
+// Currency order.
 message Order {
     // Order kind, which is an `Ask` or a `Bid`.
     OrderKind kind = 1;

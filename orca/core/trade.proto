@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package orca;
+package orca.core;
 
 import "orca/core/order.proto";
 

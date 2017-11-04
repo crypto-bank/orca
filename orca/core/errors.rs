@@ -15,10 +15,6 @@ error_chain! {
             description("unexpected event type")
             display("unexpected event type: {}", t)
         }
-        InvalidMarket(market: String) {
-            description("invalid market")
-            display("invalid market: {}", market)
-        }
         InvalidCurrencyPair(pair: String) {
             description("invalid currency pair")
             display("invalid currency pair: {}", pair)
@@ -27,8 +23,8 @@ error_chain! {
             description("invalid order kind")
             display("invalid order kind: {}", k)
         }
-        ValueNotFound {
-            description("value not found")
+        EmptyOption {
+            description("unwrapped empty option")
         }
     }
 }

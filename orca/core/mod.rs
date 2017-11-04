@@ -35,11 +35,9 @@ impl ::std::convert::TryFrom<i64> for OrderKind {
     }
 }
 
-/// NOTE: this operation is pretty slow
 impl<'a> ::std::convert::TryFrom<&'a str> for Currency {
     type Error = errors::Error;
 
-    // TODO: it should use generated lookup table #bitfinex
     fn try_from(name: &str) -> Result<Self, Self::Error> {
         for c in <Currency as ::protobuf::ProtobufEnum>::values() {
             if <Currency as ::protobuf::ProtobufEnum>::descriptor(c).name() == name {
@@ -52,17 +50,9 @@ impl<'a> ::std::convert::TryFrom<&'a str> for Currency {
     }
 }
 
-impl ::std::fmt::Display for Currency {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.write_str(
-            <Currency as ::protobuf::ProtobufEnum>::descriptor(self).name(),
-        )
-    }
-}
-
 impl ::std::fmt::Display for CurrencyPair {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{}/{}", self.quote, self.base)
+        write!(f, "{:?}/{:?}", self.quote, self.base)
     }
 }
 
@@ -72,25 +62,14 @@ mod tests {
     use super::*;
     use test::Bencher;
     use std::convert::TryFrom;
-
-    #[bench]
-    fn currency_try_from_str(b: &mut Bencher) {
-        b.iter(|| { Currency::try_from("BTC").unwrap(); });
-    }
-
-    #[bench]
-    fn order_kind_try_from_i64(b: &mut Bencher) {
-        b.iter(|| { OrderKind::try_from(0 as i64).unwrap(); });
-    }
-}
-
-
-#[cfg(test)]
-mod pbbench {
-    use test::Bencher;
     use protobuf::Message;
     use protobuf::parse_from_bytes;
-    use core::{OrderKind, RawOrder, RawTrade};
+
+    #[test]
+    fn currency_debug() {
+        let c = Currency::try_from("BTC").unwrap();
+        assert_eq!("BTC".to_owned(), format!("{:?}", c));
+    }
 
     fn create_order() -> RawOrder {
         let mut order = RawOrder::new();
@@ -106,6 +85,22 @@ mod pbbench {
         trade.set_timestamp(1509576585);
         trade.set_order(create_order());
         trade
+    }
+
+    #[bench]
+    fn currency_try_from_str(b: &mut Bencher) {
+        b.iter(|| { Currency::try_from("BTC").unwrap(); });
+    }
+
+    #[bench]
+    fn order_kind_try_from_i64(b: &mut Bencher) {
+        b.iter(|| { OrderKind::try_from(0 as i64).unwrap(); });
+    }
+
+    #[bench]
+    fn format_debug(b: &mut Bencher) {
+        let c = Currency::try_from("BTC").unwrap();
+        b.iter(|| format!("{:?}", c));
     }
 
     #[bench]
