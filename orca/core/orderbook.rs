@@ -6,8 +6,8 @@ use core::currency::CurrencyPair;
 /// Ordered order books for asks and bids.
 pub struct OrderBook {
     pub pair: CurrencyPair,
-    pub asks: OrderSideBook,
-    pub bids: OrderSideBook,
+    pub asks: Book,
+    pub bids: Book,
 }
 
 impl OrderBook {
@@ -15,21 +15,21 @@ impl OrderBook {
     pub fn new(pair: &CurrencyPair) -> Self {
         OrderBook {
             pair: pair.clone(),
-            asks: OrderSideBook::new(),
-            bids: OrderSideBook::new(),
+            asks: Book::new(),
+            bids: Book::new(),
         }
     }
 }
 
 /// Ordered order book for single side.
-pub struct OrderSideBook {
+pub struct Book {
     pub inner: BTreeMap<OrderedFloat<f64>, OrderedFloat<f64>>,
 }
 
-impl OrderSideBook {
+impl Book {
     /// Creates new order book.
     pub fn new() -> Self {
-        OrderSideBook { inner: BTreeMap::new() }
+        Book { inner: BTreeMap::new() }
     }
 
     /// Sets volume on rate.
