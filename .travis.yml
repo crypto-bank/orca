@@ -25,7 +25,6 @@ install:
   - sudo mv protoc3/bin/* $HOME/.cargo/bin/
 
 before_script:
-  - cd orca
   - cargo clean
 
 script:

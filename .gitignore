@@ -27,13 +27,13 @@ _testmain.go
 
 *.csv
 
-**/target
-*.rs.bk
+*.bk
 Cargo.lock
 
 config.toml
 
 data/
+target/
 
 .ipynb_checkpoints
 

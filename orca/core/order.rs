@@ -50,7 +50,7 @@ impl Order {
         }
     }
 
-    // .orca.OrderKind kind = 1;
+    // .orca.core.OrderKind kind = 1;
 
     pub fn clear_kind(&mut self) {
         self.kind = OrderKind::Ask;
@@ -73,7 +73,7 @@ impl Order {
         &mut self.kind
     }
 
-    // .orca.CurrencyVolume rate = 2;
+    // .orca.core.CurrencyVolume rate = 2;
 
     pub fn clear_rate(&mut self) {
         self.rate.clear();
@@ -114,7 +114,7 @@ impl Order {
         &mut self.rate
     }
 
-    // .orca.CurrencyVolume volume = 3;
+    // .orca.core.CurrencyVolume volume = 3;
 
     pub fn clear_volume(&mut self) {
         self.volume.clear();
@@ -349,7 +349,7 @@ impl RawOrder {
         }
     }
 
-    // .orca.OrderKind kind = 1;
+    // .orca.core.OrderKind kind = 1;
 
     pub fn clear_kind(&mut self) {
         self.kind = OrderKind::Ask;
@@ -631,14 +631,15 @@ impl ::protobuf::reflect::ProtobufValue for OrderKind {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x15orca/core/order.proto\x12\x04orca\x1a\x18orca/core/currency.proto\
-    \"\x84\x01\n\x05Order\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f.orca.Orde\
-    rKindR\x04kind\x12(\n\x04rate\x18\x02\x20\x01(\x0b2\x14.orca.CurrencyVol\
-    umeR\x04rate\x12,\n\x06volume\x18\x03\x20\x01(\x0b2\x14.orca.CurrencyVol\
-    umeR\x06volume\"[\n\x08RawOrder\x12#\n\x04kind\x18\x01\x20\x01(\x0e2\x0f\
-    .orca.OrderKindR\x04kind\x12\x12\n\x04rate\x18\x02\x20\x01(\x01R\x04rate\
-    \x12\x16\n\x06volume\x18\x03\x20\x01(\x01R\x06volume*\x1d\n\tOrderKind\
-    \x12\x07\n\x03Ask\x10\0\x12\x07\n\x03Bid\x10\x01b\x06proto3\
+    \n\x15orca/core/order.proto\x12\torca.core\x1a\x18orca/core/currency.pro\
+    to\"\x93\x01\n\x05Order\x12(\n\x04kind\x18\x01\x20\x01(\x0e2\x14.orca.co\
+    re.OrderKindR\x04kind\x12-\n\x04rate\x18\x02\x20\x01(\x0b2\x19.orca.core\
+    .CurrencyVolumeR\x04rate\x121\n\x06volume\x18\x03\x20\x01(\x0b2\x19.orca\
+    .core.CurrencyVolumeR\x06volume\"`\n\x08RawOrder\x12(\n\x04kind\x18\x01\
+    \x20\x01(\x0e2\x14.orca.core.OrderKindR\x04kind\x12\x12\n\x04rate\x18\
+    \x02\x20\x01(\x01R\x04rate\x12\x16\n\x06volume\x18\x03\x20\x01(\x01R\x06\
+    volume*\x1d\n\tOrderKind\x12\x07\n\x03Ask\x10\0\x12\x07\n\x03Bid\x10\x01\
+    b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

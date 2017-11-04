@@ -80,9 +80,9 @@ impl ::protobuf::reflect::ProtobufValue for Market {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x16orca/core/market.proto\x12\x04orca*1\n\x06Market\x12\x0b\n\x07Inva\
-    lid\x10\0\x12\x0c\n\x08Poloniex\x10\x01\x12\x0c\n\x08Bitfinex\x10\x02b\
-    \x06proto3\
+    \n\x16orca/core/market.proto\x12\torca.core*1\n\x06Market\x12\x0b\n\x07I\
+    nvalid\x10\0\x12\x0c\n\x08Poloniex\x10\x01\x12\x0c\n\x08Bitfinex\x10\x02\
+    b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

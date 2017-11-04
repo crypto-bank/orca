@@ -16,6 +16,7 @@ use orca::streams::poloniex;
 use orca::util::{parse_pair, ws};
 
 const STREAM_URL: &'static str = "wss://api2.poloniex.com:443";
+// const STREAM_URL: &'static str = "wss://api.bitfinex.com:443/ws";
 
 fn main() {
     env_logger::init().unwrap();
@@ -29,7 +30,7 @@ fn main() {
     let (event_sender, event_receiver) = ::futures::sync::mpsc::unbounded();
     let (cmd_sender, cmd_receiver) = ::multiqueue::broadcast_fut_queue(10248);
 
-    let pair = parse_pair("XRP_BTC").unwrap();
+    let pair = parse_pair("ETH_BTC").unwrap();
 
     info!("subscribing {}", pair);
 
@@ -44,9 +45,9 @@ fn main() {
     let reader = event_receiver.for_each(|(_m, _c, events)| {
         for e in events {
             match e {
-                Event::Order(o) => println!("order {}@{}", o.volume, o.rate),
+                Event::Order(o) => println!("order {}/{}", o.rate, o.volume),
                 Event::Trade(t) => {
-                    println!("order {}@{}", t.get_order().volume, t.get_order().rate)
+                    println!("trade {}/{}", t.get_order().rate, t.get_order().volume)
                 }
                 Event::OrderBook(ref book) => println!("orderbook@{}", book.pair),
             }

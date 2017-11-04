@@ -1,0 +1,1 @@
+//! Market events storage.

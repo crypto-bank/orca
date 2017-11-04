@@ -73,7 +73,7 @@ impl Trade {
         &mut self.id
     }
 
-    // .orca.Order order = 2;
+    // .orca.core.Order order = 2;
 
     pub fn clear_order(&mut self) {
         self.order.clear();
@@ -350,7 +350,7 @@ impl RawTrade {
         &mut self.id
     }
 
-    // .orca.RawOrder order = 2;
+    // .orca.core.RawOrder order = 2;
 
     pub fn clear_order(&mut self) {
         self.order.clear();
@@ -576,13 +576,13 @@ impl ::protobuf::reflect::ProtobufValue for RawTrade {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x15orca/core/trade.proto\x12\x04orca\x1a\x15orca/core/order.proto\"X\
-    \n\x05Trade\x12\x0e\n\x02id\x18\x01\x20\x01(\x03R\x02id\x12!\n\x05order\
-    \x18\x02\x20\x01(\x0b2\x0b.orca.OrderR\x05order\x12\x1c\n\ttimestamp\x18\
-    \x03\x20\x01(\x03R\ttimestamp\"^\n\x08RawTrade\x12\x0e\n\x02id\x18\x01\
-    \x20\x01(\x03R\x02id\x12$\n\x05order\x18\x02\x20\x01(\x0b2\x0e.orca.RawO\
-    rderR\x05order\x12\x1c\n\ttimestamp\x18\x03\x20\x01(\x03R\ttimestampb\
-    \x06proto3\
+    \n\x15orca/core/trade.proto\x12\torca.core\x1a\x15orca/core/order.proto\
+    \"]\n\x05Trade\x12\x0e\n\x02id\x18\x01\x20\x01(\x03R\x02id\x12&\n\x05ord\
+    er\x18\x02\x20\x01(\x0b2\x10.orca.core.OrderR\x05order\x12\x1c\n\ttimest\
+    amp\x18\x03\x20\x01(\x03R\ttimestamp\"c\n\x08RawTrade\x12\x0e\n\x02id\
+    \x18\x01\x20\x01(\x03R\x02id\x12)\n\x05order\x18\x02\x20\x01(\x0b2\x13.o\
+    rca.core.RawOrderR\x05order\x12\x1c\n\ttimestamp\x18\x03\x20\x01(\x03R\t\
+    timestampb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

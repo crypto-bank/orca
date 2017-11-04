@@ -1,4 +1,4 @@
-//! Poloniex WebSocket stream.
+//! Bitfinex WebSocket stream.
 
 mod cmd;
 mod parser;
@@ -8,13 +8,12 @@ use core::errors::*;
 use streams::Command;
 use util::ws;
 
-/// Poloniex WebSocket protocol.
+/// Bitfinex WebSocket protocol.
 pub struct Protocol;
 
-/// #SPC-streams-poloniex
 impl ::streams::Protocol for Protocol {
     fn market() -> Market {
-        Market::Poloniex
+        Market::Bitfinex
     }
 
     fn parse(msg: &str) -> Result<Option<ws::Message>> {

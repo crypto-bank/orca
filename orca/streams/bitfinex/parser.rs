@@ -9,6 +9,9 @@ use util::{ws, OptionExt};
 
 pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
     let msg = ::serde_json::from_str::<Value>(text)?;
+    if msg.is_object() {
+        return parse_object_event(msg);
+    }
     if msg.as_array().into_result()?.len() <= 2 {
         return Ok(None);
     }
@@ -24,6 +27,23 @@ pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
         chan_id: chan_id,
         events: results,
     }))
+}
+
+// possible messages
+//     {"event":"info", "version": 1.1}
+//     {"event":"error", "msg":"...", "code": 10000}
+//     {"event":"subscribed", "channel":"book", "chanId": 31119, "prec":"R0", "freq":"F0", "len":"25", "pair":"ETHBTC"}
+fn parse_object_event(obj: &Value) -> Result<Option<ws::Message>> {
+    match get_str(obj, "event")? {
+        "info" => Ok(None),
+        "error" => Err(ErrorKind::MarketError(get_str(event, "msg")?).into()),
+        "subscribed" => {
+            // let pair = 
+            // empty orderbook...
+            // it is "register" message
+            Ok(Some(Event::OrderBook(OrderBook::new())))
+        }
+    }
 }
 
 fn parse_event(event: &Value) -> Result<Event> {
@@ -93,7 +113,6 @@ mod tests {
     }
 
     #[test]
-    /// #TST-streams-poloniex
     fn parse_test() {
         let body = "[117,103957441,[[\"o\",1,\"0.00002789\",\"1788.27536750\"], \
                     [\"t\",\"14179278\",1,\"0.00002854\",\"175.19271198\",1509576585]]]";

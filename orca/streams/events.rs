@@ -1,4 +1,3 @@
-//! Markets streams.
 
 use core::{CurrencyPair, OrderBook, RawOrder, RawTrade, Market};
 

@@ -2,6 +2,7 @@
 
 mod pair;
 mod future;
+mod option;
 pub mod parse;
 pub mod ws;
 pub use self::pair::*;

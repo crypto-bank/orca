@@ -46,25 +46,25 @@ fn clean_old_files() {
 fn compile_dir(dir: &str, out: &str) {
     let protos = glob_simple(dir);
     assert!(!protos.is_empty());
-    let input = protos
-        .iter()
-        .map(|a| format!("orca/{}", a))
-        .collect::<Vec<String>>();
+    // let input = protos
+    //     .iter()
+    //     .map(|a| format!("orca/{}", a))
+    //     .collect::<Vec<String>>();
 
-    let root = Path::new("../");
-    assert!(env::set_current_dir(&root).is_ok());
+    // let root = Path::new("../");
+    // assert!(env::set_current_dir(&root).is_ok());
 
     protoc_rust::run(protoc_rust::Args {
         out_dir: out,
-        input: &input.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
+        // input: &input.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
         includes: &["."],
-        // input: &protos.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
+        input: &protos.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
     }).expect("protoc");
 
     println!("Generated!");
 
-    let root = Path::new("./orca");
-    assert!(env::set_current_dir(&root).is_ok());
+    // let root = Path::new("./orca");
+    // assert!(env::set_current_dir(&root).is_ok());
 }
 
 fn main() {
@@ -75,8 +75,8 @@ fn main() {
 
     clean_old_files();
 
-    compile_dir("core/*.proto", "./orca/core");
-    compile_dir("core/client/*.proto", "./orca/core/client");
+    compile_dir("orca/core/*.proto", "./orca/core");
+    compile_dir("orca/storage/*.proto", "./orca/storage");
 
     if protoc::Protoc::from_env_path()
         .version()

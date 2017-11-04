@@ -7,5 +7,5 @@ pub use self::cmd::*;
 pub use self::events::*;
 pub use self::stream::*;
 
-// Poloniex WebSocket stream client
+// pub mod bitfinex;
 pub mod poloniex;
