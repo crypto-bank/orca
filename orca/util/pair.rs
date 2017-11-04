@@ -1,17 +1,17 @@
 
 use std::convert::TryFrom;
-use util::try_opt;
 use core::errors::*;
 use core::{Currency, CurrencyPair};
+use super::OptionExt;
 
 /// Joins pair with given separator.
 pub fn join_pair<S: ::std::fmt::Display>(pair: &CurrencyPair, sep: S) -> String {
-    format!("{}{}{}", pair.quote, sep, pair.base)
+    format!("{:?}{}{:?}", pair.quote, sep, pair.base)
 }
 
 /// Joins pair with given separator.
 pub fn join_pair_reversed<S: ::std::fmt::Display>(pair: &CurrencyPair, sep: S) -> String {
-    format!("{}{}{}", pair.base, sep, pair.quote)
+    format!("{:?}{}{:?}", pair.base, sep, pair.quote)
 }
 
 /// Parses a currency pair with `_` separator.
@@ -38,8 +38,8 @@ fn parse_quote_base(s: &str) -> Result<(&str, &str)> {
     if v.len() != 2 {
         return Err(ErrorKind::InvalidCurrencyPair(s.to_string()).into());
     }
-    let quote = try_opt(v.get(0))?;
-    let base = try_opt(v.get(1))?;
+    let quote = v.get(0).into_result()?;
+    let base = v.get(1).into_result()?;
     Ok((*quote, *base))
 }
 
@@ -49,5 +49,6 @@ fn parse_and_join() {
     let revp = parse_pair_reversed("BTC_XRP").unwrap();
     assert_eq!(pair, revp);
     assert_eq!(join_pair(&pair, '_'), "XRP_BTC");
+    assert_eq!(join_pair(&pair, ""), "XRPBTC");
     assert_eq!(join_pair_reversed(&pair, '_'), "BTC_XRP");
 }

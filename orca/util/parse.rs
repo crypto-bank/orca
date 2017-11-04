@@ -3,13 +3,13 @@ use std::str::FromStr;
 use std::convert::From;
 use serde_json::Value;
 use serde_json::value::Index;
-use util::try_opt;
 use core::errors::*;
+use super::OptionExt;
 
 #[inline]
 pub fn get_array<'a, I: Index>(event: &'a Value, index: I) -> Result<&'a Vec<Value>> {
-    let event = try_opt(event.get(index))?;
-    let event = try_opt(event.as_array())?;
+    let event = event.get(index).into_result()?;
+    let event = event.as_array().into_result()?;
     Ok(event)
 }
 
@@ -18,22 +18,22 @@ pub fn get_object<'a>(
     objects: &'a Vec<Value>,
     index: usize,
 ) -> Result<&'a ::serde_json::Map<String, Value>> {
-    let object = try_opt(objects.get(index))?;
-    let object = try_opt(object.as_object())?;
+    let object = objects.get(index).into_result()?;
+    let object = object.as_object().into_result()?;
     Ok(object)
 }
 
 #[inline]
 pub fn get_i64<I: Index>(event: &Value, index: I) -> Result<i64> {
-    let event = try_opt(event.get(index))?;
-    let event = try_opt(event.as_i64())?;
+    let event = event.get(index).into_result()?;
+    let event = event.as_i64().into_result()?;
     Ok(event)
 }
 
 #[inline]
 pub fn get_str<'a, I: Index>(event: &'a Value, index: I) -> Result<&'a str> {
-    let event = try_opt(event.get(index))?;
-    let event = try_opt(event.as_str())?;
+    let event = event.get(index).into_result()?;
+    let event = event.as_str().into_result()?;
     Ok(event)
 }
 
@@ -44,7 +44,7 @@ where
 {
     match event.get(index) {
         Some(value) => parse_str::<T>(value),
-        None => Err(ErrorKind::ValueNotFound.into()),
+        None => Err(ErrorKind::EmptyOption.into()),
     }
 }
 
@@ -55,6 +55,6 @@ where
 {
     match value.as_str() {
         Some(value) => value.parse::<T>().map_err(|e| e.into()),
-        None => Err(ErrorKind::ValueNotFound.into()),
+        None => Err(ErrorKind::EmptyOption.into()),
     }
 }

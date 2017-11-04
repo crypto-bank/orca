@@ -52,11 +52,22 @@ impl Handle {
         }
     }
 
+    /// Returns currency pair by channel id.
+    pub fn pair(&self, id: &i64) -> Option<CurrencyPair> {
+        match self.pairs.get(&id) {
+            Some(pair) => Some(pair.clone()),
+            None => None,
+        }
+    }
+
     /// Creates handle with new channel.
-    pub fn with_chan(self, id: i64, pair: &CurrencyPair) -> Self {
+    pub fn with_register(self, id: i64, pair: CurrencyPair) -> Self {
         let mut pairs = self.pairs.clone();
-        pairs.insert(id, pair.clone());
-        Handle { pairs: pairs, .. self }
+        pairs.insert(id, pair);
+        Handle {
+            pairs: pairs,
+            ..self
+        }
     }
 }
 
