@@ -1,0 +1,14 @@
+codecov:
+  notify:
+    require_ci_to_pass: true
+
+coverage:
+  status:
+    project:
+      default:
+        threshold: 5%
+  ignore:
+    - orca/examples/.*
+    - orca/util/.*
+
+comment: off

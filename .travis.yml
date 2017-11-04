@@ -17,7 +17,6 @@ matrix:
   include:
   - rust: nightly
     before_deploy: cargo doc --no-deps
-  - rust: stable
 
 install:
   - bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
@@ -30,21 +29,8 @@ before_script:
   - cargo clean
 
 script:
-  # Build without unstable flag
-  - cargo build
-
-  # Test examples in README.
   - rustdoc --test ../README.md -L target/debug -L target/debug/deps
-
-  # Check with unstable flag
-  - cargo check
-
-  # Build the test executables in a separate step, since Tarpaulin
-  # will not fail on test compile errors.
-  - cargo build --tests
-
-  # Run tests
-  - RUST_TEST_THREADS=1 cargo test
+  - cargo test
 
 after_success:
   - bash <(curl -Ls https://codecov.io/bash)
