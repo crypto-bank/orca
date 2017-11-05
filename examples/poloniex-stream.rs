@@ -1,64 +1,54 @@
+//! Poloniex stream example.
 
-#![feature(rustc_private)]
-#[macro_use]
-extern crate log;
+#![feature(try_from)]
 
 extern crate orca;
-// extern crate tokio_core;
 extern crate futures;
 extern crate multiqueue;
 extern crate env_logger;
 
+use std::convert::TryFrom;
+
 use futures::prelude::*;
-use orca::core::reactor;
-use orca::streams::{connect, Command, Event};
-use orca::streams::poloniex;
-use orca::util::{parse_pair, ws};
+use orca::currency::Pair;
+use orca::events::Event;
+use orca::streams::{ws, connect, poloniex, Command};
+use orca::util::reactor;
 
 const STREAM_URL: &'static str = "wss://api2.poloniex.com:443";
-// const STREAM_URL: &'static str = "wss://api.bitfinex.com:443/ws";
 
+/// #TST-markets-streams-ws
 fn main() {
     env_logger::init().unwrap();
 
-    info!("hello");
-    println!("hello");
-
     let mut core = reactor::Core::new().unwrap();
-    // let streams = ::orca::streams::Core::new(core.handle());
 
     let (event_sender, event_receiver) = ::futures::sync::mpsc::unbounded();
     let (cmd_sender, cmd_receiver) = ::multiqueue::broadcast_fut_queue(10248);
 
-    let pair = parse_pair("ETH_BTC").unwrap();
-
-    info!("subscribing {}", pair);
-
-    // streams.command(Command::Subscribe(pair)).unwrap();
-    cmd_sender.try_send(Command::Subscribe(pair)).unwrap();
-
-    info!("subscribed");
+    cmd_sender.try_send(Command::Subscribe(Pair::try_from("ETH_BTC").unwrap())).unwrap();
+    cmd_sender.try_send(Command::Subscribe(Pair::try_from("BCH_BTC").unwrap())).unwrap();
 
     let handle = ws::Handle::new(event_sender, cmd_receiver, core.handle());
     let conn = connect::<poloniex::Protocol>(STREAM_URL, handle);
 
-    let reader = event_receiver.for_each(|(_m, _c, events)| {
+    let reader = event_receiver.for_each(move |(_m, _c, events)| {
         for e in events {
             match e {
                 Event::Order(o) => println!("order {}/{}", o.rate, o.volume),
                 Event::Trade(t) => {
                     println!("trade {}/{}", t.get_order().rate, t.get_order().volume)
                 }
-                Event::OrderBook(ref book) => println!("orderbook@{}", book.pair),
+                Event::OrderBook(ref book) => println!("orderbook@{}", book.get_pair()),
             }
         }
 
         Ok(())
     });
 
+    // spawn event reader
     core.handle().spawn(reader);
 
-    info!("spawned conn");
-
+    // spawn connection
     core.run(conn).ok();
 }

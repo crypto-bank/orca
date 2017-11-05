@@ -1,5 +1,6 @@
+// Option utilities.
 
-use core::errors::{Result, ErrorKind};
+use ::core::errors::*;
 
 /// Option utility extensions.
 pub trait OptionExt<T> {

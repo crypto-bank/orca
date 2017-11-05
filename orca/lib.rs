@@ -22,10 +22,12 @@ extern crate websocket;
 extern crate tokio_core;
 extern crate futures;
 extern crate protobuf;
-
 extern crate serde_json;
 
 
 pub mod core;
+pub mod currency;
+pub mod events;
+pub mod markets;
 pub mod streams;
 pub mod util;

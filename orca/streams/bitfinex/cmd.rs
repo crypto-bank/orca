@@ -1,7 +1,6 @@
 
-use core::CurrencyPair;
-use util::join_pair;
-use streams::Command;
+use ::core::currency::{Pair, PairExt};
+use ::streams::Command;
 
 /// Serializes a stream command.
 pub fn serialize(cmd: Command) -> String {
@@ -12,14 +11,14 @@ pub fn serialize(cmd: Command) -> String {
 }
 
 /// Creates a `subscribe` message for a given pair.
-fn subscribe(pair: &CurrencyPair) -> String {
+fn subscribe(pair: &currency::Pair) -> String {
     format!(
         "{{\"event\":\"subscribe\",\"channel\":\"book\",\"pair\":\"{}\",\"prec\":\"R0\"}}",
-        join_pair(pair, "")
+        pair.join("")
     )
 }
 
 /// Creates a `unsubscribe` message for a given pair.
-fn unsubscribe(_pair: &CurrencyPair) -> String {
+fn unsubscribe(_pair: &currency::Pair) -> String {
     unimplemented!()
 }

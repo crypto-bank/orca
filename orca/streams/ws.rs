@@ -1,7 +1,4 @@
-
-// Notes:
-//  * No heartbeats.
-//  * No sequence IDs track.
+// WebSocket streams client utilities.
 
 use std::collections::HashMap;
 use futures::future::{Future, Loop};
@@ -9,19 +6,12 @@ use futures::prelude::*;
 use websocket::{ClientBuilder, OwnedMessage};
 use websocket::async::TcpStream;
 use websocket::client::async::{Client as WebSocketClient, TlsStream};
-use core::errors::*;
-use core::{reactor, CurrencyPair};
-use streams::{CommandReceiver, Event, EventSender};
-use util::{boxfuture, FutureExt};
 
-/// TLS-encrypted asynchronous WebSocket stream client.
-pub type Client = WebSocketClient<TlsStream<TcpStream>>;
+use ::core::errors::*;
+use ::currency::Pair;
+use ::streams::{CmdReceiver, Event, EventSender};
+use ::util::{reactor, boxfuture, FutureExt};
 
-/// WebSocket Stream loop state.
-pub type LoopState = (Client, Option<Handle>);
-
-/// WebSocket Stream loop future.
-pub type LoopFuture = BoxFuture<Loop<(), LoopState>>;
 
 /// Parsed WebSocket stream message.
 pub struct Message {
@@ -33,17 +23,26 @@ pub struct Message {
     pub events: Vec<Event>,
 }
 
+/// TLS-encrypted asynchronous WebSocket stream client.
+pub type Client = WebSocketClient<TlsStream<TcpStream>>;
+
+/// WebSocket Stream loop state.
+pub type LoopState = (Client, Option<Handle>);
+
+/// WebSocket Stream loop future.
+pub type LoopFuture = BoxFuture<Loop<(), LoopState>>;
+
 /// WebSocket Stream connection handlers.
 pub struct Handle {
     pub reactor: reactor::Handle,
     pub sender: EventSender,
-    pub commands: CommandReceiver,
-    pub pairs: HashMap<i64, CurrencyPair>,
+    pub commands: CmdReceiver,
+    pub pairs: HashMap<i64, Pair>,
 }
 
 impl Handle {
     /// Creates new connection struct.
-    pub fn new(sender: EventSender, commands: CommandReceiver, handle: reactor::Handle) -> Self {
+    pub fn new(sender: EventSender, commands: CmdReceiver, handle: reactor::Handle) -> Self {
         Handle {
             reactor: handle,
             sender: sender,
@@ -53,7 +52,7 @@ impl Handle {
     }
 
     /// Returns currency pair by channel id.
-    pub fn pair(&self, id: &i64) -> Option<CurrencyPair> {
+    pub fn pair(&self, id: &i64) -> Option<Pair> {
         match self.pairs.get(&id) {
             Some(pair) => Some(pair.clone()),
             None => None,
@@ -61,7 +60,7 @@ impl Handle {
     }
 
     /// Creates handle with new channel.
-    pub fn with_register(self, id: i64, pair: CurrencyPair) -> Self {
+    pub fn with_channel(self, id: i64, pair: Pair) -> Self {
         let mut pairs = self.pairs.clone();
         pairs.insert(id, pair);
         Handle {

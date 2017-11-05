@@ -1,12 +1,19 @@
+// Poloniex WebSocket stream protocol parser.
 
 use std::convert::TryFrom;
 use serde_json::Value;
-use util::parse::{get_array, get_object, get_i64, get_str, parse_str, parse_nth_str};
-use core::errors::*;
-use core::{OrderBook, OrderKind, RawOrder, RawTrade};
-use streams::Event;
-use util::{ws, OptionExt};
+use protobuf::RepeatedField;
 
+use ::core::errors::*;
+use ::currency::{Pair, PairExt};
+use ::markets::{OrderBook, OrderKind, Order, Trade};
+use ::streams::Event;
+use ::streams::ws;
+use ::util::OptionExt;
+use ::util::parse::*;
+
+
+/// Parses Poloniex WebSocket message.
 pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
     let msg = ::serde_json::from_str::<Value>(text)?;
     if msg.as_array().into_result()?.len() <= 2 {
@@ -26,6 +33,7 @@ pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
     }))
 }
 
+/// Parses single event from Poloniex WebSocket message.
 fn parse_event(event: &Value) -> Result<Event> {
     match get_str(event, 0)? {
         "t" => Ok(Event::Trade(parse_trade(event)?)),
@@ -33,30 +41,46 @@ fn parse_event(event: &Value) -> Result<Event> {
         "i" => Ok(Event::OrderBook(
             parse_order_book(event.get(1).into_result()?)?,
         )),
-        any => Err(ErrorKind::UnexpectedEventType(any.to_owned()).into()),
+        any => Err(ErrorKind::UnknownEventType(any.to_owned()).into()),
     }
 }
 
+/// Parses order book event.
 fn parse_order_book(event: &Value) -> Result<OrderBook> {
-    let pair = get_str(event, "currencyPair")?;
-    let pair = ::util::parse_pair_reversed(pair)?;
+    // Get books from event
     let books = get_array(event, "orderBook")?;
-    let mut book = OrderBook::new(&pair);
-    for (ref rate, ref volume) in get_object(books, 0)?.iter() {
-        let rate = rate.as_str().parse::<f64>()?;
-        let volume = parse_str::<f64>(volume)?;
-        book.asks.set(rate, volume);
+    let asks = get_object(books, 0)?;
+    let bids = get_object(books, 1)?;
+
+    // Create vector of orders
+    let mut orders = Vec::with_capacity(asks.len() + bids.len());
+    for (ref rate, ref volume) in asks.iter() {
+        let mut order = Order::new();
+        order.set_kind(OrderKind::Ask);
+        order.set_rate(rate.as_str().parse::<f64>()?);
+        order.set_volume(parse_str::<f64>(volume)?);
+        orders.push(order);
     }
-    for (ref rate, ref volume) in get_object(books, 1)?.iter() {
-        let rate = rate.as_str().parse::<f64>()?;
-        let volume = parse_str::<f64>(volume)?;
-        book.bids.set(rate, volume);
+    for (ref rate, ref volume) in bids.iter() {
+        let mut order = Order::new();
+        order.set_kind(OrderKind::Bid);
+        order.set_rate(rate.as_str().parse::<f64>()?);
+        order.set_volume(parse_str::<f64>(volume)?);
+        orders.push(order);
     }
+
+    // Construct orderbook struct
+    let mut book = OrderBook::new();
+    let pair = get_str(event, "currencyPair")?;
+    book.set_pair(Pair::parse_reversed(pair)?);
+    book.set_orders(RepeatedField::from_vec(orders));
+
     Ok(book)
 }
 
-fn parse_order(event: &Value) -> Result<RawOrder> {
-    let mut order = RawOrder::new();
+/// Parses order event.
+fn parse_order(event: &Value) -> Result<Order> {
+    let mut order = Order::new();
     let kind = get_i64(event, 1)?;
     order.set_kind(OrderKind::try_from(kind)?);
     order.set_rate(parse_nth_str::<f64>(event, 2)?);
@@ -64,10 +88,11 @@ fn parse_order(event: &Value) -> Result<RawOrder> {
     Ok(order)
 }
 
-fn parse_trade(event: &Value) -> Result<RawTrade> {
-    let mut trade = RawTrade::new();
+/// Parses trade event.
+fn parse_trade(event: &Value) -> Result<Trade> {
+    let mut trade = Trade::new();
     trade.set_id(parse_nth_str::<i64>(event, 1)?);
-    let mut order = RawOrder::new();
+    let mut order = Order::new();
     let kind = get_i64(event, 2)?;
     order.set_kind(OrderKind::try_from(kind)?);
     order.set_rate(parse_nth_str::<f64>(event, 3)?);
@@ -83,8 +108,8 @@ mod tests {
     use super::*;
     use test::Bencher;
     use protobuf::Message;
-    use core::{OrderKind, RawOrder};
-    use streams::Event;
+    use ::markets::{OrderKind, Order};
+    use ::streams::Event;
 
     fn assert_eq_msg<M: Message>(a: &M, b: &M) {
         let ab = a.write_to_bytes().unwrap();
@@ -93,7 +118,7 @@ mod tests {
     }
 
     #[test]
-    /// #TST-streams-poloniex
+    /// #TST-markets-streams-poloniex
     fn parse_test() {
         let body = "[117,103957441,[[\"o\",1,\"0.00002789\",\"1788.27536750\"], \
                     [\"t\",\"14179278\",1,\"0.00002854\",\"175.19271198\",1509576585]]]";
@@ -102,7 +127,7 @@ mod tests {
         assert_eq!(msg.seq_id, 103957441);
         assert_eq!(msg.events.len(), 2);
         if let &Event::Order(ref o) = msg.events.get(0).unwrap() {
-            let mut order = RawOrder::new();
+            let mut order = Order::new();
             order.set_kind(OrderKind::Bid);
             order.set_rate(0.00002789);
             order.set_volume(1788.27536750);
@@ -111,11 +136,11 @@ mod tests {
             panic!("expecter order");
         }
         if let &Event::Trade(ref t) = msg.events.get(1).unwrap() {
-            let mut order = RawOrder::new();
+            let mut order = Order::new();
             order.set_kind(OrderKind::Bid);
             order.set_rate(0.00002854);
             order.set_volume(175.19271198);
-            let mut trade = RawTrade::new();
+            let mut trade = Trade::new();
             trade.set_id(14179278);
             trade.set_timestamp(1509576585);
             trade.set_order(order);

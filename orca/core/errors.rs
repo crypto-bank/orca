@@ -1,35 +1,48 @@
+//! Core error kinds.
 
 error_chain! {
     foreign_links {
-        IoError(::std::io::Error);
+        // Parsers
         ParseIntError(::std::num::ParseIntError);
         ParseFloatError(::std::num::ParseFloatError);
-        DeserializeError(::serde_json::error::Error);
+
+        // Streams
         WebSocketError(::websocket::result::WebSocketError);
-        SendCommandError(::std::sync::mpsc::TrySendError<::streams::Command>);
         SendEventsError(::futures::sync::mpsc::SendError<::streams::Events>);
+        SendCommandError(::std::sync::mpsc::TrySendError<::streams::Command>);
+
+        // Serialization
+        JsonError(::serde_json::error::Error);
+        ProtobufError(::protobuf::error::ProtobufError);
     }
 
     errors {
-        UnexpectedEventType(t: String) {
+        // Currency
+        UnknownCurrency(symbol: String) {
+            description("unknown currency symbol")
+            display("unknown currency symbol: {}", symbol)
+        }
+        // Currency pair
+        InvalidPair(pair: String) {
+            description("unknown currency pair")
+            display("unknown currency pair: {}", pair)
+        }
+        // Streams
+        UnknownEventType(t: String) {
             description("unexpected event type")
             display("unexpected event type: {}", t)
         }
-        InvalidCurrencyPair(pair: String) {
-            description("invalid currency pair")
-            display("invalid currency pair: {}", pair)
-        }
+        // Markets
         InvalidOrderKind(k: i64) {
             description("invalid order kind")
             display("invalid order kind: {}", k)
         }
+        // Utils
         EmptyOption {
             description("unwrapped empty option")
         }
     }
 }
-
-// above are placed here for `use core::errors::*;`
 
 /// Future with core error type.
 pub type Future<T> = ::futures::Future<Item = T, Error = Error>;

@@ -3,10 +3,10 @@
 mod cmd;
 mod parser;
 
-use core::Market;
-use core::errors::*;
-use streams::Command;
-use util::ws;
+use ::core::errors::*;
+use ::markets::Market;
+use ::streams::Command;
+use ::streams::ws;
 
 /// Bitfinex WebSocket protocol.
 pub struct Protocol;

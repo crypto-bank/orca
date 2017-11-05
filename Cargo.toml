@@ -8,6 +8,11 @@ build = "orca/build.rs"
 path = "orca/lib.rs"
 doctest = false
 
+[[example]]
+name = "poloniex-stream"
+path = "examples/poloniex-stream.rs"
+doc = false
+
 [features]
 default-features = []
 proto3 = []

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+// #SPC-markets-proto
+package orca.markets;
+
+import "orca/currency/currency.proto";
+
+// Market identifiers.
+enum Market {
+  Invalid = 0;
+  Poloniex = 1;
+  Bitfinex = 2;
+}
+
+// Order kind can be either `Ask` when we are selling
+// or a `Bid` when we are trying to buy something.
+enum OrderKind {
+  Ask = 0; // Ask or a sell.
+  Bid = 1; // Bid or a buy.
+}
+
+// Currency order details.
+//
+// It's format used in databases and streams,
+// in places where  currency pair is always known.
+message Order {
+  // Order kind, which is an `Ask` or a `Bid`.
+  OrderKind kind = 1;
+
+  // Price rate is a price of a unit.
+  double rate = 2;
+
+  // Order volume.
+  double volume = 3;
+}
+
+// Currency trade details.
+//
+// It's format used in databases and streams,
+// in places where  currency pair is always known.
+message Trade {
+  // Trade ID, unique only for a market.
+  int64 id = 1;
+
+  // Trade order.
+  Order order = 2;
+
+  // Trade timestamp.
+  int64 timestamp = 3;
+}
+
+// Market order book.
+message OrderBook {
+  // List of asks and bids.
+  repeated Order orders = 1;
+  // Order book currency pair.
+  orca.currency.Pair pair = 2;
+}

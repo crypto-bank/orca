@@ -3,21 +3,21 @@
 mod cmd;
 mod parser;
 
-use core::Market;
-use core::errors::*;
-use streams::Command;
-use util::ws;
+use ::core::errors::*;
+use ::markets::Market;
+use ::streams::Command;
+use ::streams::ws::Message;
 
 /// Poloniex WebSocket protocol.
 pub struct Protocol;
 
-/// #SPC-streams-poloniex
+/// #SPC-markets-streams-poloniex
 impl ::streams::Protocol for Protocol {
     fn market() -> Market {
         Market::Poloniex
     }
 
-    fn parse(msg: &str) -> Result<Option<ws::Message>> {
+    fn parse(msg: &str) -> Result<Option<Message>> {
         self::parser::parse_message(msg)
     }
 

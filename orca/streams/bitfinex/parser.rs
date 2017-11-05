@@ -1,11 +1,14 @@
 
 use std::convert::TryFrom;
 use serde_json::Value;
-use util::parse::{get_array, get_object, get_i64, get_str, parse_str, parse_nth_str};
-use core::errors::*;
-use core::{OrderBook, OrderKind, RawOrder, RawTrade};
-use streams::Event;
-use util::{ws, OptionExt};
+
+use ::core::errors::*;
+use ::markets::{OrderBook, OrderKind, Order, Trade};
+use ::streams::Event;
+use ::streams::ws;
+use ::util::OptionExt;
+use ::util::parse::*;
+
 
 pub fn parse_message(text: &str) -> Result<Option<ws::Message>> {
     let msg = ::serde_json::from_str::<Value>(text)?;
@@ -58,7 +61,7 @@ fn parse_event(event: &Value) -> Result<Event> {
 }
 
 fn parse_order_book(event: &Value) -> Result<OrderBook> {
-    let pair = get_str(event, "currencyPair")?;
+    let pair = get_str(event, "currency::Pair")?;
     let pair = ::util::parse_pair_reversed(pair)?;
     let books = get_array(event, "orderBook")?;
     let mut book = OrderBook::new(&pair);
@@ -75,8 +78,8 @@ fn parse_order_book(event: &Value) -> Result<OrderBook> {
     Ok(book)
 }
 
-fn parse_order(event: &Value) -> Result<RawOrder> {
-    let mut order = RawOrder::new();
+fn parse_order(event: &Value) -> Result<Order> {
+    let mut order = Order::new();
     let kind = get_i64(event, 1)?;
     order.set_kind(OrderKind::try_from(kind)?);
     order.set_rate(parse_nth_str::<f64>(event, 2)?);
@@ -84,10 +87,10 @@ fn parse_order(event: &Value) -> Result<RawOrder> {
     Ok(order)
 }
 
-fn parse_trade(event: &Value) -> Result<RawTrade> {
-    let mut trade = RawTrade::new();
+fn parse_trade(event: &Value) -> Result<Trade> {
+    let mut trade = Trade::new();
     trade.set_id(parse_nth_str::<i64>(event, 1)?);
-    let mut order = RawOrder::new();
+    let mut order = Order::new();
     let kind = get_i64(event, 2)?;
     order.set_kind(OrderKind::try_from(kind)?);
     order.set_rate(parse_nth_str::<f64>(event, 3)?);
@@ -103,7 +106,7 @@ mod tests {
     use super::*;
     use test::Bencher;
     use protobuf::Message;
-    use core::{OrderKind, RawOrder};
+    use core::{OrderKind, Order};
     use streams::Event;
 
     fn assert_eq_msg<M: Message>(a: &M, b: &M) {
@@ -121,7 +124,7 @@ mod tests {
         assert_eq!(msg.seq_id, 103957441);
         assert_eq!(msg.events.len(), 2);
         if let &Event::Order(ref o) = msg.events.get(0).unwrap() {
-            let mut order = RawOrder::new();
+            let mut order = Order::new();
             order.set_kind(OrderKind::Bid);
             order.set_rate(0.00002789);
             order.set_volume(1788.27536750);
@@ -130,11 +133,11 @@ mod tests {
             panic!("expecter order");
         }
         if let &Event::Trade(ref t) = msg.events.get(1).unwrap() {
-            let mut order = RawOrder::new();
+            let mut order = Order::new();
             order.set_kind(OrderKind::Bid);
             order.set_rate(0.00002854);
             order.set_volume(175.19271198);
-            let mut trade = RawTrade::new();
+            let mut trade = Trade::new();
             trade.set_id(14179278);
             trade.set_timestamp(1509576585);
             trade.set_order(order);

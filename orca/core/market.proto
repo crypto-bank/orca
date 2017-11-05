@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package orca.core;
-
-enum Market {
-    Invalid = 0;
-    Poloniex = 1;
-    Bitfinex = 2;
-}

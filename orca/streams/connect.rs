@@ -1,33 +1,44 @@
+// WebSocket stream connection.
 
 use futures::future::{self, Future};
 use futures::prelude::*;
-use websocket::OwnedMessage;
-use core::{Market};
-use core::errors::*;
-use util::{ws, FutureExt};
-use super::{Command, Event};
+use websocket::{OwnedMessage, WebSocketError};
 
-/// WebSocket Stream protocol trait.
-pub trait Protocol {
-    /// Returns market ID.
-    fn market() -> Market;
-
-    /// Parses message.
-    fn parse(msg: &str) -> Result<Option<ws::Message>>;
-
-    /// Serializes command.
-    fn serialize(cmd: Command) -> String;
-}
+use ::core::errors::*;
+use ::events::{Event, EventExt};
+use ::streams::{Protocol, Command};
+use ::streams::ws;
+use ::util::FutureExt;
 
 /// Connects to WebSocket stream.
+///
+/// #SPC-markets-streams-ws
 pub fn connect<P: Protocol>(addr: &str, handle: ws::Handle) -> BoxFuture<()> {
+    fn close_with_err(
+        stream: ws::Client,
+        err: WebSocketError,
+    ) -> BoxFuture<(Option<OwnedMessage>, ws::Client)> {
+        error!("Could not receive message: {:?}", err);
+        stream
+            .send(OwnedMessage::Close(None))
+            .map(|stream| (None, stream))
+            .map_err(|e| e.into())
+            .into_box()
+    }
+
+    // Connect to WebSocket server
     ws::connect(addr, &handle.reactor)
         .and_then(move |stream| {
+            // Start connection stream processing loop.
             future::loop_fn((stream, Some(handle)), move |(stream, handle)| {
+                // Check for subscribe commands.
                 let handle = handle.unwrap();
                 if let Ok(cmd) = handle.commands.try_recv() {
+                    // Serialize and send commands to connection.
                     return send_cmd::<P>(cmd, stream, handle);
                 }
+                // Read from stream and process messages.
+                // Break loop if connection was closed.
                 stream
                     .into_future()
                     .or_else(|(err, stream)| close_with_err(stream, err))
@@ -38,9 +49,12 @@ pub fn connect<P: Protocol>(addr: &str, handle: ws::Handle) -> BoxFuture<()> {
                     .into_box()
             })
         })
+        .map_err(|e| e.into())
         .into_box()
 }
 
+/// Parse raw websocket message.
+/// It can be `Close`, `Text` or a wrong message.
 fn handle_message<P: Protocol>(
     body: OwnedMessage,
     stream: ws::Client,
@@ -57,6 +71,8 @@ fn handle_message<P: Protocol>(
     }
 }
 
+/// Parses body of a `Text` WebSocket message.
+/// Processes message and sends events if any.
 fn handle_body<P: Protocol>(
     body: String,
     stream: ws::Client,
@@ -73,20 +89,23 @@ fn handle_body<P: Protocol>(
     }
 }
 
+/// Processes message and sends events if any.
+/// Registers currency pair channel on orderbook.
 fn process_message<P: Protocol>(
     msg: ws::Message,
     stream: ws::Client,
     handle: ws::Handle,
 ) -> ws::LoopFuture {
-    // handle registration
-    if msg.events.len() == 1 {
-        if let Event::OrderBook(_) = msg.events[0] {
-            return handle_orderbook::<P>(msg, stream, handle);
-        }
+    // Check if event is order book
+    if msg.events.is_order_book() {
+        // Register new channel and send events
+        return handle_orderbook::<P>(msg, stream, handle);
     }
     send_and_continue::<P>(msg, stream, handle)
 }
 
+/// Registers currency pair channel id in `ws::Handle`.
+/// Sends parsed events to handle sender.
 fn handle_orderbook<P: Protocol>(
     msg: ws::Message,
     stream: ws::Client,
@@ -94,13 +113,14 @@ fn handle_orderbook<P: Protocol>(
 ) -> ws::LoopFuture {
     // unwrap orderbook from msg
     let pair = match msg.events[0] {
-        Event::OrderBook(ref book) => book.pair.clone(),
+        Event::OrderBook(ref book) => book.get_pair().clone(),
         _ => panic!("code was mangled?"),
     };
-    let handle = handle.with_register(msg.chan_id, pair);
+    let handle = handle.with_channel(msg.chan_id, pair);
     send_and_continue::<P>(msg, stream, handle)
 }
 
+/// Sends message to handle sender.
 fn send_and_continue<P: Protocol>(
     msg: ws::Message,
     stream: ws::Client,
@@ -126,18 +146,7 @@ fn send_and_continue<P: Protocol>(
     ws::continue_loop(stream, handle)
 }
 
+/// Serializes an sends command to WebSocket connection.
 fn send_cmd<P: Protocol>(cmd: Command, stream: ws::Client, handle: ws::Handle) -> ws::LoopFuture {
     ws::send_msg(OwnedMessage::Text(P::serialize(cmd)), stream, handle)
-}
-
-fn close_with_err<E: ::std::error::Error>(
-    stream: ws::Client,
-    err: E,
-) -> BoxFuture<(Option<OwnedMessage>, ws::Client)> {
-    error!("Could not receive message: {:?}", err);
-    stream
-        .send(OwnedMessage::Close(None))
-        .map(|stream| (None, stream))
-        .map_err(|e| e.into())
-        .into_box()
 }

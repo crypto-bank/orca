@@ -1,16 +1,18 @@
 
+use ::currency::Pair;
+
 /// Market stream command.
 #[derive(Clone)]
 pub enum Command {
     /// Subscription command.
-    Subscribe(::core::CurrencyPair),
+    Subscribe(Pair),
 
     /// Unsubscription command.
-    Unsubscribe(::core::CurrencyPair),
+    Unsubscribe(Pair),
 }
 
 /// Market stream command sender.
-pub type CommandSender = ::multiqueue::BroadcastFutSender<Command>;
+pub type CmdSender = ::multiqueue::BroadcastFutSender<Command>;
 
 /// Market stream command receiver.
-pub type CommandReceiver = ::multiqueue::BroadcastFutReceiver<Command>;
+pub type CmdReceiver = ::multiqueue::BroadcastFutReceiver<Command>;

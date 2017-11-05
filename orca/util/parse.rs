@@ -3,8 +3,9 @@ use std::str::FromStr;
 use std::convert::From;
 use serde_json::Value;
 use serde_json::value::Index;
-use core::errors::*;
-use super::OptionExt;
+
+use ::core::errors::*;
+use ::util::OptionExt;
 
 #[inline]
 pub fn get_array<'a, I: Index>(event: &'a Value, index: I) -> Result<&'a Vec<Value>> {

@@ -22,39 +22,40 @@ use protobuf::Message as Message_imported_for_functions;
 use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 
 #[derive(PartialEq,Clone,Default)]
-pub struct Event {
+pub struct LogEvent {
     // message oneof groups
-    event: ::std::option::Option<Event_oneof_event>,
+    event: ::std::option::Option<LogEvent_oneof_event>,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
     cached_size: ::protobuf::CachedSize,
 }
 
 // see codegen.rs for the explanation why impl Sync explicitly
-unsafe impl ::std::marker::Sync for Event {}
+unsafe impl ::std::marker::Sync for LogEvent {}
 
 #[derive(Clone,PartialEq)]
-pub enum Event_oneof_event {
-    order(super::order::RawOrder),
-    trade(super::trade::RawTrade),
+pub enum LogEvent_oneof_event {
+    order(::markets::Order),
+    trade(::markets::Trade),
+    book(::markets::OrderBook),
 }
 
-impl Event {
-    pub fn new() -> Event {
+impl LogEvent {
+    pub fn new() -> LogEvent {
         ::std::default::Default::default()
     }
 
-    pub fn default_instance() -> &'static Event {
-        static mut instance: ::protobuf::lazy::Lazy<Event> = ::protobuf::lazy::Lazy {
+    pub fn default_instance() -> &'static LogEvent {
+        static mut instance: ::protobuf::lazy::Lazy<LogEvent> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const Event,
+            ptr: 0 as *const LogEvent,
         };
         unsafe {
-            instance.get(Event::new)
+            instance.get(LogEvent::new)
         }
     }
 
-    // .orca.core.RawOrder order = 1;
+    // .orca.markets.Order order = 1;
 
     pub fn clear_order(&mut self) {
         self.event = ::std::option::Option::None;
@@ -62,48 +63,48 @@ impl Event {
 
     pub fn has_order(&self) -> bool {
         match self.event {
-            ::std::option::Option::Some(Event_oneof_event::order(..)) => true,
+            ::std::option::Option::Some(LogEvent_oneof_event::order(..)) => true,
             _ => false,
         }
     }
 
     // Param is passed by value, moved
-    pub fn set_order(&mut self, v: super::order::RawOrder) {
-        self.event = ::std::option::Option::Some(Event_oneof_event::order(v))
+    pub fn set_order(&mut self, v: ::markets::Order) {
+        self.event = ::std::option::Option::Some(LogEvent_oneof_event::order(v))
     }
 
     // Mutable pointer to the field.
-    pub fn mut_order(&mut self) -> &mut super::order::RawOrder {
-        if let ::std::option::Option::Some(Event_oneof_event::order(_)) = self.event {
+    pub fn mut_order(&mut self) -> &mut ::markets::Order {
+        if let ::std::option::Option::Some(LogEvent_oneof_event::order(_)) = self.event {
         } else {
-            self.event = ::std::option::Option::Some(Event_oneof_event::order(super::order::RawOrder::new()));
+            self.event = ::std::option::Option::Some(LogEvent_oneof_event::order(::markets::Order::new()));
         }
         match self.event {
-            ::std::option::Option::Some(Event_oneof_event::order(ref mut v)) => v,
+            ::std::option::Option::Some(LogEvent_oneof_event::order(ref mut v)) => v,
             _ => panic!(),
         }
     }
 
     // Take field
-    pub fn take_order(&mut self) -> super::order::RawOrder {
+    pub fn take_order(&mut self) -> ::markets::Order {
         if self.has_order() {
             match self.event.take() {
-                ::std::option::Option::Some(Event_oneof_event::order(v)) => v,
+                ::std::option::Option::Some(LogEvent_oneof_event::order(v)) => v,
                 _ => panic!(),
             }
         } else {
-            super::order::RawOrder::new()
+            ::markets::Order::new()
         }
     }
 
-    pub fn get_order(&self) -> &super::order::RawOrder {
+    pub fn get_order(&self) -> &::markets::Order {
         match self.event {
-            ::std::option::Option::Some(Event_oneof_event::order(ref v)) => v,
-            _ => super::order::RawOrder::default_instance(),
+            ::std::option::Option::Some(LogEvent_oneof_event::order(ref v)) => v,
+            _ => ::markets::Order::default_instance(),
         }
     }
 
-    // .orca.core.RawTrade trade = 2;
+    // .orca.markets.Trade trade = 2;
 
     pub fn clear_trade(&mut self) {
         self.event = ::std::option::Option::None;
@@ -111,56 +112,110 @@ impl Event {
 
     pub fn has_trade(&self) -> bool {
         match self.event {
-            ::std::option::Option::Some(Event_oneof_event::trade(..)) => true,
+            ::std::option::Option::Some(LogEvent_oneof_event::trade(..)) => true,
             _ => false,
         }
     }
 
     // Param is passed by value, moved
-    pub fn set_trade(&mut self, v: super::trade::RawTrade) {
-        self.event = ::std::option::Option::Some(Event_oneof_event::trade(v))
+    pub fn set_trade(&mut self, v: ::markets::Trade) {
+        self.event = ::std::option::Option::Some(LogEvent_oneof_event::trade(v))
     }
 
     // Mutable pointer to the field.
-    pub fn mut_trade(&mut self) -> &mut super::trade::RawTrade {
-        if let ::std::option::Option::Some(Event_oneof_event::trade(_)) = self.event {
+    pub fn mut_trade(&mut self) -> &mut ::markets::Trade {
+        if let ::std::option::Option::Some(LogEvent_oneof_event::trade(_)) = self.event {
         } else {
-            self.event = ::std::option::Option::Some(Event_oneof_event::trade(super::trade::RawTrade::new()));
+            self.event = ::std::option::Option::Some(LogEvent_oneof_event::trade(::markets::Trade::new()));
         }
         match self.event {
-            ::std::option::Option::Some(Event_oneof_event::trade(ref mut v)) => v,
+            ::std::option::Option::Some(LogEvent_oneof_event::trade(ref mut v)) => v,
             _ => panic!(),
         }
     }
 
     // Take field
-    pub fn take_trade(&mut self) -> super::trade::RawTrade {
+    pub fn take_trade(&mut self) -> ::markets::Trade {
         if self.has_trade() {
             match self.event.take() {
-                ::std::option::Option::Some(Event_oneof_event::trade(v)) => v,
+                ::std::option::Option::Some(LogEvent_oneof_event::trade(v)) => v,
                 _ => panic!(),
             }
         } else {
-            super::trade::RawTrade::new()
+            ::markets::Trade::new()
         }
     }
 
-    pub fn get_trade(&self) -> &super::trade::RawTrade {
+    pub fn get_trade(&self) -> &::markets::Trade {
         match self.event {
-            ::std::option::Option::Some(Event_oneof_event::trade(ref v)) => v,
-            _ => super::trade::RawTrade::default_instance(),
+            ::std::option::Option::Some(LogEvent_oneof_event::trade(ref v)) => v,
+            _ => ::markets::Trade::default_instance(),
+        }
+    }
+
+    // .orca.markets.OrderBook book = 3;
+
+    pub fn clear_book(&mut self) {
+        self.event = ::std::option::Option::None;
+    }
+
+    pub fn has_book(&self) -> bool {
+        match self.event {
+            ::std::option::Option::Some(LogEvent_oneof_event::book(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_book(&mut self, v: ::markets::OrderBook) {
+        self.event = ::std::option::Option::Some(LogEvent_oneof_event::book(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_book(&mut self) -> &mut ::markets::OrderBook {
+        if let ::std::option::Option::Some(LogEvent_oneof_event::book(_)) = self.event {
+        } else {
+            self.event = ::std::option::Option::Some(LogEvent_oneof_event::book(::markets::OrderBook::new()));
+        }
+        match self.event {
+            ::std::option::Option::Some(LogEvent_oneof_event::book(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_book(&mut self) -> ::markets::OrderBook {
+        if self.has_book() {
+            match self.event.take() {
+                ::std::option::Option::Some(LogEvent_oneof_event::book(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::markets::OrderBook::new()
+        }
+    }
+
+    pub fn get_book(&self) -> &::markets::OrderBook {
+        match self.event {
+            ::std::option::Option::Some(LogEvent_oneof_event::book(ref v)) => v,
+            _ => ::markets::OrderBook::default_instance(),
         }
     }
 }
 
-impl ::protobuf::Message for Event {
+impl ::protobuf::Message for LogEvent {
     fn is_initialized(&self) -> bool {
-        if let Some(Event_oneof_event::order(ref v)) = self.event {
+        if let Some(LogEvent_oneof_event::order(ref v)) = self.event {
             if !v.is_initialized() {
                 return false;
             }
         }
-        if let Some(Event_oneof_event::trade(ref v)) = self.event {
+        if let Some(LogEvent_oneof_event::trade(ref v)) = self.event {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(LogEvent_oneof_event::book(ref v)) = self.event {
             if !v.is_initialized() {
                 return false;
             }
@@ -176,13 +231,19 @@ impl ::protobuf::Message for Event {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    self.event = ::std::option::Option::Some(Event_oneof_event::order(is.read_message()?));
+                    self.event = ::std::option::Option::Some(LogEvent_oneof_event::order(is.read_message()?));
                 },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    self.event = ::std::option::Option::Some(Event_oneof_event::trade(is.read_message()?));
+                    self.event = ::std::option::Option::Some(LogEvent_oneof_event::trade(is.read_message()?));
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.event = ::std::option::Option::Some(LogEvent_oneof_event::book(is.read_message()?));
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -198,11 +259,15 @@ impl ::protobuf::Message for Event {
         let mut my_size = 0;
         if let ::std::option::Option::Some(ref v) = self.event {
             match v {
-                &Event_oneof_event::order(ref v) => {
+                &LogEvent_oneof_event::order(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
-                &Event_oneof_event::trade(ref v) => {
+                &LogEvent_oneof_event::trade(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &LogEvent_oneof_event::book(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -216,13 +281,18 @@ impl ::protobuf::Message for Event {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
         if let ::std::option::Option::Some(ref v) = self.event {
             match v {
-                &Event_oneof_event::order(ref v) => {
+                &LogEvent_oneof_event::order(ref v) => {
                     os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
-                &Event_oneof_event::trade(ref v) => {
+                &LogEvent_oneof_event::trade(ref v) => {
                     os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &LogEvent_oneof_event::book(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -259,12 +329,12 @@ impl ::protobuf::Message for Event {
     }
 }
 
-impl ::protobuf::MessageStatic for Event {
-    fn new() -> Event {
-        Event::new()
+impl ::protobuf::MessageStatic for LogEvent {
+    fn new() -> LogEvent {
+        LogEvent::new()
     }
 
-    fn descriptor_static(_: ::std::option::Option<Event>) -> &'static ::protobuf::reflect::MessageDescriptor {
+    fn descriptor_static(_: ::std::option::Option<LogEvent>) -> &'static ::protobuf::reflect::MessageDescriptor {
         static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
             ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
@@ -272,18 +342,23 @@ impl ::protobuf::MessageStatic for Event {
         unsafe {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
-                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, super::order::RawOrder>(
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, ::markets::Order>(
                     "order",
-                    Event::has_order,
-                    Event::get_order,
+                    LogEvent::has_order,
+                    LogEvent::get_order,
                 ));
-                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, super::trade::RawTrade>(
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, ::markets::Trade>(
                     "trade",
-                    Event::has_trade,
-                    Event::get_trade,
+                    LogEvent::has_trade,
+                    LogEvent::get_trade,
                 ));
-                ::protobuf::reflect::MessageDescriptor::new::<Event>(
-                    "Event",
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, ::markets::OrderBook>(
+                    "book",
+                    LogEvent::has_book,
+                    LogEvent::get_book,
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<LogEvent>(
+                    "LogEvent",
                     fields,
                     file_descriptor_proto()
                 )
@@ -292,31 +367,31 @@ impl ::protobuf::MessageStatic for Event {
     }
 }
 
-impl ::protobuf::Clear for Event {
+impl ::protobuf::Clear for LogEvent {
     fn clear(&mut self) {
         self.clear_order();
         self.clear_trade();
+        self.clear_book();
         self.unknown_fields.clear();
     }
 }
 
-impl ::std::fmt::Debug for Event {
+impl ::std::fmt::Debug for LogEvent {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         ::protobuf::text_format::fmt(self, f)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for Event {
+impl ::protobuf::reflect::ProtobufValue for LogEvent {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct Events {
+pub struct LogBody {
     // message fields
-    pub events: ::protobuf::RepeatedField<Event>,
-    pub reset: bool,
+    pub events: ::protobuf::RepeatedField<LogEvent>,
     pub timestamp: i64,
     // special fields
     unknown_fields: ::protobuf::UnknownFields,
@@ -324,80 +399,57 @@ pub struct Events {
 }
 
 // see codegen.rs for the explanation why impl Sync explicitly
-unsafe impl ::std::marker::Sync for Events {}
+unsafe impl ::std::marker::Sync for LogBody {}
 
-impl Events {
-    pub fn new() -> Events {
+impl LogBody {
+    pub fn new() -> LogBody {
         ::std::default::Default::default()
     }
 
-    pub fn default_instance() -> &'static Events {
-        static mut instance: ::protobuf::lazy::Lazy<Events> = ::protobuf::lazy::Lazy {
+    pub fn default_instance() -> &'static LogBody {
+        static mut instance: ::protobuf::lazy::Lazy<LogBody> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const Events,
+            ptr: 0 as *const LogBody,
         };
         unsafe {
-            instance.get(Events::new)
+            instance.get(LogBody::new)
         }
     }
 
-    // repeated .orca.storage.Event events = 1;
+    // repeated .orca.events.LogEvent events = 1;
 
     pub fn clear_events(&mut self) {
         self.events.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_events(&mut self, v: ::protobuf::RepeatedField<Event>) {
+    pub fn set_events(&mut self, v: ::protobuf::RepeatedField<LogEvent>) {
         self.events = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_events(&mut self) -> &mut ::protobuf::RepeatedField<Event> {
+    pub fn mut_events(&mut self) -> &mut ::protobuf::RepeatedField<LogEvent> {
         &mut self.events
     }
 
     // Take field
-    pub fn take_events(&mut self) -> ::protobuf::RepeatedField<Event> {
+    pub fn take_events(&mut self) -> ::protobuf::RepeatedField<LogEvent> {
         ::std::mem::replace(&mut self.events, ::protobuf::RepeatedField::new())
     }
 
-    pub fn get_events(&self) -> &[Event] {
+    pub fn get_events(&self) -> &[LogEvent] {
         &self.events
     }
 
-    fn get_events_for_reflect(&self) -> &::protobuf::RepeatedField<Event> {
+    fn get_events_for_reflect(&self) -> &::protobuf::RepeatedField<LogEvent> {
         &self.events
     }
 
-    fn mut_events_for_reflect(&mut self) -> &mut ::protobuf::RepeatedField<Event> {
+    fn mut_events_for_reflect(&mut self) -> &mut ::protobuf::RepeatedField<LogEvent> {
         &mut self.events
     }
 
-    // bool reset = 2;
-
-    pub fn clear_reset(&mut self) {
-        self.reset = false;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_reset(&mut self, v: bool) {
-        self.reset = v;
-    }
-
-    pub fn get_reset(&self) -> bool {
-        self.reset
-    }
-
-    fn get_reset_for_reflect(&self) -> &bool {
-        &self.reset
-    }
-
-    fn mut_reset_for_reflect(&mut self) -> &mut bool {
-        &mut self.reset
-    }
-
-    // int64 timestamp = 3;
+    // int64 timestamp = 2;
 
     pub fn clear_timestamp(&mut self) {
         self.timestamp = 0;
@@ -421,7 +473,7 @@ impl Events {
     }
 }
 
-impl ::protobuf::Message for Events {
+impl ::protobuf::Message for LogBody {
     fn is_initialized(&self) -> bool {
         for v in &self.events {
             if !v.is_initialized() {
@@ -439,13 +491,6 @@ impl ::protobuf::Message for Events {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.events)?;
                 },
                 2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_bool()?;
-                    self.reset = tmp;
-                },
-                3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
@@ -468,11 +513,8 @@ impl ::protobuf::Message for Events {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
-        if self.reset != false {
-            my_size += 2;
-        }
         if self.timestamp != 0 {
-            my_size += ::protobuf::rt::value_size(3, self.timestamp, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(2, self.timestamp, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -485,11 +527,8 @@ impl ::protobuf::Message for Events {
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         };
-        if self.reset != false {
-            os.write_bool(2, self.reset)?;
-        }
         if self.timestamp != 0 {
-            os.write_int64(3, self.timestamp)?;
+            os.write_int64(2, self.timestamp)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -522,12 +561,12 @@ impl ::protobuf::Message for Events {
     }
 }
 
-impl ::protobuf::MessageStatic for Events {
-    fn new() -> Events {
-        Events::new()
+impl ::protobuf::MessageStatic for LogBody {
+    fn new() -> LogBody {
+        LogBody::new()
     }
 
-    fn descriptor_static(_: ::std::option::Option<Events>) -> &'static ::protobuf::reflect::MessageDescriptor {
+    fn descriptor_static(_: ::std::option::Option<LogBody>) -> &'static ::protobuf::reflect::MessageDescriptor {
         static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
             ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
@@ -535,23 +574,18 @@ impl ::protobuf::MessageStatic for Events {
         unsafe {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
-                fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Event>>(
+                fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<LogEvent>>(
                     "events",
-                    Events::get_events_for_reflect,
-                    Events::mut_events_for_reflect,
-                ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
-                    "reset",
-                    Events::get_reset_for_reflect,
-                    Events::mut_reset_for_reflect,
+                    LogBody::get_events_for_reflect,
+                    LogBody::mut_events_for_reflect,
                 ));
                 fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeInt64>(
                     "timestamp",
-                    Events::get_timestamp_for_reflect,
-                    Events::mut_timestamp_for_reflect,
+                    LogBody::get_timestamp_for_reflect,
+                    LogBody::mut_timestamp_for_reflect,
                 ));
-                ::protobuf::reflect::MessageDescriptor::new::<Events>(
-                    "Events",
+                ::protobuf::reflect::MessageDescriptor::new::<LogBody>(
+                    "LogBody",
                     fields,
                     file_descriptor_proto()
                 )
@@ -560,35 +594,35 @@ impl ::protobuf::MessageStatic for Events {
     }
 }
 
-impl ::protobuf::Clear for Events {
+impl ::protobuf::Clear for LogBody {
     fn clear(&mut self) {
         self.clear_events();
-        self.clear_reset();
         self.clear_timestamp();
         self.unknown_fields.clear();
     }
 }
 
-impl ::std::fmt::Debug for Events {
+impl ::std::fmt::Debug for LogBody {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         ::protobuf::text_format::fmt(self, f)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for Events {
+impl ::protobuf::reflect::ProtobufValue for LogBody {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x19orca/storage/events.proto\x12\x0corca.storage\x1a\x15orca/core/ord\
-    er.proto\x1a\x15orca/core/trade.proto\"j\n\x05Event\x12+\n\x05order\x18\
-    \x01\x20\x01(\x0b2\x13.orca.core.RawOrderH\0R\x05order\x12+\n\x05trade\
-    \x18\x02\x20\x01(\x0b2\x13.orca.core.RawTradeH\0R\x05tradeB\x07\n\x05eve\
-    nt\"i\n\x06Events\x12+\n\x06events\x18\x01\x20\x03(\x0b2\x13.orca.storag\
-    e.EventR\x06events\x12\x14\n\x05reset\x18\x02\x20\x01(\x08R\x05reset\x12\
-    \x1c\n\ttimestamp\x18\x03\x20\x01(\x03R\ttimestampb\x06proto3\
+    \n\x18orca/events/events.proto\x12\x0borca.events\x1a\x1aorca/markets/ma\
+    rkets.proto\"\x9c\x01\n\x08LogEvent\x12+\n\x05order\x18\x01\x20\x01(\x0b\
+    2\x13.orca.markets.OrderH\0R\x05order\x12+\n\x05trade\x18\x02\x20\x01(\
+    \x0b2\x13.orca.markets.TradeH\0R\x05trade\x12-\n\x04book\x18\x03\x20\x01\
+    (\x0b2\x17.orca.markets.OrderBookH\0R\x04bookB\x07\n\x05event\"V\n\x07Lo\
+    gBody\x12-\n\x06events\x18\x01\x20\x03(\x0b2\x15.orca.events.LogEventR\
+    \x06events\x12\x1c\n\ttimestamp\x18\x02\x20\x01(\x03R\ttimestampb\x06pro\
+    to3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

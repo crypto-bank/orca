@@ -1,3 +1,4 @@
+// Future utilities.
 
 use futures::Future;
 

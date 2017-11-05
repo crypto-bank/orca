@@ -9,9 +9,14 @@ extern crate protoc;
 extern crate protoc_rust;
 
 use std::fs;
-use std::env;
-use std::path::Path;
+use std::fs::File;
+use std::io::prelude::*;
 
+const GENERATED_FILES: &'static [&'static str] = &[
+    "orca/currency/currency.rs",
+    "orca/events/events.rs",
+    "orca/markets/markets.rs",
+];
 
 fn glob_simple(pattern: &str) -> Vec<String> {
     glob::glob(pattern)
@@ -27,16 +32,8 @@ fn glob_simple(pattern: &str) -> Vec<String> {
         .collect()
 }
 
-
 fn clean_old_files() {
-    for f in &[
-        "core/currency.rs",
-        "core/market.rs",
-        "core/order.rs",
-        "core/trade.rs",
-        "core/client/order.rs",
-    ]
-    {
+    for f in GENERATED_FILES {
         if let Err(e) = fs::remove_file(f) {
             warn!("couldn't remote {}, err: {:?}", f, e);
         }
@@ -46,25 +43,14 @@ fn clean_old_files() {
 fn compile_dir(dir: &str, out: &str) {
     let protos = glob_simple(dir);
     assert!(!protos.is_empty());
-    // let input = protos
-    //     .iter()
-    //     .map(|a| format!("orca/{}", a))
-    //     .collect::<Vec<String>>();
-
-    // let root = Path::new("../");
-    // assert!(env::set_current_dir(&root).is_ok());
 
     protoc_rust::run(protoc_rust::Args {
         out_dir: out,
-        // input: &input.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
         includes: &["."],
         input: &protos.iter().map(|a| a.as_ref()).collect::<Vec<&str>>(),
     }).expect("protoc");
 
     println!("Generated!");
-
-    // let root = Path::new("./orca");
-    // assert!(env::set_current_dir(&root).is_ok());
 }
 
 fn main() {
@@ -75,8 +61,34 @@ fn main() {
 
     clean_old_files();
 
-    compile_dir("orca/core/*.proto", "./orca/core");
-    compile_dir("orca/storage/*.proto", "./orca/storage");
+    compile_dir("orca/currency/*.proto", "./orca/currency");
+    compile_dir("orca/events/*.proto", "./orca/events");
+    compile_dir("orca/markets/*.proto", "./orca/markets");
+
+    // Read generated files and
+    // replace all occurences of:
+    //  1. `super::events` to `::events`.
+    //  2. `super::markets` to `::markets`.
+    //  3. `super::currency` to `::currency`.
+    for filename in GENERATED_FILES {
+        // read file to string
+        let mut contents = String::new();
+        {
+            let mut f = File::open(filename)
+                .expect(&format!("file not found: {}", filename));
+            f.read_to_string(&mut contents).expect("read file");
+        }
+        // replace occurences
+        contents = contents.replace("super::events", "::events");
+        contents = contents.replace("super::markets", "::markets");
+        contents = contents.replace("super::currency", "::currency");
+        // create file
+        let mut file = File::create(filename)
+            .expect("create file");
+        // write back to file
+        file.write_all(contents.as_bytes())
+            .expect("write to file");
+    }
 
     if protoc::Protoc::from_env_path()
         .version()
